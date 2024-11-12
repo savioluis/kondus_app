@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kondus/app/routers/app_routers.dart';
+import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/src/modules/shared/widgets/kondus_fullwidth_button.dart';
 import 'package:kondus/src/modules/shared/widgets/kondus_text_field.dart';
 
@@ -87,7 +89,12 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   SizedBox(height: screenHeight * 0.06),
-                  KondusFillWidthButton(label: 'entrar'.toUpperCase()),
+                  KondusFillWidthButton(
+                    label: 'ENTRAR',
+                    onPressed: () {
+                      NavigatorProvider.navigateTo(AppRoutes.home);
+                    },
+                  ),
                   SizedBox(height: screenHeight * 0.20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

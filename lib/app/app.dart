@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kondus/app/routers/app_routers.dart';
+import 'package:kondus/core/providers/navigator/navigator_observer_provider.dart';
+import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/src/modules/login/presentation/login_page.dart';
 
 class KondusApp extends StatefulWidget {
@@ -12,9 +15,14 @@ class _KondusAppState extends State<KondusApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData.light(),
-        darkTheme: ThemeData.dark(),
-        themeMode: ThemeMode.system,
-        home: const LoginPage());
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
+      onGenerateRoute: AppRoutes.generateRoute,
+      navigatorObservers: [AppNavigatorObserver()],
+      navigatorKey: NavigatorProvider.navigatorKey,
+      title: 'Kondus',
+      home: const LoginPage(),
+    );
   }
 }

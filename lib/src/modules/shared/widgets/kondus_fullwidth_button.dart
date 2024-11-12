@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 class KondusFillWidthButton extends StatelessWidget {
-
   final String label;
   final double height;
   final TextStyle? textStyle;
+  final void Function() onPressed;
 
   const KondusFillWidthButton({
     this.label = '',
+    required this.onPressed,
     this.height = 48,
     this.textStyle,
     super.key,
@@ -19,11 +20,11 @@ class KondusFillWidthButton extends StatelessWidget {
       width: double.infinity,
       height: height,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xff05ACC1),
         ),
-        child:  Text(
+        child: Text(
           label,
           style: const TextStyle(
             color: Colors.white,
