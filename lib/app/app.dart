@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/pages/home_page.dart';
+import 'package:kondus/src/modules/login/presentation/login_page.dart';
 
 class KondusApp extends StatefulWidget {
   const KondusApp({super.key});
@@ -12,10 +12,9 @@ class _KondusAppState extends State<KondusApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.dark(),
-      darkTheme: ThemeData.dark(),
-      themeMode: ThemeMode.system,
-      home: const HomePage(),
-    );
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
+        themeMode: ThemeMode.system,
+        home: const LoginPage());
   }
 }
