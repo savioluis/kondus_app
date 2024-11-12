@@ -13,8 +13,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      bottomNavigationBar: BottomNavBar(),
-      body: Center(
+      bottomNavigationBar: const BottomNavBar(),
+      body: const Center(
         child: Text('Kondus'),
       ),
     );

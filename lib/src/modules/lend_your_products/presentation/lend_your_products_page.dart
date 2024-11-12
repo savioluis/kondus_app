@@ -20,7 +20,7 @@ class _LendYourProductsPageState extends State<LendYourProductsPage> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Column(
-            children: [
+            children: const [
               Text(
                 'Você possui algum desses itens para compartilhar com seus vizinhos ?',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 34),

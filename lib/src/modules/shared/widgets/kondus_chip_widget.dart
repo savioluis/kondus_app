@@ -18,8 +18,8 @@ class KondusChipWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return  ElevatedButton(
       onPressed: onPressed,
-      child: Text(label),
       style: ElevatedButton.styleFrom(),
+      child: Text(label),
     );
   }
 }
