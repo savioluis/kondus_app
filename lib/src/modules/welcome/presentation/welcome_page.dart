@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/src/modules/shared/widgets/kondus_custom_button.dart';
 
-class GetStartedPage extends StatelessWidget {
-  const GetStartedPage({Key? key}) : super(key: key);
+class WelcomePage extends StatelessWidget {
+  const WelcomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
