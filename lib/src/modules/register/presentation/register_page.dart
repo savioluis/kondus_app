@@ -44,9 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     Text(
                       'Morador',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xff555555)),
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff555555)),
                     )
                   ],
                 ),
@@ -96,7 +94,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 SizedBox(height: screenHeight * 0.08),
                 Align(
-                  alignment:Alignment.centerRight,
+                  alignment: Alignment.centerRight,
                   child: KondusCustomButton(
                     onPressed: pageController.validateForm,
                     height: 48,

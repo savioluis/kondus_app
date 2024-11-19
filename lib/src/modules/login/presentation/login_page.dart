@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/app/routers/app_routers.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
-import 'package:kondus/src/modules/shared/widgets/kondus_fullwidth_button.dart';
+import 'package:kondus/src/modules/shared/theme/app_theme.dart';
+import 'package:kondus/src/modules/shared/widgets/kondus_elevated_button.dart';
 import 'package:kondus/src/modules/shared/widgets/kondus_text_field.dart';
 
 class LoginPage extends StatefulWidget {
@@ -26,8 +27,8 @@ class _LoginPageState extends State<LoginPage> {
             ClipPath(
               clipper: _LoginClipPath(),
               child: Container(
-                decoration: const BoxDecoration(
-                  color: Color(0xff05ACC1),
+                decoration: BoxDecoration(
+                  color: context.blueColor,
                 ),
                 width: double.infinity,
                 height: screenHeight * 0.28,
@@ -43,17 +44,17 @@ class _LoginPageState extends State<LoginPage> {
                       Text(
                         'Entrar',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: context.whiteColor,
                           fontWeight: FontWeight.bold,
-                          fontSize: screenWidth * 0.1,
+                          fontSize: screenHeight * 0.05,
                         ),
                       ),
                       Text(
                         'Acesse sua conta',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: context.whiteColor,
                           fontWeight: FontWeight.normal,
-                          fontSize: screenWidth * 0.045,
+                          fontSize: screenHeight * 0.025,
                         ),
                       ),
                     ],
@@ -83,13 +84,11 @@ class _LoginPageState extends State<LoginPage> {
                           passwordHiddenValue = !passwordHiddenValue;
                         });
                       },
-                      icon: passwordHiddenValue
-                          ? const Icon(Icons.visibility_off)
-                          : const Icon(Icons.visibility),
+                      icon: passwordHiddenValue ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility),
                     ),
                   ),
                   SizedBox(height: screenHeight * 0.06),
-                  KondusFillWidthButton(
+                  KondusButton(
                     label: 'ENTRAR',
                     onPressed: () {
                       NavigatorProvider.navigateTo(AppRoutes.home);
@@ -99,13 +98,15 @@ class _LoginPageState extends State<LoginPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Não possui uma conta ?',
-                          style: TextStyle(color: Color(0xff757575))),
+                      Text(
+                        'Não possui uma conta ?',
+                        style: TextStyle(color: context.primaryColor.withOpacity(0.5)),
+                      ),
+                      const SizedBox(width: 2),
                       InkWell(
                         borderRadius: BorderRadius.circular(8),
                         child: const Padding(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                          padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                           child: Text(
                             'Criar conta',
                             style: TextStyle(color: Color(0xff05ACC1)),
@@ -132,8 +133,7 @@ class _LoginClipPath extends CustomClipper<Path> {
 
     path.moveTo(size.width, 0);
     path.lineTo(size.width, size.height * 0.5);
-    path.quadraticBezierTo(
-        size.width * 0.6, size.height * 1.2, 0, size.height * 0.9);
+    path.quadraticBezierTo(size.width * 0.6, size.height * 1.2, 0, size.height * 0.9);
     path.lineTo(0, 0);
     path.close();
 

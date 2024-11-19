@@ -25,31 +25,24 @@ class AppRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case welcome:
-        return MaterialPageRoute(
-            builder: (_) => const WelcomePage(), settings: settings);
+        return MaterialPageRoute(builder: (_) => const WelcomePage(), settings: settings);
       case login:
-        return MaterialPageRoute(
-            builder: (_) => const LoginPage(), settings: settings);
+        return MaterialPageRoute(builder: (_) => const LoginPage(), settings: settings);
       case home:
-        return MaterialPageRoute(
-            builder: (_) => const HomePage(), settings: settings);
+        return MaterialPageRoute(builder: (_) => const HomePage(), settings: settings);
       case searchProducts:
-        return MaterialPageRoute(
-            builder: (_) => const SearchPage(), settings: settings);
+        return MaterialPageRoute(builder: (_) => const SearchPage(), settings: settings);
       case productDetails:
-        return MaterialPageRoute(
-            builder: (_) => const ProductDetailsPage(), settings: settings);
+        return MaterialPageRoute(builder: (_) => const ProductDetailsPage(), settings: settings);
       case appSettings:
-        return MaterialPageRoute(
-            builder: (_) => const SettingsPage(), settings: settings);
+        return MaterialPageRoute(builder: (_) => const SettingsPage(), settings: settings);
       case privacyPolicy:
         return MaterialPageRoute(
           builder: (_) => const PrivacyPolicyPage(),
           settings: settings,
         );
       case termsAndConditions:
-        return MaterialPageRoute(
-            builder: (_) => const TermsAndConditionsPage(), settings: settings);
+        return MaterialPageRoute(builder: (_) => const TermsAndConditionsPage(), settings: settings);
       default:
         return MaterialPageRoute(
           settings: settings,

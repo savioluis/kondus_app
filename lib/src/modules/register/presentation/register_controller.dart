@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class RegisterController {
@@ -13,6 +12,4 @@ class RegisterController {
   void validateForm() {
     print('OK');
   }
-
-  
 }
