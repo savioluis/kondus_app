@@ -1,7 +1,7 @@
 part of '../../app_theme.dart';
 
 extension ColorExtension on BuildContext {
-  ColorScheme get colorScheme => Theme.of(this).colorScheme;
+  ColorScheme get colorScheme => theme.colorScheme;
 
   // Cores do tema principal e secundário
   Color get primaryColor => colorScheme.primary;
@@ -12,6 +12,10 @@ extension ColorExtension on BuildContext {
   // Cores do fundo e superfície
   Color get surfaceColor => colorScheme.surface;
   Color get onSurfaceColor => colorScheme.onSurface;
+
+  Color get blueColor => AppColors.blue;
+  Color get yellowColor => AppColors.yellow;
+  Color get whiteColor => Colors.white;
 
   // Cores de erro
   Color get errorColor => colorScheme.error;

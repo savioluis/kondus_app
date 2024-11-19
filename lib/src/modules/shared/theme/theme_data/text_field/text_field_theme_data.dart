@@ -1,10 +1,10 @@
 part of '../../app_theme.dart';
 
 extension TextFieldThemeExtension on BuildContext {
-  InputDecorationTheme get textFieldTheme => Theme.of(this).inputDecorationTheme;
+  InputDecorationTheme get textFieldTheme => theme.inputDecorationTheme;
 
   InputDecoration get textFieldDecoration => InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+        contentPadding: const EdgeInsets.all(18),
         filled: textFieldTheme.filled,
         fillColor: textFieldTheme.fillColor,
         labelStyle: textFieldTheme.labelStyle,
@@ -26,22 +26,33 @@ class TextFieldThemeData {
       fillColor: Colors.transparent,
       labelStyle: TextStyle(color: colorScheme.primary),
       floatingLabelStyle: TextStyle(color: colorScheme.primary),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20), // Define padding vertical
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(color: colorScheme.outline.withOpacity(0.2)),
+      contentPadding: const EdgeInsets.all(18),
+      hintStyle: const TextStyle(fontSize: 16, color: AppColors.lightGrey),
+      focusedBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(18)),
+        borderSide: BorderSide(width: 1, color: AppColors.blue),
       ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(color: colorScheme.primary),
+      disabledBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(18)),
+        borderSide: BorderSide(width: 1, color: Colors.orange),
       ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(color: colorScheme.error),
+      enabledBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(18)),
+        borderSide: BorderSide(width: 1, color: AppColors.lightGrey),
       ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(color: colorScheme.error, width: 2),
+      border: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(18)),
+        borderSide: BorderSide(
+          width: 1,
+        ),
+      ),
+      errorBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(18)),
+        borderSide: BorderSide(width: 1, color: AppColors.error),
+      ),
+      focusedErrorBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(18)),
+        borderSide: BorderSide(width: 1, color: AppColors.error),
       ),
     );
   }
@@ -52,22 +63,33 @@ class TextFieldThemeData {
       fillColor: Colors.transparent,
       labelStyle: TextStyle(color: colorScheme.primary),
       floatingLabelStyle: TextStyle(color: colorScheme.primary),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20), // Define padding vertical
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(color: Colors.grey[600]!),
+      hintStyle: const TextStyle(fontSize: 16, color: AppColors.darkLightGrey),
+      contentPadding: const EdgeInsets.all(18),
+      focusedBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(18)),
+        borderSide: BorderSide(width: 1, color: AppColors.blue),
       ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(color: colorScheme.primary),
+      disabledBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(18)),
+        borderSide: BorderSide(width: 1, color: Colors.orange),
       ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(color: colorScheme.error),
+      enabledBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(18)),
+        borderSide: BorderSide(width: 1, color: AppColors.darkLightGrey),
       ),
-      focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
-        borderSide: BorderSide(color: colorScheme.error, width: 2),
+      border: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(18)),
+        borderSide: BorderSide(
+          width: 1,
+        ),
+      ),
+      errorBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(18)),
+        borderSide: BorderSide(width: 1, color: AppColors.darkError),
+      ),
+      focusedErrorBorder: const OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(18)),
+        borderSide: BorderSide(width: 1, color: AppColors.darkError),
       ),
     );
   }

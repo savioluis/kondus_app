@@ -41,8 +41,7 @@ class ChipThemeExtension extends ThemeExtension<ChipThemeExtension> {
     if (other is! ChipThemeExtension) return this;
     return ChipThemeExtension(
       defaultBackgroundColor: Color.lerp(defaultBackgroundColor, other.defaultBackgroundColor, t)!,
-      selectedBackgroundColor:
-          Color.lerp(selectedBackgroundColor, other.selectedBackgroundColor, t)!,
+      selectedBackgroundColor: Color.lerp(selectedBackgroundColor, other.selectedBackgroundColor, t)!,
       defaultLabelColor: Color.lerp(defaultLabelColor, other.defaultLabelColor, t)!,
       selectedLabelColor: Color.lerp(selectedLabelColor, other.selectedLabelColor, t)!,
       defaultBorderColor: Color.lerp(defaultBorderColor, other.defaultBorderColor, t)!,

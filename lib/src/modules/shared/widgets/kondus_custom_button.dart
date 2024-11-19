@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class KondusCustomButton extends StatelessWidget {
-
   final VoidCallback? onPressed;
   final String label;
   final double? height;
@@ -27,13 +26,14 @@ class KondusCustomButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xff05ACC1),
         ),
-        child:  Text(
+        child: Text(
           label,
-          style: textStyle ?? const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
+          style: textStyle ??
+              const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
         ),
       ),
     );

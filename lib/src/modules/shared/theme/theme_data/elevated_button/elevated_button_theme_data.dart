@@ -8,15 +8,8 @@ extension ButtonThemeExtension on BuildContext {
 ElevatedButtonThemeData _elevatedButtonThemeData() {
   return ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      minimumSize: const Size(double.infinity, 64),
-      textStyle: ThemeData.light().textTheme.labelMedium?.copyWith(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-          ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+      minimumSize: const Size(double.infinity, 56),
     ).copyWith(
       backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
         if (states.contains(WidgetState.disabled)) {
@@ -30,6 +23,7 @@ ElevatedButtonThemeData _elevatedButtonThemeData() {
         }
         return AppColors.onPrimary; // Cor de contraste para texto habilitado
       }),
+
       // Certificando-se que a cor de fundo sempre contraste com o texto:
       overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
         if (states.contains(WidgetState.pressed)) {
