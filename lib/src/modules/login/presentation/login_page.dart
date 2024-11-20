@@ -112,7 +112,9 @@ class _LoginPageState extends State<LoginPage> {
                             style: TextStyle(color: Color(0xff05ACC1)),
                           ),
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          NavigatorProvider.navigateTo(AppRoutes.lendYourProducts);
+                        },
                       ),
                     ],
                   ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/src/modules/shared/widgets/kondus_custom_button.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -45,10 +44,7 @@ class WelcomePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 48),
-                KondusCustomButton(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  onPressed: () {},
-                ),
+                
                 const SizedBox(height: 16),
                 TextButton(
                   onPressed: () {},

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:kondus/src/modules/shared/widgets/header_section.dart';
 
 class LendYourProductsPage extends StatefulWidget {
   const LendYourProductsPage({super.key});
@@ -20,27 +21,22 @@ class _LendYourProductsPageState extends State<LendYourProductsPage> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: const [
-              Text(
-                'Você possui algum desses itens para compartilhar com seus vizinhos ?',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 34),
-              ),
-              Row(
-                children: [
-                  Text(
-                    'Compartilhe seus ',
-                    style: TextStyle(fontWeight: FontWeight.w200),
-                  ),
-                  Text(
-                    'serviços ',
+              HeaderSection(
+                titleSize: 34,
+                subTitleSize: 16,
+                title:
+                    'Você possui algum desses itens para compartilhar com seus vizinhos?',
+                subtitle: [
+                  TextSpan(text: 'Compartilhe seus '),
+                  TextSpan(
+                    text: 'serviços ',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Text(
-                    'e ',
-                    style: TextStyle(fontWeight: FontWeight.w200),
-                  ),
-                  Text(
-                    'produtos',
+                  TextSpan(text: 'e '),
+                  TextSpan(
+                    text: 'produtos',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
