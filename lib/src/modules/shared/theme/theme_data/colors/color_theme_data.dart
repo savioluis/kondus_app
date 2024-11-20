@@ -22,8 +22,8 @@ extension ColorExtension on BuildContext {
   Color get onErrorColor => colorScheme.onError;
 
   // Cores adicionais
-  Color get greyColor => AppColors.grey;
-  Color get lightGreyColor => AppColors.lightGrey;
+  Color get greyColor => isDarkMode ? AppColors.grey : AppColors.darkGrey;
+  Color get lightGreyColor => isDarkMode ? AppColors.lightGrey : AppColors.darkGrey;
 
   // Métodos utilitários para acessar cores
   Color getBackgroundColor(bool isPrimary) => isPrimary ? primaryColor : secondaryColor;

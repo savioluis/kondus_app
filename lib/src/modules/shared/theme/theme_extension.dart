@@ -8,4 +8,5 @@ extension ThemeExtension on BuildContext {
   ButtonThemeData get buttonTheme => theme.buttonTheme;
   ChipThemeData get chipTheme => theme.chipTheme;
   ChipThemeExtension? get customChipTheme => theme.extension<ChipThemeExtension>();
+  bool get isDarkMode => theme.brightness == Brightness.dark;
 }
