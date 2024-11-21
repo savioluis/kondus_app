@@ -16,10 +16,10 @@ class KondusChipWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  ElevatedButton(
+    return ElevatedButton(
       onPressed: onPressed,
-      child: Text(label),
       style: ElevatedButton.styleFrom(),
+      child: Text(label),
     );
   }
 }

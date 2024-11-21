@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kondus/src/modules/shared/theme/app_theme.dart';
 
 class KondusTextFormField extends StatelessWidget {
   final TextEditingController? controller;
@@ -6,8 +7,12 @@ class KondusTextFormField extends StatelessWidget {
   final String? hintText;
   final Widget? prefixIcon;
   final Widget? sufixIcon;
+  final Color? prefixIconColor;
+  final Color? sufixIconColor;
   final bool isObscure;
   final bool isEnabled;
+  final bool? isFilled;
+  final Color? fillColor;
 
   const KondusTextFormField({
     this.formKey,
@@ -17,6 +22,10 @@ class KondusTextFormField extends StatelessWidget {
     this.sufixIcon,
     this.isObscure = false,
     this.isEnabled = true,
+    this.isFilled,
+    this.fillColor,
+    this.prefixIconColor,
+    this.sufixIconColor,
     super.key,
   });
 
@@ -27,39 +36,14 @@ class KondusTextFormField extends StatelessWidget {
       enabled: isEnabled,
       controller: controller,
       obscureText: isObscure,
-      decoration: InputDecoration(
+      decoration: context.textFieldDecoration.copyWith(
         prefixIcon: prefixIcon,
+        prefixIconColor: prefixIconColor ?? context.secondaryColor,
         suffixIcon: sufixIcon,
-        fillColor: Colors.transparent,
-        filled: true,
-        focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(18)),
-          borderSide: BorderSide(width: 1, color: Color(0xff05ACC1)),
-        ),
-        disabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(18)),
-          borderSide: BorderSide(width: 1, color: Colors.orange),
-        ),
-        enabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(18)),
-          borderSide: BorderSide(width: 1, color: Color(0xffB0BEC5)),
-        ),
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(18)),
-          borderSide: BorderSide(
-            width: 1,
-          ),
-        ),
-        errorBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(18)),
-          borderSide: BorderSide(width: 1, color: Colors.redAccent),
-        ),
-        focusedErrorBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(18)),
-          borderSide: BorderSide(width: 1, color: Colors.redAccent),
-        ),
+        suffixIconColor: sufixIconColor ?? context.secondaryColor,
         hintText: hintText,
-        hintStyle: const TextStyle(fontSize: 16, color: Color(0xffB0BEC5)),
+        filled: isFilled,
+        fillColor: fillColor,
       ),
     );
   }

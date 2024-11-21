@@ -2,7 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:kondus/src/modules/register/presentation/register_controller.dart';
-import 'package:kondus/src/modules/shared/widgets/kondus_custom_button.dart';
+import 'package:kondus/src/modules/shared/theme/app_theme.dart';
+import 'package:kondus/src/modules/shared/widgets/kondus_app_bar.dart';
+import 'package:kondus/src/modules/shared/widgets/header_section.dart';
+import 'package:kondus/src/modules/shared/widgets/kondus_elevated_button.dart';
 import 'package:kondus/src/modules/shared/widgets/kondus_text_field.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -21,33 +24,23 @@ class _RegisterPageState extends State<RegisterPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        toolbarHeight: 40,
-      ),
+      appBar: KondusAppBar(),
       body: SingleChildScrollView(
         child: Form(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            padding: const EdgeInsets.symmetric(horizontal: 32),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Informe seus dados',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 28),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'como ',
-                      style: TextStyle(color: Color(0xff555555)),
+                HeaderSection(
+                  title: 'Informe seus dados',
+                  titleSize: 28,
+                  subtitle: [
+                    TextSpan(text: 'como '),
+                    TextSpan(
+                      text: 'Morador',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    Text(
-                      'Morador',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xff555555)),
-                    )
                   ],
                 ),
                 SizedBox(height: screenHeight * 0.05),
@@ -96,10 +89,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 SizedBox(height: screenHeight * 0.08),
                 Align(
-                  alignment:Alignment.centerRight,
-                  child: KondusCustomButton(
+                  alignment: Alignment.centerRight,
+                  child: KondusButton(
                     onPressed: pageController.validateForm,
-                    height: 48,
                     label: 'FINALIZAR',
                     textStyle: TextStyle(
                       fontWeight: FontWeight.bold,
