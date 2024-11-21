@@ -39,7 +39,7 @@ TextTheme _buildTextTheme(TextTheme base) {
 }
 
 TextStyle _buildTextStyle(TextStyle? base, {FontWeight? fontWeight, FontStyle fontStyle = FontStyle.normal}) {
-  return GoogleFonts.inter(
+  return GoogleFonts.lato(
     textStyle: base,
     fontWeight: fontWeight,
     fontStyle: fontStyle,
