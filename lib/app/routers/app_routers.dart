@@ -6,7 +6,7 @@ import 'package:kondus/src/modules/notifications/presentation/notifications_page
 import 'package:kondus/src/modules/privacy_policy/presentation/privacy_policy_page.dart';
 import 'package:kondus/src/modules/product_details/presentation/product_details_page.dart';
 import 'package:kondus/src/modules/register/presentation/register_page.dart';
-import 'package:kondus/src/modules/search/presentation/search_page.dart';
+import 'package:kondus/src/modules/search_products/presentation/search_products_page.dart';
 import 'package:kondus/src/modules/settings/presentation/settings_page.dart';
 import 'package:kondus/src/modules/shared/widgets/kondus_app_bar.dart';
 import 'package:kondus/src/modules/terms_and_conditions/presentation/terms_and_conditions_page.dart';
@@ -41,7 +41,7 @@ class AppRoutes {
             builder: (_) => const RegisterPage(), settings: settings);
       case home:
         return MaterialPageRoute(
-            builder: (_) => const HomePage(), settings: settings);
+            builder: (_) =>  HomePage(), settings: settings);
       case searchProducts:
         return MaterialPageRoute(
             builder: (_) => const SearchPage(), settings: settings);
