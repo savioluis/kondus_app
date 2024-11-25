@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/src/modules/search/presentation/search_controller.dart';
-import 'package:kondus/src/modules/search/presentation/search_state.dart';
-import 'package:kondus/src/modules/search/widgets/product_card.dart';
+import 'package:kondus/src/modules/search_products/presentation/search_controller.dart';
+import 'package:kondus/src/modules/search_products/presentation/search_state.dart';
+import 'package:kondus/src/modules/search_products/widgets/product_card.dart';
 import 'package:kondus/src/modules/shared/theme/app_theme.dart';
 import 'package:kondus/src/modules/shared/widgets/kondus_app_bar.dart';
 import 'package:kondus/src/modules/shared/widgets/kondus_text_field.dart';
