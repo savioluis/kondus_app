@@ -22,12 +22,15 @@ extension ColorExtension on BuildContext {
   Color get onErrorColor => colorScheme.onError;
 
   // Cores adicionais
-  Color get greyColor => isDarkMode ? AppColors.grey : AppColors.darkGrey;
-  Color get lightGreyColor => isDarkMode ? AppColors.lightGrey : AppColors.darkGrey;
+  Color get greyColor => isDarkMode ? AppColors.darkGrey : AppColors.grey;
+  Color get lightGreyColor =>
+      isDarkMode ? AppColors.darkGrey : AppColors.lightGrey;
 
   // Métodos utilitários para acessar cores
-  Color getBackgroundColor(bool isPrimary) => isPrimary ? primaryColor : secondaryColor;
-  Color getForegroundColor(bool isPrimary) => isPrimary ? onPrimaryColor : onSecondaryColor;
+  Color getBackgroundColor(bool isPrimary) =>
+      isPrimary ? primaryColor : secondaryColor;
+  Color getForegroundColor(bool isPrimary) =>
+      isPrimary ? onPrimaryColor : onSecondaryColor;
 
   Color getColor(Set<WidgetState> states, {bool isPrimary = true}) {
     if (states.contains(WidgetState.disabled)) {
