@@ -45,9 +45,14 @@ class KondusTextFormField extends StatelessWidget {
         suffixIcon: sufixIcon,
         suffixIconColor: sufixIconColor ?? context.secondaryColor,
         hintText: hintText,
+        hintStyle: context.titleMedium!
+            .copyWith(color: context.lightGreyColor.withOpacity(0.5)),
         filled: isFilled,
         fillColor: fillColor,
       ),
+      onTapOutside: (event) {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
     );
   }
 }
