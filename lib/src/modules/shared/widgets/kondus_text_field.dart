@@ -13,6 +13,7 @@ class KondusTextFormField extends StatelessWidget {
   final bool isEnabled;
   final bool? isFilled;
   final Color? fillColor;
+  final Function(String)? onChanged;
 
   const KondusTextFormField({
     this.formKey,
@@ -26,30 +27,32 @@ class KondusTextFormField extends StatelessWidget {
     this.fillColor,
     this.prefixIconColor,
     this.sufixIconColor,
+    this.onChanged,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        key: formKey,
-        enabled: isEnabled,
-        controller: controller,
-        obscureText: isObscure,
-        decoration: context.textFieldDecoration.copyWith(
-          prefixIcon: prefixIcon,
-          prefixIconColor: prefixIconColor ?? context.secondaryColor,
-          suffixIcon: sufixIcon,
-          suffixIconColor: sufixIconColor ?? context.secondaryColor,
-          hintText: hintText,
-          hintStyle: context.titleMedium!.copyWith(
-            color: context.lightGreyColor.withOpacity(0.5)
-          ),
-          filled: isFilled,
-          fillColor: fillColor,
-        ),
-        onTapOutside: (event) {
-          FocusManager.instance.primaryFocus?.unfocus();
-        });
+      key: formKey,
+      enabled: isEnabled,
+      controller: controller,
+      obscureText: isObscure,
+      onChanged: onChanged,
+      decoration: context.textFieldDecoration.copyWith(
+        prefixIcon: prefixIcon,
+        prefixIconColor: prefixIconColor ?? context.secondaryColor,
+        suffixIcon: sufixIcon,
+        suffixIconColor: sufixIconColor ?? context.secondaryColor,
+        hintText: hintText,
+        hintStyle: context.titleMedium!
+            .copyWith(color: context.lightGreyColor.withOpacity(0.5)),
+        filled: isFilled,
+        fillColor: fillColor,
+      ),
+      onTapOutside: (event) {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+    );
   }
 }

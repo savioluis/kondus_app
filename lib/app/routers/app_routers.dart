@@ -41,7 +41,7 @@ class AppRoutes {
             builder: (_) => const RegisterPage(), settings: settings);
       case home:
         return MaterialPageRoute(
-            builder: (_) =>  HomePage(), settings: settings);
+            builder: (_) => HomePage(), settings: settings);
       case searchProducts:
         return MaterialPageRoute(
             builder: (_) => const SearchPage(), settings: settings);

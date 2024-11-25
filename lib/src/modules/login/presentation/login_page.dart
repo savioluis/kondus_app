@@ -113,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         onTap: () {
-                          NavigatorProvider.navigateTo(AppRoutes.lendYourProducts);
+                          NavigatorProvider.navigateTo(AppRoutes.register);
                         },
                       ),
                     ],
