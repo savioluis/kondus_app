@@ -35,7 +35,7 @@ class Header extends StatelessWidget {
                 clipBehavior: Clip.antiAlias,
                 child: InkWell(
                   onTap: () {
-                    NavigatorProvider.navigateTo('');
+                    NavigatorProvider.navigateTo(AppRoutes.profile);
                   },
                   child: CircleAvatar(
                     radius: 25,
