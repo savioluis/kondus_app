@@ -27,6 +27,7 @@ class Header extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SizedBox(
+          height: kToolbarHeight,
           child: Row(
             children: [
               Material(
@@ -41,7 +42,10 @@ class Header extends StatelessWidget {
                     backgroundColor: context.primaryColor.withOpacity(0.08),
                     child: Text(
                       _getInitials(username),
-                      style: TextStyle(color: context.blueColor, fontSize: 24),
+                      style: TextStyle(
+                        color: context.blueColor,
+                        fontSize: 24,
+                      ),
                     ),
                   ),
                 ),
@@ -49,12 +53,15 @@ class Header extends StatelessWidget {
               const SizedBox(width: 8),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Welcome,'),
+                  const Text('Bem-vindo,'),
                   Text(
                     username,
                     style: TextStyle(
-                        color: context.blueColor, fontWeight: FontWeight.bold),
+                      color: context.blueColor,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
@@ -65,7 +72,8 @@ class Header extends StatelessWidget {
           icon: Icons.notifications,
           size: 48,
           iconColor: context.primaryColor.withOpacity(0.5),
-          onPressed: () => NavigatorProvider.navigateTo(AppRoutes.notifications),
+          onPressed: () =>
+              NavigatorProvider.navigateTo(AppRoutes.notifications),
         )
       ],
     );
