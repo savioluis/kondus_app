@@ -27,7 +27,7 @@ class TextFieldThemeData {
       labelStyle: TextStyle(color: colorScheme.primary),
       floatingLabelStyle: TextStyle(color: colorScheme.primary),
       contentPadding: const EdgeInsets.all(18),
-      hintStyle: const TextStyle(fontSize: 16, color: AppColors.lightGrey),
+      hintStyle: TextStyle(fontSize: 16, color: AppColors.lightGrey.withOpacity(0.5)),
       focusedBorder: const OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(18)),
         borderSide: BorderSide(width: 1, color: AppColors.blue),
@@ -63,7 +63,7 @@ class TextFieldThemeData {
       fillColor: Colors.transparent,
       labelStyle: TextStyle(color: colorScheme.primary),
       floatingLabelStyle: TextStyle(color: colorScheme.primary),
-      hintStyle: const TextStyle(fontSize: 16, color: AppColors.darkLightGrey),
+      hintStyle: TextStyle(fontSize: 16, color: AppColors.darkLightGrey.withOpacity(0.5)),
       contentPadding: const EdgeInsets.all(18),
       focusedBorder: const OutlineInputBorder(
         borderRadius: BorderRadius.all(Radius.circular(18)),

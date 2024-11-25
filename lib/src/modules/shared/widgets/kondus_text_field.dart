@@ -32,19 +32,24 @@ class KondusTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      key: formKey,
-      enabled: isEnabled,
-      controller: controller,
-      obscureText: isObscure,
-      decoration: context.textFieldDecoration.copyWith(
-        prefixIcon: prefixIcon,
-        prefixIconColor: prefixIconColor ?? context.secondaryColor,
-        suffixIcon: sufixIcon,
-        suffixIconColor: sufixIconColor ?? context.secondaryColor,
-        hintText: hintText,
-        filled: isFilled,
-        fillColor: fillColor,
-      ),
-    );
+        key: formKey,
+        enabled: isEnabled,
+        controller: controller,
+        obscureText: isObscure,
+        decoration: context.textFieldDecoration.copyWith(
+          prefixIcon: prefixIcon,
+          prefixIconColor: prefixIconColor ?? context.secondaryColor,
+          suffixIcon: sufixIcon,
+          suffixIconColor: sufixIconColor ?? context.secondaryColor,
+          hintText: hintText,
+          hintStyle: context.titleMedium!.copyWith(
+            color: context.lightGreyColor.withOpacity(0.5)
+          ),
+          filled: isFilled,
+          fillColor: fillColor,
+        ),
+        onTapOutside: (event) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        });
   }
 }
