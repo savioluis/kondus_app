@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kondus/src/modules/history/presentation/perfil_history_page.dart';
 import 'package:kondus/src/modules/home/presentation/home_page.dart';
 import 'package:kondus/src/modules/lend_your_products/presentation/lend_your_products_page.dart';
 import 'package:kondus/src/modules/login/presentation/login_page.dart';
@@ -26,6 +27,8 @@ class AppRoutes {
   static const String notifications = '/notifications';
   static const String privacyPolicy = '/privacyPolicy';
   static const String termsAndConditions = '/termsAndConditions';
+
+  static const String history = "/history";
 
   // Método para gerar as rotas
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -72,6 +75,13 @@ class AppRoutes {
           builder: (_) => const TermsAndConditionsPage(),
           settings: settings,
         );
+
+      case history:
+        return MaterialPageRoute(
+          builder: (_) => const PerfilHistoryPage(),
+          settings: settings,
+        );
+
       default:
         return MaterialPageRoute(
           settings: settings,
