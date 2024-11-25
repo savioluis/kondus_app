@@ -6,6 +6,6 @@ import '../../../app/injections.dart';
 Future<void> historyInjections() async{
   getIt.registerLazySingleton<HistoryUsecase>(() => HistoryUsecase());
   getIt.registerLazySingleton<HistoryViewModel>( () =>
-    HistoryViewModel(usecase: getIt<HistoryUsecase>())
+    HistoryViewModel(getIt())
   );
 }

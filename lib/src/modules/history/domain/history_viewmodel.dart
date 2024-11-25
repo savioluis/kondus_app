@@ -3,14 +3,14 @@ import 'package:kondus/src/modules/history/domain/history_model.dart';
 import 'package:kondus/src/modules/history/domain/history_usecase.dart';
 
 final class HistoryViewModel{
-  final HistoryUsecase usecase;
-  HistoryViewModel({required this.usecase});
+  final HistoryUsecase _usecase;
+  HistoryViewModel(this._usecase);
 
   final ValueNotifier<HistoryState> state = ValueNotifier(HistoryIdleState());
 
   Future getHistory() async{
     state.value = HistoryLoadingState();
-    state.value = await usecase.call();
+    state.value = await _usecase.call();
   }
 }
 
