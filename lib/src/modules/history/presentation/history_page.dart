@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/src/modules/history/domain/perfil_history_viewmodel.dart';
+import 'package:kondus/src/modules/history/domain/history_viewmodel.dart';
 import 'package:kondus/src/modules/history/widgets/history_list.dart';
 import 'package:kondus/src/modules/shared/theme/app_theme.dart';
 
 import '../../../../app/injections.dart';
 
-class PerfilHistoryPage extends StatefulWidget {
-  const PerfilHistoryPage({super.key});
+class HistoryPage extends StatefulWidget {
+  const HistoryPage({super.key});
 
   @override
-  State<PerfilHistoryPage> createState() => _PerfilHistoryPageState();
+  State<HistoryPage> createState() => _PerfilHistoryPageState();
 }
 
-class _PerfilHistoryPageState extends State<PerfilHistoryPage> {
-  final viewmodel = getIt<PerfilHistoryViewModel>();
+class _PerfilHistoryPageState extends State<HistoryPage> {
+  final viewmodel = getIt<HistoryViewModel>();
 
   @override
   void initState() {
@@ -28,13 +28,13 @@ class _PerfilHistoryPageState extends State<PerfilHistoryPage> {
             valueListenable: viewmodel.state,
             builder: (context, state, widget) {
               return switch (state) {
-                PerfilHistoryIdleState() => const SizedBox(),
-                PerfilHistoryLoadingState() => const Center(
+                HistoryIdleState() => const SizedBox(),
+                HistoryLoadingState() => const Center(
                     child: CircularProgressIndicator(),
                   ),
-                PerfilHistoryErrorState(message: final message) =>
+                HistoryErrorState(message: final message) =>
                   Center(child: Text(message, style: context.bodyLarge)),
-                PerfilHistorySuccessState(data: final data) =>
+                HistorySuccessState(data: final data) =>
                   HistoryList(models: data)
               };
             }),

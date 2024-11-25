@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/src/modules/history/presentation/perfil_history_page.dart';
+import 'package:kondus/src/modules/history/presentation/history_page.dart';
 import 'package:kondus/src/modules/home/presentation/home_page.dart';
 import 'package:kondus/src/modules/lend_your_products/presentation/lend_your_products_page.dart';
 import 'package:kondus/src/modules/login/presentation/login_page.dart';
@@ -78,7 +78,7 @@ class AppRoutes {
 
       case history:
         return MaterialPageRoute(
-          builder: (_) => const PerfilHistoryPage(),
+          builder: (_) => const HistoryPage(),
           settings: settings,
         );
 

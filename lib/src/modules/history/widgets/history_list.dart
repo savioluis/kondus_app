@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/app/app.dart';
 import 'package:kondus/src/modules/history/widgets/history_tile.dart';
 import 'package:kondus/src/modules/shared/theme/app_theme.dart';
-import '../domain/perfil_history_model.dart';
+import '../domain/history_model.dart';
 
 class HistoryList extends StatelessWidget {
-  final List<PerfilHistoryServiceModel> models;
+  final List<HistoryServiceModel> models;
   const HistoryList({super.key, required this.models});
 
   @override

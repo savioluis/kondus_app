@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/src/modules/shared/theme/app_theme.dart';
-import '../domain/perfil_history_model.dart';
+import '../domain/history_model.dart';
 import 'history_info_line.dart';
 
 class HistoryTile extends StatelessWidget {
-  final PerfilHistoryServiceModel model;
+  final HistoryServiceModel model;
   const HistoryTile({super.key, required this.model});
 
   @override
