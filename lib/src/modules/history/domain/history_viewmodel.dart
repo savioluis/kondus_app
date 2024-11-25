@@ -6,7 +6,7 @@ final class HistoryViewModel{
   final HistoryUsecase usecase;
   HistoryViewModel({required this.usecase});
 
-  ValueNotifier<HistoryState> state = ValueNotifier(HistoryIdleState());
+  final ValueNotifier<HistoryState> state = ValueNotifier(HistoryIdleState());
 
   Future getHistory() async{
     state.value = HistoryLoadingState();
