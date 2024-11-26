@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kondus/app/app.dart';
 import 'package:kondus/src/modules/profile/domain/profile_viewmodel.dart';
+import 'package:kondus/src/modules/profile/widgets/profile_banner.dart';
 import 'package:kondus/src/modules/profile/widgets/profile_options.dart';
+import 'package:kondus/src/modules/shared/theme/app_theme.dart';
 
 import '../../../../app/injections.dart';
 
@@ -26,19 +29,13 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(24),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            ValueListenableBuilder(
-              valueListenable: viewModel.state,
-              builder: (context, state, widget) => switch(state){
-                ProfileSuccessState() => throw UnimplementedError(),
-                ProfileIdleState() => throw UnimplementedError(),
-                ProfileErrorState() => throw UnimplementedError(),
-                ProfileLoadingState() => throw UnimplementedError(),
-              },
-            ),
-            const ProfileOptions()
+            ProfileBanner(state: viewModel.state),
+            const ProfileOptions(),
+            const SizedBox(height: 100)
           ],
         ),
       ),
