@@ -13,12 +13,14 @@ import 'package:kondus/src/modules/shared/widgets/kondus_app_bar.dart';
 import 'package:kondus/src/modules/terms_and_conditions/presentation/terms_and_conditions_page.dart';
 import 'package:kondus/src/modules/welcome/presentation/welcome_page.dart';
 
+import '../../src/modules/profile/presentation/profile_page.dart';
+
 class AppRoutes {
   static const String welcome = '/welcome';
   static const String login = '/login';
   static const String register = '/register';
   static const String home = '/home';
-
+  static const String profile = "/profile";
   static const String searchProducts = '/searchProducts';
   static const String productDetails = '/productDetails';
   static const String lendYourProducts = '/lendYourProducts';
@@ -75,7 +77,11 @@ class AppRoutes {
           builder: (_) => const TermsAndConditionsPage(),
           settings: settings,
         );
-
+      case profile:
+        return MaterialPageRoute(
+          builder: (_) => const ProfilePage(),
+          settings: settings,
+        );
       case history:
         return MaterialPageRoute(
           builder: (_) => const HistoryPage(),
