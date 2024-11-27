@@ -33,7 +33,9 @@ class ProfileOptions extends StatelessWidget {
           iconData: Icons.settings_outlined,
           title: "Configurações",
           subTitle: "Ajuste suas preferências e configurações",
-          onTap: () {},
+          onTap: () {
+            NavigatorProvider.navigateTo(AppRoutes.appSettings);
+          },
         ),
         Divider(thickness: 0.5, color: context.lightGreyColor),
       ],
