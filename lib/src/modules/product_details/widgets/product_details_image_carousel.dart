@@ -11,6 +11,7 @@ class ProductDetailsImageCarousel extends StatelessWidget {
       width: double.infinity,
       child: CarouselView(
         itemExtent: double.infinity,
+        itemSnapping: true,
         children: [
           for (final url in imageUrls)
             Image.network(
