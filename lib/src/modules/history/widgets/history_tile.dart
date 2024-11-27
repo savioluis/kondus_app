@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/src/modules/shared/theme/app_theme.dart';
+import '../../../../app/routers/app_routers.dart';
+import '../../../../core/providers/navigator/navigator_provider.dart';
 import '../domain/history_model.dart';
 import 'history_info_line.dart';
 
@@ -32,7 +34,9 @@ class HistoryTile extends StatelessWidget {
                 children: [
                   Text(model.ownerName, style: context.titleMedium),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      NavigatorProvider.navigateTo(AppRoutes.productDetails);
+                    },
                     icon: const Icon(Icons.arrow_forward_ios),
                   ),
                 ],
