@@ -28,7 +28,7 @@ class _NotificationSectionState extends State<NotificationSection> {
         ),
         const SizedBox(height: 10),
         NotificationSwitchRow(
-          text: "Product",
+          text: "Produtos",
           switchValue: _switchProduct,
           onTap: () => setState(() => _switchProduct = !_switchProduct),
         )
