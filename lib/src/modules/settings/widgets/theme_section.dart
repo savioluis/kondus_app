@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/src/modules/shared/theme/app_theme.dart';
+import 'package:kondus/src/modules/settings/domain/theme_section_viewmodel.dart';
+import 'package:kondus/src/modules/settings/widgets/theme_section_content.dart';
+
+import '../../../../app/injections.dart';
 
 class ThemeSection extends StatefulWidget {
   const ThemeSection({super.key});
@@ -9,35 +12,35 @@ class ThemeSection extends StatefulWidget {
 }
 
 class _ThemeSectionState extends State<ThemeSection> {
-  final List<String> options = ["Claro", "Escuro", "Sistema"];
-  late String currentOption;
+  final viewmodel = getIt<ThemeSectionViewmodel>();
 
   @override
   void initState() {
-    currentOption = options.first;
+    viewmodel.getInitialTheme();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text("Tema", style: context.titleLarge),
-        for (final option in options)
-          GestureDetector(
-            onTap: () => setState(() => currentOption = option),
-            child: ListTile(
-              title: Text(option),
-              leading: Radio(
-                value: option,
-                groupValue: currentOption,
-                onChanged: (value) =>
-                    setState(() => currentOption = value.toString()),
-              ),
-            ),
-          )
-      ],
+    return ValueListenableBuilder(
+      valueListenable: viewmodel.state,
+      builder: (context, state, widget) {
+        if (state is ChangeThemeErrorState) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(state.message)));
+        }
+
+        return switch (state) {
+          ThemeSectionEmptyState() => const SizedBox(),
+          ThemeSectionContentState(currentTheme: final currentTheme) =>
+            ThemeSectionContent(
+              currentTheme: currentTheme,
+              onTap: (theme) {
+                viewmodel.changeTheme(theme);
+              },
+            )
+        };
+      },
     );
   }
 }
