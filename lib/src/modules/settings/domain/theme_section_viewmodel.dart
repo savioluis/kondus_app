@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/core/providers/theme/theme_provider.dart';
 import 'package:kondus/src/modules/settings/domain/change_theme_usecase.dart';
 import 'package:kondus/src/modules/settings/domain/get_configurated_theme_usecase.dart';
 
@@ -7,36 +6,24 @@ final class ThemeSectionViewmodel {
   final GetConfiguredThemeUsecase _getConfiguredThemeUsecase;
   final ChangeThemeUsecase _changeThemeUsecase;
 
-  ThemeSectionViewmodel(this._getConfiguredThemeUsecase, this._changeThemeUsecase);
+  ThemeSectionViewmodel(
+      this._getConfiguredThemeUsecase, this._changeThemeUsecase);
 
   final ValueNotifier<ThemeSectionState> state =
       ValueNotifier(ThemeSectionEmptyState());
 
-
-
   Future getInitialTheme() async {
     if (state.value is! ThemeSectionEmptyState) return;
-    try {
-      final currentTheme = await _getConfiguredThemeUsecase.call();
-      state.value = ThemeSectionSuccessState(currentTheme: currentTheme);
-    } catch (e) {
-      //The state continue as a ThemeSectionEmptyState
-    }
+    state.value = await _getConfiguredThemeUsecase.call();
   }
 
   Future changeTheme(ThemeMode newTheme) async {
     if (state.value is! ThemeSectionContentState) return;
-
     final contentState = state.value as ThemeSectionContentState;
-    if(contentState.currentTheme == newTheme) return;
 
-    try {
-      await _changeThemeUsecase.call(newTheme);
-      state.value = ThemeSectionSuccessState(currentTheme: newTheme);
-    } catch (e) {
-      state.value =
-          ChangeThemeErrorState(currentTheme: contentState.currentTheme);
-    }
+    if (contentState.currentTheme == newTheme) return;
+
+    state.value = await _changeThemeUsecase.call(newTheme,contentState.currentTheme);
   }
 }
 
