@@ -14,6 +14,7 @@ class KondusTextFormField extends StatelessWidget {
   final bool? isFilled;
   final Color? fillColor;
   final Function(String)? onChanged;
+  final InputDecoration? decoration;
 
   const KondusTextFormField({
     this.formKey,
@@ -28,6 +29,7 @@ class KondusTextFormField extends StatelessWidget {
     this.prefixIconColor,
     this.sufixIconColor,
     this.onChanged,
+    this.decoration,
     super.key,
   });
 
@@ -39,7 +41,7 @@ class KondusTextFormField extends StatelessWidget {
       controller: controller,
       obscureText: isObscure,
       onChanged: onChanged,
-      decoration: context.textFieldDecoration.copyWith(
+      decoration: decoration ?? context.textFieldDecoration.copyWith(
         prefixIcon: prefixIcon,
         prefixIconColor: prefixIconColor ?? context.secondaryColor,
         suffixIcon: sufixIcon,

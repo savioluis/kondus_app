@@ -51,6 +51,23 @@ class _HomePageState extends State<HomePage> {
     },
   ];
 
+  final contacts = [
+    {'uid': '1', 'name': 'Alice', 'apartment': 'Apartamento 1 - Bloco A'},
+    {'uid': '2', 'name': 'Bob', 'apartment': 'Apartamento 2 - Bloco D'},
+    {'uid': '3', 'name': 'Charlie', 'apartment': 'Apartamento 105 - Bloco B'},
+    {'uid': '4', 'name': 'David', 'apartment': 'Apartamento 309 - Bloco J'},
+    {'uid': '5', 'name': 'Elias', 'apartment': 'Apartamento  - Bloco H'},
+    {'uid': '6', 'name': 'Filipe', 'apartment': 'Casa 3'},
+    {'uid': '7', 'name': 'Greg', 'apartment': 'Casa 06'},
+    {'uid': '8', 'name': 'Heitor', 'apartment': 'Casa 06'},
+    {'uid': '9', 'name': 'Isabel', 'apartment': 'Casa 27'},
+    {
+      'uid': '10',
+      'name': 'Jay',
+      'apartment': 'Apartamento 48 - Torre 3 - Bloco 1'
+    },
+  ];
+
   String selectedCategory = 'Todos';
 
   @override
@@ -68,18 +85,16 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 12),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
-              child:
-                  ContactTitle(onTap: () => NavigatorProvider.navigateTo('')),
+              child: ContactTitle(
+                  onTap: () =>
+                      NavigatorProvider.navigateTo(AppRoutes.contactList)),
             ),
             const SizedBox(height: 8),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: ContactItemSlider(
-                contactNames: List.generate(
-                  4,
-                  (index) => 'Marcelo',
-                ),
-                itemCount: 4,
+                contacts: contacts,
+                itemCount: contacts.length,
               ),
             ),
             const SizedBox(height: 18),

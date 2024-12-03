@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class ContactItem extends StatelessWidget {
   const ContactItem({
     required this.name,
+    required this.onPressed,
     this.backgroundColor,
     this.iconColor,
     this.maxNameLength = 12,
     super.key,
   });
 
+  final void Function()? onPressed;
   final String name;
   final Color? backgroundColor;
   final Color? iconColor;
@@ -22,7 +24,7 @@ class ContactItem extends StatelessWidget {
           shape: const CircleBorder(),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
-            onTap: () {},
+            onTap: onPressed,
             child: CircleAvatar(
               radius: 38,
               backgroundColor: backgroundColor,

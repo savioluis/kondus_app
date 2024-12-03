@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kondus/src/modules/chat/contact_list/presentation/contact_list_page.dart';
 import 'package:kondus/src/modules/history/presentation/history_page.dart';
 import 'package:kondus/src/modules/home/presentation/home_page.dart';
 import 'package:kondus/src/modules/lend_your_products/presentation/lend_your_products_page.dart';
@@ -24,6 +25,9 @@ class AppRoutes {
   static const String searchProducts = '/searchProducts';
   static const String productDetails = '/productDetails';
   static const String lendYourProducts = '/lendYourProducts';
+
+  static const String contactList = '/contactList';
+  static const String contactChat = '/contactChat';
 
   static const String appSettings = '/settings';
   static const String notifications = '/notifications';
@@ -59,6 +63,12 @@ class AppRoutes {
           settings: settings,
         );
       case appSettings:
+        return MaterialPageRoute(
+            builder: (_) => const SettingsPage(), settings: settings);
+      case contactList:
+        return MaterialPageRoute(
+            builder: (_) => ContactListPage()..controller.fetchContacts(), settings: settings);
+      case contactChat:
         return MaterialPageRoute(
             builder: (_) => const SettingsPage(), settings: settings);
 
