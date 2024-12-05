@@ -15,6 +15,7 @@ class KondusTextFormField extends StatelessWidget {
   final Color? fillColor;
   final Function(String)? onChanged;
   final InputDecoration? decoration;
+  final int maxLines;
 
   const KondusTextFormField({
     this.formKey,
@@ -30,6 +31,7 @@ class KondusTextFormField extends StatelessWidget {
     this.sufixIconColor,
     this.onChanged,
     this.decoration,
+    this.maxLines = 1,
     super.key,
   });
 
@@ -41,6 +43,7 @@ class KondusTextFormField extends StatelessWidget {
       controller: controller,
       obscureText: isObscure,
       onChanged: onChanged,
+      maxLines: maxLines,
       decoration: decoration ?? context.textFieldDecoration.copyWith(
         prefixIcon: prefixIcon,
         prefixIconColor: prefixIconColor ?? context.secondaryColor,
@@ -51,6 +54,7 @@ class KondusTextFormField extends StatelessWidget {
             .copyWith(color: context.lightGreyColor.withOpacity(0.5)),
         filled: isFilled,
         fillColor: fillColor,
+        
       ),
       onTapOutside: (event) {
         FocusManager.instance.primaryFocus?.unfocus();

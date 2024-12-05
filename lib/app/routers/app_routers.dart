@@ -8,6 +8,7 @@ import 'package:kondus/src/modules/notifications/presentation/notifications_page
 import 'package:kondus/src/modules/privacy_policy/presentation/privacy_policy_page.dart';
 import 'package:kondus/src/modules/product_details/presentation/product_details_page.dart';
 import 'package:kondus/src/modules/register/presentation/register_page.dart';
+import 'package:kondus/src/modules/register_product/presentation/register_product_page.dart';
 import 'package:kondus/src/modules/search_products/presentation/search_page.dart';
 import 'package:kondus/src/modules/settings/presentation/settings_page.dart';
 import 'package:kondus/src/modules/shared/widgets/kondus_app_bar.dart';
@@ -25,6 +26,7 @@ class AppRoutes {
   static const String searchProducts = '/searchProducts';
   static const String productDetails = '/productDetails';
   static const String lendYourProducts = '/lendYourProducts';
+  static const String registerProduct = '/registerProduct';
 
   static const String contactList = '/contactList';
   static const String contactChat = '/contactChat';
@@ -62,12 +64,18 @@ class AppRoutes {
           builder: (_) => const LendYourProductsPage(),
           settings: settings,
         );
+      case registerProduct:
+        return MaterialPageRoute(
+          builder: (_) => const RegisterProductPage(),
+          settings: settings,
+        );
       case appSettings:
         return MaterialPageRoute(
             builder: (_) => const SettingsPage(), settings: settings);
       case contactList:
         return MaterialPageRoute(
-            builder: (_) => ContactListPage()..controller.fetchContacts(), settings: settings);
+            builder: (_) => ContactListPage()..controller.fetchContacts(),
+            settings: settings);
       case contactChat:
         return MaterialPageRoute(
             builder: (_) => const SettingsPage(), settings: settings);

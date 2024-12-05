@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kondus/app/routers/app_routers.dart';
+import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/src/modules/search_products/presentation/search_controller.dart';
 import 'package:kondus/src/modules/search_products/presentation/search_state.dart';
 import 'package:kondus/src/modules/search_products/widgets/product_card.dart';
@@ -27,6 +29,23 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       appBar: const KondusAppBar(
         title: 'Buscar Produtos ou Serviços',
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+        label: Text(
+          'CADASTRAR',
+          style: context.headlineLarge!.copyWith(
+            color: context.whiteColor,
+            fontSize: 20,
+          ),
+        ),
+        icon: Icon(
+          Icons.add_business,
+          color: context.whiteColor,
+        ),
+        backgroundColor: context.blueColor,
+        onPressed: () =>
+            NavigatorProvider.navigateTo(AppRoutes.registerProduct),
       ),
       body: AnimatedBuilder(
         animation: controller,
@@ -61,7 +80,7 @@ class _SearchPageState extends State<SearchPage> {
     if (state is SearchInitial || controller.searchController.text.isEmpty) {
       return const Center(
         child: Text(
-          'Digite algo para começar a busca. 😎',
+          'Digite algo para começar a busca. 😎\nOu cadastre um novo produto',
           style: TextStyle(fontSize: 18),
           textAlign: TextAlign.center,
         ),

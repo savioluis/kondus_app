@@ -6,11 +6,13 @@ class KondusAppBar extends StatelessWidget implements PreferredSizeWidget {
   const KondusAppBar({
     this.title,
     this.onBackButtonPressed,
+    this.backButtonColor,
     super.key,
   });
 
   final String? title;
   final void Function()? onBackButtonPressed;
+  final Color? backButtonColor;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class KondusAppBar extends StatelessWidget implements PreferredSizeWidget {
         onPressed: onBackButtonPressed ?? NavigatorProvider.goBack,
         icon: Icon(
           Icons.arrow_back,
-          color: context.onSurfaceColor,
+          color: backButtonColor ?? context.onSurfaceColor,
         ),
       ),
       elevation: 0,
