@@ -73,16 +73,14 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(90),
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(90),
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.only(left: 24, right: 24, top: 64),
+            Padding(
+              padding: EdgeInsets.only(left: 24, right: 24, top: 48),
               child: Header(username: 'Sávio'),
             ),
-            const SizedBox(height: 12),
-            Divider(thickness: 0.1, color: context.lightGreyColor),
           ],
         ),
       ),
