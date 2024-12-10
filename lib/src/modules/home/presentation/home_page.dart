@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(100),
+        preferredSize: const Size.fromHeight(90),
         child: Column(
           children: [
             const Padding(
@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(height: 8),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.only(left: 24),
                 child: ContactItemSlider(
                   contacts: contacts,
                   itemCount: contacts.length,
