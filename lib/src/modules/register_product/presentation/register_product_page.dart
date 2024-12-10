@@ -61,28 +61,31 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
             const SizedBox(height: 48),
             Align(
               alignment: Alignment.centerRight,
-              child: SizedBox(
-                width: 164,
-                child: KondusButton(
-                  label: 'CADASTRAR',
-                  onPressed: () {
-                    // Ação ao cadastrar
-                    debugPrint('Nome: ${_nameController.text}');
-                    debugPrint('Descrição: ${_descriptionController.text}');
-                    debugPrint('Imagens: $_imageUrls');
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Item adicionado com sucesso !',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 24),
+                child: SizedBox(
+                  width: 184,
+                  child: KondusButton(
+                    label: 'CADASTRAR',
+                    onPressed: () {
+                      // Ação ao cadastrar
+                      debugPrint('Nome: ${_nameController.text}');
+                      debugPrint('Descrição: ${_descriptionController.text}');
+                      debugPrint('Imagens: $_imageUrls');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Item adicionado com sucesso !',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                    NavigatorProvider.goBack();
-                  },
+                      );
+                      NavigatorProvider.goBack();
+                    },
+                  ),
                 ),
               ),
             ),

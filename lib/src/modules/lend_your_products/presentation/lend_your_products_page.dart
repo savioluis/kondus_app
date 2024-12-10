@@ -54,7 +54,7 @@ class _LendYourProductsPageState extends State<LendYourProductsPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: SizedBox(
-                width: 148,
+                width: 150,
                 child: KondusButton(
                   label: 'FINALIZAR',
                   onPressed: () {
