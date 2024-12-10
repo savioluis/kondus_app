@@ -73,58 +73,67 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(100),
         child: Column(
           children: [
             const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
+              padding: EdgeInsets.only(left: 24, right: 24, top: 64),
               child: Header(username: 'Sávio'),
             ),
-            const SizedBox(height: 18),
+            const SizedBox(height: 12),
             Divider(thickness: 0.1, color: context.lightGreyColor),
-            const SizedBox(height: 12),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: ContactTitle(
-                  onTap: () =>
-                      NavigatorProvider.navigateTo(AppRoutes.contactList)),
-            ),
-            const SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: ContactItemSlider(
-                contacts: contacts,
-                itemCount: contacts.length,
+          ],
+        ),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: ContactTitle(
+                    onTap: () =>
+                        NavigatorProvider.navigateTo(AppRoutes.contactList)),
               ),
-            ),
-            const SizedBox(height: 18),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: SearchBarButton(
-                  onTap: () =>
-                      NavigatorProvider.navigateTo(AppRoutes.searchProducts)),
-            ),
-            const SizedBox(height: 12),
-            Padding(
-              padding: const EdgeInsets.only(left: 12),
-              child: SizedBox(
-                height: 48,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    _buildCategoryChip('Todos'),
-                    _buildCategoryChip('Compra'),
-                    _buildCategoryChip('Alugar'),
-                    _buildCategoryChip('Contratar'),
-                  ],
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: ContactItemSlider(
+                  contacts: contacts,
+                  itemCount: contacts.length,
                 ),
               ),
-            ),
-            const SizedBox(height: 18),
-            Expanded(
-              child: Padding(
+              const SizedBox(height: 18),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: SearchBarButton(
+                    onTap: () =>
+                        NavigatorProvider.navigateTo(AppRoutes.searchProducts)),
+              ),
+              const SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.only(left: 12),
+                child: SizedBox(
+                  height: 48,
+                  child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      _buildCategoryChip('Todos'),
+                      _buildCategoryChip('Compra'),
+                      _buildCategoryChip('Alugar'),
+                      _buildCategoryChip('Contratar'),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 18),
+              Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
                   itemCount: _getFilteredProducts().length,
                   itemBuilder: (context, index) {
                     final product = _getFilteredProducts()[index];
@@ -143,8 +152,8 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

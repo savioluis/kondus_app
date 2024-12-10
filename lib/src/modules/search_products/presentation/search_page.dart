@@ -45,7 +45,7 @@ class _SearchPageState extends State<SearchPage> {
         ),
         backgroundColor: context.blueColor,
         onPressed: () =>
-            NavigatorProvider.navigateTo(AppRoutes.registerProduct),
+            NavigatorProvider.navigateTo(AppRoutes.lendYourProducts),
       ),
       body: AnimatedBuilder(
         animation: controller,
@@ -80,7 +80,7 @@ class _SearchPageState extends State<SearchPage> {
     if (state is SearchInitial || controller.searchController.text.isEmpty) {
       return const Center(
         child: Text(
-          'Digite algo para começar a busca. 😎\nOu cadastre um novo produto',
+          'Digite algo para começar a busca. 😎\nOu cadastre um novo item',
           style: TextStyle(fontSize: 18),
           textAlign: TextAlign.center,
         ),
@@ -96,7 +96,7 @@ class _SearchPageState extends State<SearchPage> {
           final product = state.products[index];
           return ProductCard(
             product: product,
-            onTap: () {},
+            onTap: () => NavigatorProvider.navigateTo(AppRoutes.productDetails),
           );
         },
       );

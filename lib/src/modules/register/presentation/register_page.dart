@@ -87,11 +87,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     isObscure: true,
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.08),
-                Align(
-                  alignment: Alignment.centerRight,
+                SizedBox(height: screenHeight * 0.06),
+                Padding(
+                  padding: const EdgeInsets.only(left: 180, bottom: 48),
                   child: KondusButton(
-                    onPressed: pageController.validateForm,
+                    onPressed: () => pageController.registerAccount(context),
                     label: 'FINALIZAR',
                     textStyle: TextStyle(
                       fontWeight: FontWeight.bold,

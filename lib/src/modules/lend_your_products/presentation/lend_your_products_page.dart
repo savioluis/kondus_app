@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kondus/app/routers/app_routers.dart';
+import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/src/modules/lend_your_products/widgets/item_chip.dart';
 import 'package:kondus/src/modules/shared/theme/app_theme.dart';
 import 'package:kondus/src/modules/shared/theme/theme_extension.dart';
@@ -15,7 +17,7 @@ class LendYourProductsPage extends StatefulWidget {
 
 class _LendYourProductsPageState extends State<LendYourProductsPage> {
   List<String> selectedItems = [];
-  
+
   final List<String> items = [
     'Furadeira',
     'Bicicleta',
@@ -39,7 +41,7 @@ class _LendYourProductsPageState extends State<LendYourProductsPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: TextButton(
-                onPressed: () => Navigator.of(context).pop(),
+                onPressed: () => NavigatorProvider.navigateTo(AppRoutes.home),
                 child: Text(
                   'Pular Etapa',
                   style: context.textTheme.labelMedium?.copyWith(
@@ -56,7 +58,18 @@ class _LendYourProductsPageState extends State<LendYourProductsPage> {
                 child: KondusButton(
                   label: 'FINALIZAR',
                   onPressed: () {
-                    print(selectedItems);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Produtos adicionados com sucesso !',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    );
+                    NavigatorProvider.replaceWith(AppRoutes.home);
                   },
                 ),
               ),
@@ -110,14 +123,8 @@ class _LendYourProductsPageState extends State<LendYourProductsPage> {
                   }),
                   // Chip de adicionar mais
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const OtherPage(),
-                        ),
-                      );
-                    },
+                    onTap: () =>
+                        NavigatorProvider.navigateTo(AppRoutes.registerProduct),
                     child: Chip(
                       padding: const EdgeInsets.all(6),
                       label: Row(
@@ -150,19 +157,6 @@ class _LendYourProductsPageState extends State<LendYourProductsPage> {
           ),
         ),
       ),
-    );
-  }
-}
-
-// Exemplo de outra página
-class OtherPage extends StatelessWidget {
-  const OtherPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Outra Página')),
-      body: Center(child: Text('Conteúdo da outra página')),
     );
   }
 }

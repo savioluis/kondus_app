@@ -26,8 +26,14 @@ class _ThemeSectionState extends State<ThemeSection> {
       valueListenable: viewmodel.state,
       builder: (context, state, widget) {
         if (state is ChangeThemeErrorState) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(state.message)));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(
+            state.message,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          )));
         }
 
         return switch (state) {

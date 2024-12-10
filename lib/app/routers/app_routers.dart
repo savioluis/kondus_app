@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kondus/src/modules/chat/contact_chat/presentation/contact_chat_page.dart';
 import 'package:kondus/src/modules/chat/contact_list/presentation/contact_list_page.dart';
 import 'package:kondus/src/modules/history/presentation/history_page.dart';
 import 'package:kondus/src/modules/home/presentation/home_page.dart';
@@ -78,7 +79,7 @@ class AppRoutes {
             settings: settings);
       case contactChat:
         return MaterialPageRoute(
-            builder: (_) => const SettingsPage(), settings: settings);
+            builder: (_) => const ContactChatPage(apartment: 'Casa 7', name: 'Teresa', uid: '1',), settings: settings);
 
       case notifications:
         return MaterialPageRoute(

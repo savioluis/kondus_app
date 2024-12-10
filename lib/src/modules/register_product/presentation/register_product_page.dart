@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/src/modules/shared/theme/app_theme.dart';
 import 'package:kondus/src/modules/shared/widgets/header_section.dart';
 import 'package:kondus/src/modules/shared/widgets/kondus_app_bar.dart';
@@ -69,6 +70,18 @@ class _RegisterProductPageState extends State<RegisterProductPage> {
                     debugPrint('Nome: ${_nameController.text}');
                     debugPrint('Descrição: ${_descriptionController.text}');
                     debugPrint('Imagens: $_imageUrls');
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Item adicionado com sucesso !',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    );
+                    NavigatorProvider.goBack();
                   },
                 ),
               ),

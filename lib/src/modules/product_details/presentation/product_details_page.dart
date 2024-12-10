@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kondus/app/routers/app_routers.dart';
+import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/src/modules/product_details/domain/product_details_viewmodel.dart';
 import 'package:kondus/src/modules/product_details/widgets/product_details_image_carousel.dart';
 import 'package:kondus/src/modules/product_details/widgets/product_details_owner_banner.dart';
@@ -31,9 +33,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           return state is! ProductDetailsSuccessState
               ? const SizedBox()
               : FloatingActionButton.extended(
-                  onPressed: () {},
+                  onPressed: () => NavigatorProvider.navigateTo(AppRoutes.contactChat),
                   backgroundColor: context.blueColor,
                   label: const Text("RESERVAR"),
+                  icon: const Icon(Icons.chat),
                 );
         },
       ),

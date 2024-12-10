@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:kondus/app/routers/app_routers.dart';
+import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 
 class RegisterController {
   RegisterController();
@@ -9,7 +11,15 @@ class RegisterController {
   final passwordEC = TextEditingController();
   final confirmPasswordEC = TextEditingController();
 
-  void validateForm() {
-    print('OK');
+  void registerAccount(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+      'Conta criada com sucesso !',
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 18,
+      ),
+    )));
+    NavigatorProvider.replaceWith(AppRoutes.lendYourProducts);
   }
 }
