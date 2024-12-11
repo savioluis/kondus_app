@@ -66,7 +66,7 @@ String _formatDate(DateTime date) {
         _ => "",
       };
   String formatDay(DateTime date) =>
-      date.day > 10 ? "${date.day}" : "0${date.day}";
+      date.day >= 10 ? "${date.day}" : "0${date.day}";
 
   final month = formatPortugueseMonth(date);
   final weekDayAbreviation = formatPortugueseWeekDay(date).substring(0, 3);
