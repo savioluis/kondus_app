@@ -73,7 +73,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HomeAppBar(username: 'Sávio',),
+      appBar: const HomeAppBar(
+        username: 'Sávio',
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -97,19 +99,16 @@ class _HomePageState extends State<HomePage> {
                       NavigatorProvider.navigateTo(AppRoutes.searchProducts)),
             ),
             const SizedBox(height: 12),
-            Padding(
-              padding: const EdgeInsets.only(left: 12),
-              child: SizedBox(
-                height: 48,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    _buildCategoryChip('Todos'),
-                    _buildCategoryChip('Compra'),
-                    _buildCategoryChip('Alugar'),
-                    _buildCategoryChip('Contratar'),
-                  ],
-                ),
+            SizedBox(
+              height: 48,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  _buildCategoryChip('Todos'),
+                  _buildCategoryChip('Comprar'),
+                  _buildCategoryChip('Alugar'),
+                  _buildCategoryChip('Contratar'),
+                ],
               ),
             ),
             const SizedBox(height: 18),
@@ -117,7 +116,7 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: _getFilteredProducts().length,
                 itemBuilder: (context, index) {
                   final product = _getFilteredProducts()[index];
@@ -154,7 +153,7 @@ class _HomePageState extends State<HomePage> {
   String _getActionTypeString(ActionType actionType) {
     switch (actionType) {
       case ActionType.comprar:
-        return 'Compra';
+        return 'Comprar';
       case ActionType.alugar:
         return 'Alugar';
       case ActionType.contratar:
@@ -174,7 +173,9 @@ class _HomePageState extends State<HomePage> {
         });
       },
       child: Container(
-        margin: const EdgeInsets.only(right: 8.0),
+        margin: category == 'Todos'
+            ? const EdgeInsets.symmetric(horizontal: 12)
+            : const EdgeInsets.only(right: 12),
         child: Chip(
           label: Text(category.toUpperCase()),
           backgroundColor:
