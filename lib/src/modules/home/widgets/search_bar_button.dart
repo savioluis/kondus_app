@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/src/modules/shared/theme/app_theme.dart';
-import 'package:kondus/src/modules/shared/widgets/kondus_text_field.dart';
 
 class SearchBarButton extends StatelessWidget {
   const SearchBarButton({

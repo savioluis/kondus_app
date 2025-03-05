@@ -3,7 +3,7 @@ import 'package:kondus/app/routers/app_routers.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/src/modules/home/widgets/contact/contact_item_slider.dart';
 import 'package:kondus/src/modules/home/widgets/contact/contact_title.dart';
-import 'package:kondus/src/modules/home/widgets/header.dart';
+import 'package:kondus/src/modules/home/widgets/app_bar/home_app_bar.dart';
 import 'package:kondus/src/modules/home/widgets/product_card.dart';
 import 'package:kondus/src/modules/home/widgets/search_bar_button.dart';
 import 'package:kondus/src/modules/shared/theme/app_theme.dart';
@@ -73,87 +73,69 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(90),
+      appBar: const HomeAppBar(
+        username: 'Sávio',
+      ),
+      body: SingleChildScrollView(
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.only(left: 24, right: 24, top: 64),
-              child: Header(username: 'Sávio'),
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: ContactTitle(
+                  onTap: () =>
+                      NavigatorProvider.navigateTo(AppRoutes.contactList)),
+            ),
+            const SizedBox(height: 8),
+            ContactItemSlider(
+              contacts: contacts,
+              itemCount: contacts.length,
+            ),
+            const SizedBox(height: 18),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: SearchBarButton(
+                  onTap: () =>
+                      NavigatorProvider.navigateTo(AppRoutes.searchProducts)),
             ),
             const SizedBox(height: 12),
-            Divider(thickness: 0.1, color: context.lightGreyColor),
+            SizedBox(
+              height: 48,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  _buildCategoryChip('Todos'),
+                  _buildCategoryChip('Comprar'),
+                  _buildCategoryChip('Alugar'),
+                  _buildCategoryChip('Contratar'),
+                ],
+              ),
+            ),
+            const SizedBox(height: 18),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: _getFilteredProducts().length,
+                itemBuilder: (context, index) {
+                  final product = _getFilteredProducts()[index];
+                  return ProductCard(
+                    imageUrl: product['imageUrl']!,
+                    name: product['name']!,
+                    category: product['category']!,
+                    actionType: product['actionType'] as ActionType,
+                    onTap: () {
+                      NavigatorProvider.navigateTo(AppRoutes.productDetails);
+                    },
+                    onButtonPressed: () {
+                      NavigatorProvider.navigateTo(AppRoutes.productDetails);
+                    },
+                  );
+                },
+              ),
+            ),
           ],
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 12),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: ContactTitle(
-                    onTap: () =>
-                        NavigatorProvider.navigateTo(AppRoutes.contactList)),
-              ),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.only(left: 24),
-                child: ContactItemSlider(
-                  contacts: contacts,
-                  itemCount: contacts.length,
-                ),
-              ),
-              const SizedBox(height: 18),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: SearchBarButton(
-                    onTap: () =>
-                        NavigatorProvider.navigateTo(AppRoutes.searchProducts)),
-              ),
-              const SizedBox(height: 12),
-              Padding(
-                padding: const EdgeInsets.only(left: 12),
-                child: SizedBox(
-                  height: 48,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      _buildCategoryChip('Todos'),
-                      _buildCategoryChip('Compra'),
-                      _buildCategoryChip('Alugar'),
-                      _buildCategoryChip('Contratar'),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 18),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: _getFilteredProducts().length,
-                  itemBuilder: (context, index) {
-                    final product = _getFilteredProducts()[index];
-                    return ProductCard(
-                      imageUrl: product['imageUrl']!,
-                      name: product['name']!,
-                      category: product['category']!,
-                      actionType: product['actionType'] as ActionType,
-                      onTap: () {
-                        NavigatorProvider.navigateTo(AppRoutes.productDetails);
-                      },
-                      onButtonPressed: () {
-                        NavigatorProvider.navigateTo(AppRoutes.productDetails);
-                      },
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );
@@ -171,7 +153,7 @@ class _HomePageState extends State<HomePage> {
   String _getActionTypeString(ActionType actionType) {
     switch (actionType) {
       case ActionType.comprar:
-        return 'Compra';
+        return 'Comprar';
       case ActionType.alugar:
         return 'Alugar';
       case ActionType.contratar:
@@ -191,7 +173,9 @@ class _HomePageState extends State<HomePage> {
         });
       },
       child: Container(
-        margin: const EdgeInsets.only(right: 8.0),
+        margin: category == 'Todos'
+            ? const EdgeInsets.symmetric(horizontal: 12)
+            : const EdgeInsets.only(right: 12),
         child: Chip(
           label: Text(category.toUpperCase()),
           backgroundColor:

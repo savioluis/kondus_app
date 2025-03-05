@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/app/app.dart';
 import 'package:kondus/src/modules/shared/theme/app_theme.dart';
 import 'package:kondus/src/modules/shared/theme/theme_extension.dart';
-import 'package:kondus/src/modules/shared/widgets/kondus_elevated_button.dart';
 
 import '../../shared/theme/theme_data/colors/app_colors.dart';
 
