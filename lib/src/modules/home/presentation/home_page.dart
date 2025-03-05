@@ -3,7 +3,7 @@ import 'package:kondus/app/routers/app_routers.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/src/modules/home/widgets/contact/contact_item_slider.dart';
 import 'package:kondus/src/modules/home/widgets/contact/contact_title.dart';
-import 'package:kondus/src/modules/home/widgets/header.dart';
+import 'package:kondus/src/modules/home/widgets/app_bar/home_app_bar.dart';
 import 'package:kondus/src/modules/home/widgets/product_card.dart';
 import 'package:kondus/src/modules/home/widgets/search_bar_button.dart';
 import 'package:kondus/src/modules/shared/theme/app_theme.dart';
@@ -73,19 +73,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(90),
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(left: 24, right: 24, top: 64),
-              child: Header(username: 'Sávio'),
-            ),
-            const SizedBox(height: 12),
-            Divider(thickness: 0.1, color: context.lightGreyColor),
-          ],
-        ),
-      ),
+      appBar: const HomeAppBar(username: 'Sávio',),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
