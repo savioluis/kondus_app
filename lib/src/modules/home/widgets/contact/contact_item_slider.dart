@@ -20,26 +20,32 @@ class ContactItemSlider extends StatelessWidget {
       height: 110,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) => ContactItem(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ContactChatPage(
-                  uid: contacts[index]['uid']!,
-                  name: contacts[index]['name']!,
-                  apartment: contacts[index]['apartment']!,
-                ),
-              ),
-            );
-          },
-          name: contacts[index]['name']!,
-          iconColor: context.whiteColor,
-          backgroundColor: ColorUtils.generateTonalColors(
-            baseColor: context.blueColor,
-            count: itemCount,
-          ).toList()[index].withOpacity(0.38),
-        ),
+        itemBuilder: (context, index) {
+          return Padding(
+            padding:
+                index == 0 ? const EdgeInsets.only(left: 12) : EdgeInsets.zero,
+            child: ContactItem(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ContactChatPage(
+                      uid: contacts[index]['uid']!,
+                      name: contacts[index]['name']!,
+                      apartment: contacts[index]['apartment']!,
+                    ),
+                  ),
+                );
+              },
+              name: contacts[index]['name']!,
+              iconColor: context.whiteColor,
+              backgroundColor: ColorUtils.generateTonalColors(
+                baseColor: context.blueColor,
+                count: itemCount,
+              ).toList()[index].withOpacity(0.38),
+            ),
+          );
+        },
         separatorBuilder: (context, index) => const SizedBox(
           width: 12,
         ),

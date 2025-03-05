@@ -74,74 +74,69 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const HomeAppBar(username: 'Sávio',),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 12),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: ContactTitle(
-                    onTap: () =>
-                        NavigatorProvider.navigateTo(AppRoutes.contactList)),
-              ),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.only(left: 24),
-                child: ContactItemSlider(
-                  contacts: contacts,
-                  itemCount: contacts.length,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: ContactTitle(
+                  onTap: () =>
+                      NavigatorProvider.navigateTo(AppRoutes.contactList)),
+            ),
+            const SizedBox(height: 8),
+            ContactItemSlider(
+              contacts: contacts,
+              itemCount: contacts.length,
+            ),
+            const SizedBox(height: 18),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: SearchBarButton(
+                  onTap: () =>
+                      NavigatorProvider.navigateTo(AppRoutes.searchProducts)),
+            ),
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.only(left: 12),
+              child: SizedBox(
+                height: 48,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    _buildCategoryChip('Todos'),
+                    _buildCategoryChip('Compra'),
+                    _buildCategoryChip('Alugar'),
+                    _buildCategoryChip('Contratar'),
+                  ],
                 ),
               ),
-              const SizedBox(height: 18),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: SearchBarButton(
-                    onTap: () =>
-                        NavigatorProvider.navigateTo(AppRoutes.searchProducts)),
+            ),
+            const SizedBox(height: 18),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: _getFilteredProducts().length,
+                itemBuilder: (context, index) {
+                  final product = _getFilteredProducts()[index];
+                  return ProductCard(
+                    imageUrl: product['imageUrl']!,
+                    name: product['name']!,
+                    category: product['category']!,
+                    actionType: product['actionType'] as ActionType,
+                    onTap: () {
+                      NavigatorProvider.navigateTo(AppRoutes.productDetails);
+                    },
+                    onButtonPressed: () {
+                      NavigatorProvider.navigateTo(AppRoutes.productDetails);
+                    },
+                  );
+                },
               ),
-              const SizedBox(height: 12),
-              Padding(
-                padding: const EdgeInsets.only(left: 12),
-                child: SizedBox(
-                  height: 48,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      _buildCategoryChip('Todos'),
-                      _buildCategoryChip('Compra'),
-                      _buildCategoryChip('Alugar'),
-                      _buildCategoryChip('Contratar'),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 18),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: _getFilteredProducts().length,
-                  itemBuilder: (context, index) {
-                    final product = _getFilteredProducts()[index];
-                    return ProductCard(
-                      imageUrl: product['imageUrl']!,
-                      name: product['name']!,
-                      category: product['category']!,
-                      actionType: product['actionType'] as ActionType,
-                      onTap: () {
-                        NavigatorProvider.navigateTo(AppRoutes.productDetails);
-                      },
-                      onButtonPressed: () {
-                        NavigatorProvider.navigateTo(AppRoutes.productDetails);
-                      },
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
