@@ -1,5 +1,5 @@
-import 'package:kondus/src/modules/shared/theme/theme_data/colors/app_colors.dart';
-import 'package:kondus/src/modules/shared/theme/theme_extension.dart';
+import 'package:kondus/core/theme/theme_data/colors/app_colors.dart';
+import 'package:kondus/core/theme/theme_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

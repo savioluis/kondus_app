@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/src/modules/history/widgets/history_tile.dart';
-import 'package:kondus/src/modules/shared/theme/app_theme.dart';
+import 'package:kondus/core/theme/app_theme.dart';
 import '../domain/history_model.dart';
 
 class HistoryList extends StatelessWidget {

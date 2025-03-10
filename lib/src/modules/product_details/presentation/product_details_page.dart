@@ -4,7 +4,7 @@ import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/src/modules/product_details/domain/product_details_viewmodel.dart';
 import 'package:kondus/src/modules/product_details/widgets/product_details_image_carousel.dart';
 import 'package:kondus/src/modules/product_details/widgets/product_details_owner_banner.dart';
-import 'package:kondus/src/modules/shared/theme/app_theme.dart';
+import 'package:kondus/core/theme/app_theme.dart';
 import '../../../../app/injections.dart';
 
 class ProductDetailsPage extends StatefulWidget {

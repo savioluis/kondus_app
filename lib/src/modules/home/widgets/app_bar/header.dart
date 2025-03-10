@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kondus/app/routers/app_routers.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/src/modules/home/widgets/notification_button.dart';
-import 'package:kondus/src/modules/shared/theme/app_theme.dart';
+import 'package:kondus/core/theme/app_theme.dart';
 
 class Header extends StatelessWidget {
   const Header({

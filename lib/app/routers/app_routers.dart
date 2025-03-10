@@ -12,7 +12,7 @@ import 'package:kondus/src/modules/register/presentation/register_page.dart';
 import 'package:kondus/src/modules/register_product/presentation/register_product_page.dart';
 import 'package:kondus/src/modules/search_products/presentation/search_page.dart';
 import 'package:kondus/src/modules/settings/presentation/settings_page.dart';
-import 'package:kondus/src/modules/shared/widgets/kondus_app_bar.dart';
+import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/src/modules/terms_and_conditions/presentation/terms_and_conditions_page.dart';
 import 'package:kondus/src/modules/welcome/presentation/welcome_page.dart';
 

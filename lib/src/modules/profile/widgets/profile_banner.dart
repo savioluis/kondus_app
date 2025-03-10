@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/src/modules/profile/domain/profile_viewmodel.dart';
-import 'package:kondus/src/modules/shared/theme/app_theme.dart';
+import 'package:kondus/core/theme/app_theme.dart';
 
 class ProfileBanner extends StatelessWidget {
   final ValueNotifier<ProfileState> state;

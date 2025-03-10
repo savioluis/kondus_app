@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:kondus/src/modules/product_details/domain/product_details_model.dart';
-import 'package:kondus/src/modules/shared/theme/app_theme.dart';
+import 'package:kondus/core/theme/app_theme.dart';
 
 class ProductDetailsOwnerBanner extends StatelessWidget {
   final ProductDetailsOwnerModel owner;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/src/modules/shared/theme/app_theme.dart';
-import 'package:kondus/src/modules/shared/widgets/kondus_app_bar.dart';
-import 'package:kondus/src/modules/shared/widgets/kondus_text_field.dart';
+import 'package:kondus/core/theme/app_theme.dart';
+import 'package:kondus/core/widgets/kondus_app_bar.dart';
+import 'package:kondus/core/widgets/kondus_text_field.dart';
 import 'contact_chat_controller.dart';
 import 'contact_chat_state.dart';
 

@@ -6,7 +6,7 @@ import 'package:kondus/src/modules/home/widgets/contact/contact_title.dart';
 import 'package:kondus/src/modules/home/widgets/app_bar/home_app_bar.dart';
 import 'package:kondus/src/modules/home/widgets/product_card.dart';
 import 'package:kondus/src/modules/home/widgets/search_bar_button.dart';
-import 'package:kondus/src/modules/shared/theme/app_theme.dart';
+import 'package:kondus/core/theme/app_theme.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});

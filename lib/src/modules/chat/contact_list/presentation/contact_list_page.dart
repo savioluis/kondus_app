@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/src/modules/chat/contact_chat/presentation/contact_chat_page.dart';
 import 'package:kondus/src/modules/chat/contact_list/widgets/contact_tile.dart';
-import 'package:kondus/src/modules/shared/widgets/kondus_app_bar.dart';
+import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'contact_list_controller.dart';
 import 'contact_list_state.dart';
 

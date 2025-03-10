@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/src/modules/shared/widgets/kondus_text_field.dart';
+import 'package:kondus/core/widgets/kondus_text_field.dart';
 
 class KonduSearchBar extends StatelessWidget {
   const KonduSearchBar({

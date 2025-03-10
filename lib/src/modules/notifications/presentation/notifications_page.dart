@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/src/modules/shared/widgets/kondus_app_bar.dart';
+import 'package:kondus/core/widgets/kondus_app_bar.dart';
 
 class NotificationsPage extends StatelessWidget {
   const NotificationsPage({super.key});

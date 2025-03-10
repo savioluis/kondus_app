@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/src/modules/shared/theme/app_theme.dart';
+import 'package:kondus/core/theme/app_theme.dart';
 import '../../../../app/routers/app_routers.dart';
 import '../../../../core/providers/navigator/navigator_provider.dart';
 import '../domain/history_model.dart';

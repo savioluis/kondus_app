@@ -3,8 +3,8 @@ import 'package:kondus/app/routers/app_routers.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/src/modules/login/widgets/login_app_bar.dart';
 import 'package:kondus/src/modules/login/widgets/register_text_widget.dart';
-import 'package:kondus/src/modules/shared/widgets/kondus_elevated_button.dart';
-import 'package:kondus/src/modules/shared/widgets/kondus_text_field.dart';
+import 'package:kondus/core/widgets/kondus_elevated_button.dart';
+import 'package:kondus/core/widgets/kondus_text_field.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

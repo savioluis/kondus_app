@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/src/modules/chat/contact_chat/presentation/contact_chat_page.dart';
 import 'package:kondus/src/modules/home/widgets/contact/contact_item.dart';
-import 'package:kondus/src/modules/shared/theme/app_theme.dart';
-import 'package:kondus/src/modules/shared/theme/theme_data/colors/color_utils.dart';
+import 'package:kondus/core/theme/app_theme.dart';
+import 'package:kondus/core/theme/theme_data/colors/color_utils.dart';
 
 class ContactItemSlider extends StatelessWidget {
   const ContactItemSlider({

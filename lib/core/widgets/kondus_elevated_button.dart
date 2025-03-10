@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/src/modules/shared/theme/app_theme.dart';
-import 'package:kondus/src/modules/shared/theme/theme_data/colors/app_colors.dart';
+import 'package:kondus/core/theme/app_theme.dart';
+import 'package:kondus/core/theme/theme_data/colors/app_colors.dart';
 
 class KondusButton extends StatelessWidget {
   final String label;

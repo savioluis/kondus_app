@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/src/modules/settings/widgets/theme_section.dart';
-import 'package:kondus/src/modules/shared/widgets/header_section.dart';
+import 'package:kondus/core/widgets/header_section.dart';
 
 import '../widgets/notification_section.dart';
 

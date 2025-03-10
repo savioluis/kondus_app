@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/src/modules/home/widgets/app_bar/header.dart';
-import 'package:kondus/src/modules/shared/theme/app_theme.dart';
+import 'package:kondus/core/theme/app_theme.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({

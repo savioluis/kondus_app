@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/src/modules/shared/theme/app_theme.dart';
-import 'package:kondus/src/modules/shared/widgets/header_section.dart';
+import 'package:kondus/core/theme/app_theme.dart';
+import 'package:kondus/core/widgets/header_section.dart';
 
 class ProfileOptionTile extends StatelessWidget {
   final IconData iconData;

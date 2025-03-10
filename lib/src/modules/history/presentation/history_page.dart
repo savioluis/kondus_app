@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/src/modules/history/domain/history_viewmodel.dart';
 import 'package:kondus/src/modules/history/widgets/history_list.dart';
-import 'package:kondus/src/modules/shared/theme/app_theme.dart';
+import 'package:kondus/core/theme/app_theme.dart';
 
 import '../../../../app/injections.dart';
 

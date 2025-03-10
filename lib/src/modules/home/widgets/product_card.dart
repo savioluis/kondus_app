@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/src/modules/shared/theme/app_theme.dart';
-import 'package:kondus/src/modules/shared/theme/theme_extension.dart';
+import 'package:kondus/core/theme/app_theme.dart';
+import 'package:kondus/core/theme/theme_extension.dart';
 
-import '../../shared/theme/theme_data/colors/app_colors.dart';
+import '../../../../core/theme/theme_data/colors/app_colors.dart';
 
 enum ActionType {
   comprar,

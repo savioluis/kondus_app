@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
-import 'package:kondus/src/modules/shared/theme/app_theme.dart';
-import 'package:kondus/src/modules/shared/widgets/header_section.dart';
-import 'package:kondus/src/modules/shared/widgets/kondus_app_bar.dart';
-import 'package:kondus/src/modules/shared/widgets/kondus_elevated_button.dart';
-import 'package:kondus/src/modules/shared/widgets/kondus_text_field.dart';
-import 'package:kondus/src/modules/shared/widgets/photo_view_page.dart';
+import 'package:kondus/core/theme/app_theme.dart';
+import 'package:kondus/core/widgets/header_section.dart';
+import 'package:kondus/core/widgets/kondus_app_bar.dart';
+import 'package:kondus/core/widgets/kondus_elevated_button.dart';
+import 'package:kondus/core/widgets/kondus_text_field.dart';
+import 'package:kondus/core/widgets/photo_view_page.dart';
 
 class RegisterProductPage extends StatefulWidget {
   const RegisterProductPage({super.key});
