@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:kondus/app/routers/app_routers.dart';
 import 'package:kondus/core/providers/navigator/navigator_observer_provider.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
+import 'package:kondus/core/providers/theme/theme_provider.dart';
 import 'package:kondus/src/modules/login/presentation/login_page.dart';
 import 'package:kondus/core/theme/app_theme.dart';
+import 'package:get_it/get_it.dart';
 
 class KondusApp extends StatefulWidget {
   const KondusApp({super.key});
@@ -13,17 +15,24 @@ class KondusApp extends StatefulWidget {
 }
 
 class _KondusAppState extends State<KondusApp> {
+  final ThemeProvider themeProvider = GetIt.instance<ThemeProvider>();
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: AppTheme.lightTheme(),
-      darkTheme: AppTheme.darkTheme(),
-      themeMode: ThemeMode.system,
-      onGenerateRoute: AppRoutes.generateRoute,
-      navigatorObservers: [AppNavigatorObserver()],
-      navigatorKey: NavigatorProvider.navigatorKey,
-      title: 'Kondus',
-      home: const LoginPage(),
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeProvider,
+      builder: (context, themeMode, _) {
+        return MaterialApp(
+          theme: AppTheme.lightTheme(),
+          darkTheme: AppTheme.darkTheme(),
+          themeMode: themeMode,
+          onGenerateRoute: AppRoutes.generateRoute,
+          navigatorObservers: [AppNavigatorObserver()],
+          navigatorKey: NavigatorProvider.navigatorKey,
+          title: 'Kondus',
+          home: const LoginPage(),
+        );
+      },
     );
   }
 }

@@ -7,7 +7,7 @@ final class GetConfiguredThemeUsecase {
 
   Future<ThemeSectionState> call() async {
     try{
-      final theme = (await _themeProvider).themeMode;
+      final theme = (await _themeProvider).value;
       return ThemeSectionSuccessState(currentTheme: theme);
     }catch(_){
       return ThemeSectionEmptyState();
