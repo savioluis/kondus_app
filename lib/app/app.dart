@@ -23,6 +23,7 @@ class _KondusAppState extends State<KondusApp> {
       valueListenable: themeProvider,
       builder: (context, themeMode, _) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme(),
           darkTheme: AppTheme.darkTheme(),
           themeMode: themeMode,
