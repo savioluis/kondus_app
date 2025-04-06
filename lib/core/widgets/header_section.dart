@@ -3,14 +3,14 @@ import 'package:kondus/core/theme/app_theme.dart';
 
 class HeaderSection extends StatelessWidget {
   final String title;
-  final List<TextSpan> subtitle;
+  final List<TextSpan>? subtitle;
   final double? titleSize;
   final double? subTitleSize;
   final double? spaceBetween;
 
   const HeaderSection({
     required this.title,
-    required this.subtitle,
+    this.subtitle,
     this.titleSize,
     this.subTitleSize,
     this.spaceBetween,
@@ -21,6 +21,7 @@ class HeaderSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         RichText(
           text: TextSpan(
@@ -32,17 +33,19 @@ class HeaderSection extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: spaceBetween ?? 2),
-        RichText(
-          text: TextSpan(
-            style: TextStyle(
-              fontWeight: FontWeight.w200,
-              fontSize: subTitleSize ?? 16,
-              color: context.secondaryColor,
+        if (subtitle != null) ...[
+          SizedBox(height: spaceBetween ?? 2),
+          RichText(
+            text: TextSpan(
+              style: TextStyle(
+                fontWeight: FontWeight.w200,
+                fontSize: subTitleSize ?? 16,
+                color: context.secondaryColor,
+              ),
+              children: subtitle,
             ),
-            children: subtitle,
           ),
-        ),
+        ]
       ],
     );
   }

@@ -5,13 +5,13 @@ import 'package:kondus/core/widgets/header_section.dart';
 class ProfileOptionTile extends StatelessWidget {
   final IconData iconData;
   final String title;
-  final String subTitle;
+  final String? subTitle;
   final Function() onTap;
   const ProfileOptionTile(
       {super.key,
       required this.iconData,
       required this.title,
-      required this.subTitle,
+      this.subTitle,
       required this.onTap});
 
   @override
@@ -35,9 +35,7 @@ class ProfileOptionTile extends StatelessWidget {
               title: title,
               titleSize: 22,
               subTitleSize: 14,
-              subtitle: [
-                TextSpan(text: subTitle),
-              ],
+              subtitle: subTitle != null ? [TextSpan(text: subTitle)] : null,
             ),
           ],
         ),
