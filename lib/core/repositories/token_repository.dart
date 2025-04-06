@@ -7,7 +7,6 @@ class TokenRepository implements ITokenRepository {
   final FlutterSecureStorage _storage;
 
   static const _accessTokenKey = 'access_token';
-  static const _refreshTokenKey = 'refresh_token';
 
   @override
   Future<String?> getAccessToken() async {
@@ -20,18 +19,7 @@ class TokenRepository implements ITokenRepository {
   }
 
   @override
-  Future<String?> getRefreshToken() async {
-    return _storage.read(key: _refreshTokenKey);
-  }
-
-  @override
-  Future<void> saveRefreshToken(String token) async {
-    await _storage.write(key: _refreshTokenKey, value: token);
-  }
-
-  @override
-  Future<void> clearTokens() async {
+  Future<void> clearToken() async {
     await _storage.delete(key: _accessTokenKey);
-    await _storage.delete(key: _refreshTokenKey);
   }
 }

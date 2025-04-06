@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:kondus/core/providers/http/error/http_error.dart';
 import 'package:kondus/core/providers/http/i_http_provider.dart';
 
 class HttpProvider implements IHttpProvider {
@@ -57,19 +58,21 @@ class HttpProvider implements IHttpProvider {
   @override
   Future<T?> get<T>(
     String path, {
+    dynamic data,
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
   }) async {
     try {
       final response = await _dio.get<T>(
         path,
+        data: data,
         queryParameters: queryParameters,
         options: Options(headers: headers),
       );
 
       return response.data;
-    } on DioException catch (e, s) {
-      throw (e, s);
+    } on DioException catch (e) {
+      throw HttpError.fromDioError(e);
     }
   }
 
@@ -89,8 +92,8 @@ class HttpProvider implements IHttpProvider {
       );
 
       return response.data;
-    } on HttpException catch (e, s) {
-      throw (e, s);
+    } on DioException catch (e) {
+      throw HttpError.fromDioError(e);
     }
   }
 
@@ -110,8 +113,8 @@ class HttpProvider implements IHttpProvider {
       );
 
       return response.data;
-    } on HttpException catch (e, s) {
-      throw (e, s);
+    } on DioException catch (e) {
+      throw HttpError.fromDioError(e);
     }
   }
 
@@ -131,8 +134,8 @@ class HttpProvider implements IHttpProvider {
       );
 
       return response.data;
-    } on DioException catch (e, s) {
-      throw (e, s);
+    } on DioException catch (e) {
+      throw HttpError.fromDioError(e);
     }
   }
 
@@ -152,8 +155,8 @@ class HttpProvider implements IHttpProvider {
       );
 
       return response.data;
-    } on HttpException catch (e, s) {
-      throw (e, s);
+    } on DioException catch (e) {
+      throw HttpError.fromDioError(e);
     }
   }
 }

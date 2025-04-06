@@ -68,13 +68,15 @@ class _HomePageState extends State<HomePage> {
     },
   ];
 
+  final String user = '';
+
   String selectedCategory = 'Todos';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const HomeAppBar(
-        username: 'Sávio',
+      appBar: HomeAppBar(
+        username: user,
       ),
       body: SingleChildScrollView(
         child: Column(

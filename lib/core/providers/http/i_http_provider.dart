@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 abstract interface class IHttpProvider {
   Future<T?> get<T>(
     String path, {
+    dynamic data,
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
   });

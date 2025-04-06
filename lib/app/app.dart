@@ -1,8 +1,13 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:kondus/app/routers/app_routers.dart';
 import 'package:kondus/core/providers/navigator/navigator_observer_provider.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/providers/theme/theme_provider.dart';
+import 'package:kondus/core/services/auth/auth_gate.dart';
+import 'package:kondus/core/services/auth/session_manager.dart';
 import 'package:kondus/src/modules/login/presentation/login_page.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:get_it/get_it.dart';
@@ -16,6 +21,7 @@ class KondusApp extends StatefulWidget {
 
 class _KondusAppState extends State<KondusApp> {
   final ThemeProvider themeProvider = GetIt.instance<ThemeProvider>();
+  final SessionManager sessionManager = GetIt.instance<SessionManager>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +37,66 @@ class _KondusAppState extends State<KondusApp> {
           navigatorObservers: [AppNavigatorObserver()],
           navigatorKey: NavigatorProvider.navigatorKey,
           title: 'Kondus',
-          home: const LoginPage(),
+          home: const InitialPage(),
+          builder: (context, child) {
+            return AuthGate(child: child!);
+          },
         );
       },
+    );
+  }
+}
+
+class InitialPage extends StatefulWidget {
+  const InitialPage({super.key});
+
+  @override
+  State<InitialPage> createState() => _InitialPageState();
+}
+
+class _InitialPageState extends State<InitialPage> {
+  final _sessionManager = GetIt.instance<SessionManager>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _handleInitialNavigation();
+    }, debugLabel: 'initialNavigation');
+  }
+
+  Future<void> _handleInitialNavigation() async {
+    try {
+      final isLoggedIn = await _sessionManager.isLoggedIn();
+      final initialRoute = isLoggedIn.$1 ? AppRoutes.home : AppRoutes.login;
+
+      log('🆕 Initial route: $initialRoute');
+
+      if (isLoggedIn.$1) {
+        final token = isLoggedIn.$2;
+        log('🔐 Current Token: $token');
+      }
+
+      await NavigatorProvider.navigateAndRemoveUntil(initialRoute);
+    } catch (e, stackTrace) {
+      log(
+        '🚧 Erro ao determinar a tela inicial',
+        error: e,
+        stackTrace: stackTrace,
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(child: CircularProgressIndicator()),
     );
   }
 }
