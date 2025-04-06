@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/app/routers/app_routers.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
+import 'package:kondus/core/widgets/kondus_elevated_button.dart';
+import 'package:kondus/src/modules/home/presentation/home_controller.dart';
 import 'package:kondus/src/modules/home/widgets/contact/contact_item_slider.dart';
 import 'package:kondus/src/modules/home/widgets/contact/contact_title.dart';
 import 'package:kondus/src/modules/home/widgets/app_bar/home_app_bar.dart';
@@ -72,6 +74,8 @@ class _HomePageState extends State<HomePage> {
 
   String selectedCategory = 'Todos';
 
+  final controller = HomeController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,6 +93,12 @@ class _HomePageState extends State<HomePage> {
                       NavigatorProvider.navigateTo(AppRoutes.contactList)),
             ),
             const SizedBox(height: 8),
+            KondusButton(
+              label: 'teste',
+              onPressed: () async {
+                await controller.loadItems();
+              },
+            ),
             ContactItemSlider(
               contacts: contacts,
               itemCount: contacts.length,

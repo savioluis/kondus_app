@@ -4,6 +4,7 @@ import 'package:kondus/core/repositories/i_token_repository.dart';
 import 'package:kondus/core/services/auth/session_manager.dart';
 import 'package:kondus/core/services/dtos/login/login_request_dto.dart';
 import 'package:kondus/core/services/dtos/login/login_response_dto.dart';
+import 'package:kondus/core/services/dtos/user/user_id_response_dto.dart';
 
 class AuthService {
   AuthService({
@@ -71,8 +72,11 @@ class AuthService {
 
   Future<int?> getUserId() async {
     try {
-      final response = await _httpProvider.post<Map<String, int>>(
+      final token = await _tokenRepository.getAccessToken();
+
+      final response = await _httpProvider.get<int?>(
         '/users/id',
+        headers: {'Authorization': 'Bearer $token'},
       );
 
       if (response == null) {
@@ -83,7 +87,8 @@ class AuthService {
         );
       }
 
-      final userId = response[0];
+      final userId = response;
+
       return userId;
     } on HttpError catch (e) {
       if (e.isAuthError) {
@@ -102,7 +107,7 @@ class AuthService {
 
       throw const HttpError(
         type: HttpErrorType.unknown,
-        message: 'Ocorreu um erro ao fazer login. Tente novamente.',
+        message: 'Ocorreu um erro ao recuperar o id. Tente novamente.',
       );
     }
   }

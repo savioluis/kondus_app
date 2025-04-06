@@ -36,5 +36,5 @@ abstract interface class IHttpProvider {
     Map<String, dynamic>? headers,
   });
 
-  void setupInterceptors(List<Interceptor>? interceptors);
+  void setupInterceptors(List<Interceptor> interceptors);
 }

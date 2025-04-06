@@ -29,30 +29,20 @@ class HttpProvider implements IHttpProvider {
       ),
     );
 
-    setupInterceptors(interceptors);
+    _dio.interceptors.add(
+      LogInterceptor(
+        requestBody: true,
+        responseBody: true,
+        error: true,
+      ),
+    );
   }
 
   late final Dio _dio;
 
   @override
-  void setupInterceptors(List<Interceptor>? interceptors) {
-    bool hasLogInterceptor =
-        interceptors?.any((i) => i is LogInterceptor) ?? false;
-
-    if (interceptors != null) {
-      hasLogInterceptor
-          ? _dio.interceptors.addAll(interceptors)
-          : _dio.interceptors.addAll(
-              [
-                ...interceptors,
-                LogInterceptor(
-                  requestBody: true,
-                  responseBody: true,
-                  error: true,
-                ),
-              ],
-            );
-    }
+  void setupInterceptors(List<Interceptor> interceptors) {
+    _dio.interceptors.addAll(interceptors);
   }
 
   @override
@@ -63,7 +53,7 @@ class HttpProvider implements IHttpProvider {
     Map<String, dynamic>? headers,
   }) async {
     try {
-      final response = await _dio.get<T>(
+      final response = await _dio.get(
         path,
         data: data,
         queryParameters: queryParameters,
@@ -73,6 +63,13 @@ class HttpProvider implements IHttpProvider {
       return response.data;
     } on DioException catch (e) {
       throw HttpError.fromDioError(e);
+    } catch (e, s) {
+      throw HttpError(
+        type: HttpErrorType.unknown,
+        message: 'Erro inesperado ao realizar requisição GET',
+        originalError: e,
+        stackTrace: s,
+      );
     }
   }
 
@@ -84,7 +81,7 @@ class HttpProvider implements IHttpProvider {
     Map<String, dynamic>? headers,
   }) async {
     try {
-      final response = await _dio.post<T>(
+      final response = await _dio.post(
         path,
         data: data,
         queryParameters: queryParameters,
@@ -94,6 +91,13 @@ class HttpProvider implements IHttpProvider {
       return response.data;
     } on DioException catch (e) {
       throw HttpError.fromDioError(e);
+    } catch (e, s) {
+      throw HttpError(
+        type: HttpErrorType.unknown,
+        message: 'Erro inesperado ao realizar requisição POST',
+        originalError: e,
+        stackTrace: s,
+      );
     }
   }
 
@@ -115,6 +119,13 @@ class HttpProvider implements IHttpProvider {
       return response.data;
     } on DioException catch (e) {
       throw HttpError.fromDioError(e);
+    } catch (e, s) {
+      throw HttpError(
+        type: HttpErrorType.unknown,
+        message: 'Erro inesperado ao realizar requisição PUT',
+        originalError: e,
+        stackTrace: s,
+      );
     }
   }
 
@@ -126,7 +137,7 @@ class HttpProvider implements IHttpProvider {
     Map<String, dynamic>? headers,
   }) async {
     try {
-      final response = await _dio.delete<T>(
+      final response = await _dio.delete(
         path,
         data: data,
         queryParameters: queryParameters,
@@ -136,6 +147,13 @@ class HttpProvider implements IHttpProvider {
       return response.data;
     } on DioException catch (e) {
       throw HttpError.fromDioError(e);
+    } catch (e, s) {
+      throw HttpError(
+        type: HttpErrorType.unknown,
+        message: 'Erro inesperado ao realizar requisição DELETE',
+        originalError: e,
+        stackTrace: s,
+      );
     }
   }
 
@@ -147,7 +165,7 @@ class HttpProvider implements IHttpProvider {
     Map<String, dynamic>? headers,
   }) async {
     try {
-      final response = await _dio.patch<T>(
+      final response = await _dio.patch(
         path,
         data: data,
         queryParameters: queryParameters,
@@ -157,6 +175,13 @@ class HttpProvider implements IHttpProvider {
       return response.data;
     } on DioException catch (e) {
       throw HttpError.fromDioError(e);
+    } catch (e, s) {
+      throw HttpError(
+        type: HttpErrorType.unknown,
+        message: 'Erro inesperado ao realizar requisição PATCH',
+        originalError: e,
+        stackTrace: s,
+      );
     }
   }
 }
