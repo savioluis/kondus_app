@@ -37,6 +37,12 @@ class LoginController extends ChangeNotifier {
         ),
       );
 
+      if (loginResponse == null) {
+        _emitState(LoginFailureState(
+            message: 'Falha ao realizar o login. Tente novamente'));
+        return;
+      }
+
       final accessToken = loginResponse.token;
 
       _emitState(LoginSuccessState(authToken: accessToken));
