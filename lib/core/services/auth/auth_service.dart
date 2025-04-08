@@ -4,7 +4,7 @@ import 'package:kondus/core/repositories/i_token_repository.dart';
 import 'package:kondus/core/services/auth/session_manager.dart';
 import 'package:kondus/core/services/dtos/login/login_request_dto.dart';
 import 'package:kondus/core/services/dtos/login/login_response_dto.dart';
-import 'package:kondus/core/services/dtos/user/user_id_response_dto.dart';
+import 'package:kondus/core/services/dtos/user/user_info_response_dto.dart';
 
 class AuthService {
   AuthService({
@@ -19,7 +19,7 @@ class AuthService {
   final ITokenRepository _tokenRepository;
   final SessionManager _sessionManager;
 
-  Future<LoginResponseDTO> login(LoginRequestDTO request) async {
+  Future<LoginResponseDTO?> login(LoginRequestDTO request) async {
     try {
       final response = await _httpProvider.get<Map<String, dynamic>>(
         '/users/login',
@@ -94,7 +94,7 @@ class AuthService {
       if (e.isAuthError) {
         throw const HttpError(
           type: HttpErrorType.unauthorized,
-          message: 'Email ou senha incorretos',
+          message: 'Não autorizado. Autentifique-se novamente.',
         );
       }
 
@@ -108,6 +108,49 @@ class AuthService {
       throw const HttpError(
         type: HttpErrorType.unknown,
         message: 'Ocorreu um erro ao recuperar o id. Tente novamente.',
+      );
+    }
+  }
+
+  Future<UserInfoResponseDTO?> getLoggedUserInfo() async {
+    try {
+      final token = await _tokenRepository.getAccessToken();
+
+      final response = await _httpProvider.get<Map<String, dynamic>>(
+        '/users/info',
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response == null) {
+        throw const HttpError(
+          type: HttpErrorType.unknown,
+          message:
+              'Não foi possível recuperar o id do usuario. Tente novamente.',
+        );
+      }
+
+      final userInfo = UserInfoResponseDTO.fromJson(response);
+
+      return userInfo;
+    } on HttpError catch (e) {
+      if (e.isAuthError) {
+        throw const HttpError(
+          type: HttpErrorType.unauthorized,
+          message: 'Não autorizado. Autentifique-se novamente.',
+        );
+      }
+
+      if (e.isNetworkError) {
+        throw const HttpError(
+          type: HttpErrorType.network,
+          message: 'Verifique sua conexão com a internet',
+        );
+      }
+
+      throw const HttpError(
+        type: HttpErrorType.unknown,
+        message:
+            'Ocorreu um erro ao recuperar as informações do usuário. Tente novamente.',
       );
     }
   }

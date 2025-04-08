@@ -18,7 +18,7 @@ class ItemsService {
   final ITokenRepository _tokenRepository;
   final SessionManager _sessionManager;
 
-  Future<ItemsResponseDTO> getAllItems({ItemsFiltersModel? filters}) async {
+  Future<ItemsResponseDTO?> getAllItems({ItemsFiltersModel? filters}) async {
     try {
       final token = await _tokenRepository.getAccessToken();
 
@@ -27,7 +27,7 @@ class ItemsService {
         data: filters != null
             ? filters.toJson()
             : {
-                "search": "br",
+                "search": "",
                 "categoriesIds": [],
                 "types": [],
               },
@@ -43,7 +43,6 @@ class ItemsService {
 
       final items = ItemsResponseDTO.fromList(response);
 
-      print(items);
       return items;
     } on HttpError catch (e) {
       if (e.isAuthError) {

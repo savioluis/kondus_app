@@ -10,6 +10,16 @@ enum ActionType {
   contratar,
 }
 
+extension ActionTypeExtension on ActionType {
+  String toJsonValue() {
+    return switch (this) {
+      ActionType.comprar => 'comprar',
+      ActionType.alugar => 'alugar',
+      ActionType.contratar => 'contratar',
+    };
+  }
+}
+
 class ProductCard extends StatelessWidget {
   const ProductCard({
     required this.imageUrl,
