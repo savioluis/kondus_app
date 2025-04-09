@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:kondus/app/routers/app_routers.dart';
+import 'package:kondus/app/routing/app_router.dart';
+import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/core/providers/navigator/navigator_observer_provider.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/providers/theme/theme_provider.dart';
 import 'package:kondus/core/services/auth/auth_gate.dart';
 import 'package:kondus/core/services/auth/session_manager.dart';
-import 'package:kondus/src/modules/login/presentation/login_page.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:get_it/get_it.dart';
 
@@ -33,7 +33,7 @@ class _KondusAppState extends State<KondusApp> {
           theme: AppTheme.lightTheme(),
           darkTheme: AppTheme.darkTheme(),
           themeMode: themeMode,
-          onGenerateRoute: AppRoutes.generateRoute,
+          onGenerateRoute: AppRouter.generateRoute,
           navigatorObservers: [AppNavigatorObserver()],
           navigatorKey: NavigatorProvider.navigatorKey,
           title: 'Kondus',

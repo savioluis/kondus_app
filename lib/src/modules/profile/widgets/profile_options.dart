@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/core/services/auth/session_manager.dart';
 import 'package:kondus/src/modules/profile/widgets/profile_option_tile.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 
-import '../../../../app/routers/app_routers.dart';
 import '../../../../core/providers/navigator/navigator_provider.dart';
 
 class ProfileOptions extends StatelessWidget {

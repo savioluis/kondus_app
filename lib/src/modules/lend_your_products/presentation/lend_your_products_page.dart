@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/app/routers/app_routers.dart';
+import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/src/modules/lend_your_products/widgets/item_chip.dart';
 import 'package:kondus/core/theme/app_theme.dart';
