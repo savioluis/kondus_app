@@ -60,7 +60,7 @@ class ItemModel {
         description: item.description,
         type: switch (item.type) {
           'produto' => ItemType.produto,
-          'servico' => ItemType.servico,
+          'serviço' => ItemType.servico,
           'aluguel' => ItemType.aluguel,
           _ => ItemType.produto,
         },

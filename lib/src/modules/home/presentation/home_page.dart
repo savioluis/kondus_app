@@ -196,8 +196,8 @@ class _HomePageState extends State<HomePage> {
     if (selectedCategory == 'Todos') {
       return items;
     }
-    return items.where((product) {
-      return product.type.toActionType().toJsonValue() ==
+    return items.where((item) {
+      return item.type.toActionType().toJsonValue() ==
           selectedCategory.toLowerCase();
     }).toList();
   }
