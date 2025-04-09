@@ -8,7 +8,7 @@ import 'package:kondus/core/theme/app_theme.dart';
 import '../../../../app/injections.dart';
 
 class ProductDetailsPage extends StatefulWidget {
-  const ProductDetailsPage({required this.productId,super.key});
+  const ProductDetailsPage({required this.productId, super.key});
 
   final int productId;
 
@@ -18,7 +18,6 @@ class ProductDetailsPage extends StatefulWidget {
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   final viewmodel = getIt<ProductDetailsViewmodel>();
-  
 
   @override
   void initState() {
@@ -36,7 +35,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           return state is! ProductDetailsSuccessState
               ? const SizedBox()
               : FloatingActionButton.extended(
-                  onPressed: () => NavigatorProvider.navigateTo(AppRoutes.contactChat),
+                  onPressed: () =>
+                      NavigatorProvider.navigateTo(AppRoutes.contactChat),
                   backgroundColor: context.blueColor,
                   label: const Text("RESERVAR"),
                   icon: const Icon(Icons.chat),
@@ -65,7 +65,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 25, bottom: 25),
                         child: ProductDetailsImageCarousel(
-                            imageUrls: data.imageUrls),
+                          imageUrls: data.imageUrls,
+                        ),
                       ),
                       Text("Descrição", style: context.headlineMedium),
                       const SizedBox(height: 10),

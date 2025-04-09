@@ -69,10 +69,12 @@ class ProductCard extends StatelessWidget {
                   : Container(
                       width: 64,
                       height: 64,
-                      decoration: BoxDecoration(color: context.onSurfaceColor),
+                      decoration: BoxDecoration(
+                        color: context.lightGreyColor.withOpacity(0.2),
+                      ),
                       child: Icon(
                         Icons.hide_image_outlined,
-                        color: context.greyColor,
+                        color: context.onSurfaceColor.withOpacity(0.2),
                         size: 36,
                       ),
                     ),
