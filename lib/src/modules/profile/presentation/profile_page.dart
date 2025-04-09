@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kondus/app/app.dart';
 import 'package:kondus/src/modules/profile/domain/profile_viewmodel.dart';
 import 'package:kondus/src/modules/profile/widgets/profile_banner.dart';
 import 'package:kondus/src/modules/profile/widgets/profile_options.dart';
-import 'package:kondus/core/theme/app_theme.dart';
 
 import '../../../../app/injections.dart';
 
