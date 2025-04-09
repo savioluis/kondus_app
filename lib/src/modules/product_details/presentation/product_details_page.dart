@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/app/routers/app_routers.dart';
+import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/src/modules/product_details/domain/product_details_viewmodel.dart';
 import 'package:kondus/src/modules/product_details/widgets/product_details_image_carousel.dart';
@@ -8,7 +8,9 @@ import 'package:kondus/core/theme/app_theme.dart';
 import '../../../../app/injections.dart';
 
 class ProductDetailsPage extends StatefulWidget {
-  const ProductDetailsPage({super.key});
+  const ProductDetailsPage({required this.productId,super.key});
+
+  final int productId;
 
   @override
   State<ProductDetailsPage> createState() => _ProductDetailsPageState();
@@ -16,10 +18,11 @@ class ProductDetailsPage extends StatefulWidget {
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   final viewmodel = getIt<ProductDetailsViewmodel>();
+  
 
   @override
   void initState() {
-    viewmodel.getProductDetails(0);
+    viewmodel.getProductDetails(widget.productId);
     super.initState();
   }
 

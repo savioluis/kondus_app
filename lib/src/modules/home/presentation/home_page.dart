@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/app/routers/app_routers.dart';
+import 'package:kondus/app/routing/app_routes.dart';
+import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
 import 'package:kondus/core/utils/snack_bar_helper.dart';
@@ -84,19 +85,31 @@ class _HomePageState extends State<HomePage> {
         } else if (state is HomeFailureState) {
           final currentState = state;
           return Scaffold(
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(currentState.message),
-                const SizedBox(height: 12),
-                KondusButton(
-                  label: 'Tentar novamente',
-                  onPressed: () {
-                    controller.loadInitialData();
-                  },
-                )
-              ],
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    currentState.message,
+                    style: const TextStyle(fontSize: 24),
+                  ),
+                  const SizedBox(height: 12),
+                  KondusButton(
+                    label: 'Tentar novamente',
+                    onPressed: () {
+                      controller.loadInitialData();
+                    },
+                  ),
+                  KondusButton(
+                    label: 'Deslogar',
+                    onPressed: () {
+                      controller.logout();
+                    },
+                  ),
+                ],
+              ),
             ),
           );
         } else if (state is HomeSuccessState) {
@@ -153,18 +166,16 @@ class _HomePageState extends State<HomePage> {
                         final product =
                             _getFilteredItems(currentState.items)[index];
                         return ProductCard(
-                          imageUrl: 'https://placehold.co/150x150.png',
+                          imageUrl: product.imagesPaths.isNotEmpty
+                              ? product.imagesPaths.first
+                              : null,
                           name: product.name,
                           category: product.categories[0].name,
                           actionType: product.type.toActionType(),
                           onTap: () {
                             NavigatorProvider.navigateTo(
                               AppRoutes.productDetails,
-                            );
-                          },
-                          onButtonPressed: () {
-                            NavigatorProvider.navigateTo(
-                              AppRoutes.productDetails,
+                              arguments: RouteArguments<int>(product.id),
                             );
                           },
                         );
