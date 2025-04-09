@@ -18,6 +18,7 @@ class HomeSuccessState extends HomeState {
 }
 
 class HomeFailureState extends HomeState {
-  HomeFailureState({required this.message});
+  HomeFailureState({required this.message, this.isLoggedIn = false});
   final String message;
+  bool isLoggedIn;
 }

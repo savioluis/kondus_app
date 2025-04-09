@@ -27,16 +27,14 @@ class ProductCard extends StatelessWidget {
     required this.category,
     required this.actionType,
     required this.onTap,
-    required this.onButtonPressed,
     super.key,
   });
 
-  final String imageUrl;
+  final String? imageUrl;
   final String name;
   final String category;
   final ActionType actionType;
   final VoidCallback onTap;
-  final VoidCallback onButtonPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -61,12 +59,25 @@ class ProductCard extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.network(
-                imageUrl,
-                width: 64,
-                height: 64,
-                fit: BoxFit.cover,
-              ),
+              child: imageUrl != null
+                  ? Image.network(
+                      imageUrl!,
+                      width: 64,
+                      height: 64,
+                      fit: BoxFit.cover,
+                    )
+                  : Container(
+                      width: 64,
+                      height: 64,
+                      decoration: BoxDecoration(
+                        color: context.lightGreyColor.withOpacity(0.2),
+                      ),
+                      child: Icon(
+                        Icons.hide_image_outlined,
+                        color: context.onSurfaceColor.withOpacity(0.2),
+                        size: 36,
+                      ),
+                    ),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -93,17 +104,12 @@ class ProductCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 16),
-            // SizedBox(
-            //   width: 72,
-            //   height: 36,
-            //   child: _ActionButton(
-            //     actionType: actionType,
-            //     onPressed: onButtonPressed,
-            //   ),
-            // ),
             GestureDetector(
-              onTap: onButtonPressed,
-              child: Icon(Icons.keyboard_arrow_right, color: context.blueColor),
+              onTap: onTap,
+              child: Icon(
+                Icons.keyboard_arrow_right,
+                color: context.blueColor,
+              ),
             ),
           ],
         ),

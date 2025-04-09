@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
+import 'package:kondus/core/providers/http/error/http_error.dart';
 import 'package:kondus/core/services/auth/auth_service.dart';
+import 'package:kondus/core/services/auth/session_manager.dart';
 import 'package:kondus/core/services/items/items_service.dart';
 import 'package:kondus/src/modules/home/models/item_model.dart';
 import 'package:kondus/src/modules/home/models/user_model.dart';
@@ -40,6 +42,8 @@ class HomeController extends ChangeNotifier {
           items: itemsData,
         ),
       );
+    } on HttpError catch (e) {
+      _emitState(HomeFailureState(message: e.message));
     } catch (e) {
       _emitState(HomeFailureState(message: e.toString()));
     }
@@ -73,6 +77,10 @@ class HomeController extends ChangeNotifier {
     } catch (e) {
       rethrow;
     }
+  }
+
+  logout() {
+    GetIt.instance<SessionManager>().logout();
   }
 
   void _emitState(HomeState newState) {

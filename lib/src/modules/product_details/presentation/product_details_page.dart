@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/app/routers/app_routers.dart';
+import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/src/modules/product_details/domain/product_details_viewmodel.dart';
 import 'package:kondus/src/modules/product_details/widgets/product_details_image_carousel.dart';
@@ -8,7 +8,9 @@ import 'package:kondus/core/theme/app_theme.dart';
 import '../../../../app/injections.dart';
 
 class ProductDetailsPage extends StatefulWidget {
-  const ProductDetailsPage({super.key});
+  const ProductDetailsPage({required this.productId, super.key});
+
+  final int productId;
 
   @override
   State<ProductDetailsPage> createState() => _ProductDetailsPageState();
@@ -19,7 +21,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
   @override
   void initState() {
-    viewmodel.getProductDetails(0);
+    viewmodel.getProductDetails(widget.productId);
     super.initState();
   }
 
@@ -33,7 +35,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           return state is! ProductDetailsSuccessState
               ? const SizedBox()
               : FloatingActionButton.extended(
-                  onPressed: () => NavigatorProvider.navigateTo(AppRoutes.contactChat),
+                  onPressed: () =>
+                      NavigatorProvider.navigateTo(AppRoutes.contactChat),
                   backgroundColor: context.blueColor,
                   label: const Text("RESERVAR"),
                   icon: const Icon(Icons.chat),
@@ -62,7 +65,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 25, bottom: 25),
                         child: ProductDetailsImageCarousel(
-                            imageUrls: data.imageUrls),
+                          imageUrls: data.imageUrls,
+                        ),
                       ),
                       Text("Descrição", style: context.headlineMedium),
                       const SizedBox(height: 10),
