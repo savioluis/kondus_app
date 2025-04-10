@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/app/routing/app_routes.dart';
+import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
+import 'package:kondus/src/modules/home/models/item_model.dart';
 import 'package:kondus/src/modules/search_products/presentation/search_controller.dart';
 import 'package:kondus/src/modules/search_products/presentation/search_state.dart';
 import 'package:kondus/src/modules/search_products/widgets/product_card.dart';
@@ -56,13 +58,65 @@ class _SearchPageState extends State<SearchPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                KondusTextFormField(
-                  prefixIcon: const Icon(Icons.search),
-                  prefixIconColor: context.lightGreyColor,
-                  hintText: 'Digite para pesquisar...',
-                  controller: controller.searchController,
-                  onChanged: controller.onSearchChanged,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      flex: 6,
+                      child: KondusTextFormField(
+                        prefixIcon: const Icon(Icons.search),
+                        prefixIconColor: context.lightGreyColor,
+                        hintText: 'Digite para pesquisar...',
+                        controller: controller.searchController,
+                        onChanged: controller.onSearchChanged,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      flex: 1,
+                      child: InkWell(
+                        onTap: () async {
+                          final resultOfFilterSelection =
+                              await NavigatorProvider.navigateTo(
+                            AppRoutes.filter,
+                            arguments: RouteArguments<List<CategoryModel>>(
+                                controller.selectedCategories),
+                          ) as RouteArguments<List<CategoryModel>?>?;
+
+                          if (resultOfFilterSelection != null &&
+                              resultOfFilterSelection.data != null) {
+                            controller.onFiltersChanged(
+                                resultOfFilterSelection.data!);
+                          }
+                        },
+                        borderRadius: BorderRadius.circular(12),
+                        child: Ink(
+                          height: 56,
+                          decoration: BoxDecoration(
+                            color: context.blueColor,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.filter_list_sharp,
+                              color: context.whiteColor,
+                              size: 32,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+                if (controller.selectedCategories.isNotEmpty)
+                  Wrap(
+                    spacing: 8,
+                    children: controller.selectedCategories
+                        .map((cat) => Chip(
+                              label: Text(cat.name),
+                            ))
+                        .toList(),
+                  ),
                 if (controller.searchController.text.isNotEmpty)
                   const SizedBox(height: 24),
                 Expanded(
@@ -96,7 +150,9 @@ class _SearchPageState extends State<SearchPage> {
           final product = state.products[index];
           return ProductCard(
             product: product,
-            onTap: () => NavigatorProvider.navigateTo(AppRoutes.productDetails),
+            onTap: () => NavigatorProvider.navigateTo(
+              AppRoutes.productDetails,
+            ),
           );
         },
       );

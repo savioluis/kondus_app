@@ -18,4 +18,6 @@ class AppRoutes {
   static const String termsAndConditions = '/termsAndConditions';
 
   static const String history = "/history";
+  static const String filter = "/filter";
+  
 }

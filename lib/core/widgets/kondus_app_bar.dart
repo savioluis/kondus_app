@@ -7,12 +7,14 @@ class KondusAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.title,
     this.onBackButtonPressed,
     this.backButtonColor,
+    this.actions,
     super.key,
   });
 
   final String? title;
   final void Function()? onBackButtonPressed;
   final Color? backButtonColor;
+  final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,9 @@ class KondusAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       elevation: 0,
       backgroundColor: Colors.transparent,
+      surfaceTintColor: Colors.transparent,
       title: title != null ? Text(title!) : null,
+      actions: actions,
     );
   }
 

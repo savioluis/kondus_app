@@ -16,4 +16,10 @@ class CategoryDTO {
       _$CategoryDTOFromJson(json);
 
   Map<String, dynamic> toJson() => _$CategoryDTOToJson(this);
+
+  static List<CategoryDTO> parseCategoriesResponse(List<dynamic> jsonList) {
+    return jsonList
+        .map((json) => CategoryDTO.fromJson(json as Map<String, dynamic>))
+        .toList();
+  }
 }
