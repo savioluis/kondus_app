@@ -5,8 +5,7 @@ import 'package:kondus/src/modules/search_products/presentation/search_controlle
 import 'package:kondus/src/modules/search_products/presentation/search_state.dart';
 import 'package:kondus/src/modules/search_products/widgets/product_card.dart';
 import 'package:kondus/core/theme/app_theme.dart';
-import 'package:kondus/core/widgets/kondus_app_bar.dart';
-import 'package:kondus/core/widgets/kondus_text_field.dart';
+import 'package:kondus/src/modules/search_products/widgets/search_page_appbar.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -16,7 +15,9 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  final SearchPageController controller = SearchPageController();
+  final SearchPageController controller = SearchPageController()..fetchItems();
+
+  get selectedCategories => controller.selectedCategories;
 
   @override
   void dispose() {
@@ -27,8 +28,9 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const KondusAppBar(
-        title: 'Buscar Produtos ou Serviços',
+      appBar: SearchPageAppBar(
+        controller: controller,
+        title: 'Buscar produtos ou serviços',
       ),
       floatingActionButton: FloatingActionButton.extended(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
@@ -56,15 +58,6 @@ class _SearchPageState extends State<SearchPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                KondusTextFormField(
-                  prefixIcon: const Icon(Icons.search),
-                  prefixIconColor: context.lightGreyColor,
-                  hintText: 'Digite para pesquisar...',
-                  controller: controller.searchController,
-                  onChanged: controller.onSearchChanged,
-                ),
-                if (controller.searchController.text.isNotEmpty)
-                  const SizedBox(height: 24),
                 Expanded(
                   child: _buildStateContent(state),
                 ),
@@ -77,28 +70,24 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _buildStateContent(SearchState state) {
-    if (state is SearchInitial || controller.searchController.text.isEmpty) {
-      return const Center(
-        child: Text(
-          'Digite algo para começar a busca. 😎\nOu cadastre um novo item',
-          style: TextStyle(fontSize: 18),
-          textAlign: TextAlign.center,
-        ),
-      );
-    } else if (state is SearchLoading) {
+    if (state is SearchLoading) {
       return const Center(
         child: CircularProgressIndicator(),
       );
     } else if (state is SearchSuccess) {
-      return ListView.builder(
+      return ListView.separated(
+        padding: const EdgeInsets.only(top: 12),
         itemCount: state.products.length,
         itemBuilder: (context, index) {
           final product = state.products[index];
           return ProductCard(
             product: product,
-            onTap: () => NavigatorProvider.navigateTo(AppRoutes.productDetails),
+            onTap: () => NavigatorProvider.navigateTo(
+              AppRoutes.productDetails,
+            ),
           );
         },
+        separatorBuilder: (context, index) => const SizedBox(height: 18),
       );
     } else if (state is SearchFailure) {
       return Center(

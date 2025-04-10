@@ -1,5 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:kondus/core/services/dtos/product_dto.dart';
+import 'package:kondus/core/services/items/items_service.dart';
+import 'package:kondus/core/services/items/models/items_filter_model.dart';
+import 'package:kondus/src/modules/home/models/item_model.dart';
 import 'search_state.dart';
 
 class SearchPageController extends ChangeNotifier {
@@ -8,70 +14,54 @@ class SearchPageController extends ChangeNotifier {
   SearchState _state = SearchInitial();
   SearchState get state => _state;
 
+  final _itemsService = GetIt.instance<ItemsService>();
+
+  List<CategoryModel> selectedCategories = [];
+
   @override
   void dispose() {
     searchController.dispose();
     super.dispose();
   }
 
-  Future<void> fetchProducts(String query) async {
-    if (query.isEmpty) {
-      _emitState(SearchInitial());
-      return;
-    }
+  Future<void> fetchItems() async {
+    final query = searchController.text;
 
     _emitState(SearchLoading());
 
     try {
-      await Future.delayed(const Duration(seconds: 1));
+      final response = await _itemsService.getAllItems(
+        filters: ItemsFiltersModel(
+          query: query,
+          categoriesIds: selectedCategories.map((c) => c.id).toList(),
+          types: [],
+        ),
+      );
 
-      final mockApiResponse = [
-        ProductDTO(
-          name: 'Furadeira X200',
-          category: 'Ferramentas',
-          actionType: 'Comprar',
-          imageUrl: 'https://placehold.co/150.png',
-        ),
-        ProductDTO(
-          name: 'Bolo de Chocolate',
-          category: 'Alimentos',
-          actionType: 'Comprar',
-          imageUrl: 'https://placehold.co/150.png',
-        ),
-        ProductDTO(
-          name: 'Curso de Inglês Online',
-          category: 'Serviços',
-          actionType: 'Contratar',
-          imageUrl: 'https://placehold.co/150.png',
-        ),
-        ProductDTO(
-          name: 'Apartamento Temporário',
-          category: 'Imóveis',
-          actionType: 'Alugar',
-          imageUrl: 'https://placehold.co/150.png',
-        ),
-      ];
-
-      final filteredProducts = mockApiResponse
-          .where((product) =>
-              product.name.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-
-      if (filteredProducts.isEmpty) {
-        _emitState(SearchFailure('Nenhum produto encontrado.'));
-      } else {
-        _emitState(SearchSuccess(filteredProducts));
+      if (response == null || response.items.isEmpty) {
+        _emitState(const SearchFailure('Nenhum produto encontrado.'));
+        return;
       }
+
+      final products = ProductDTO.fromItemResponseDTO(response);
+
+      _emitState(SearchSuccess(products, selectedCategories));
     } catch (e) {
-      _emitState(SearchFailure('Erro ao buscar produtos.'));
+      _emitState(const SearchFailure('Erro ao buscar produtos.'));
     }
   }
 
+  void onFiltersChanged(List<CategoryModel> newCategories) {
+    selectedCategories = newCategories;
+    fetchItems();
+  }
+
   void onSearchChanged(String query) {
-    fetchProducts(query);
+    fetchItems();
   }
 
   void _emitState(SearchState newState) {
+    log('Estado emitido: $newState');
     _state = newState;
     notifyListeners();
   }

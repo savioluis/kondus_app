@@ -2,6 +2,7 @@ import 'package:kondus/core/providers/http/error/http_error.dart';
 import 'package:kondus/core/providers/http/i_http_provider.dart';
 import 'package:kondus/core/repositories/i_token_repository.dart';
 import 'package:kondus/core/services/auth/session_manager.dart';
+import 'package:kondus/core/services/dtos/items/category_dto.dart';
 import 'package:kondus/core/services/dtos/items/item_content_dto.dart';
 import 'package:kondus/core/services/dtos/items/items_response_dto.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
@@ -104,6 +105,47 @@ class ItemsService {
       throw const HttpError(
         type: HttpErrorType.unknown,
         message: 'Ocorreu um erro ao recuperar o item. Tente novamente.',
+      );
+    }
+  }
+
+  Future<List<CategoryDTO>> getAllCategories() async {
+    try {
+      final token = await _tokenRepository.getAccessToken();
+
+      final response = await _httpProvider.get<List>(
+        '/items/categories',
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response == null) {
+        throw const HttpError(
+          type: HttpErrorType.unknown,
+          message: 'Não foi possível recuperar as categorias. Tente novamente.',
+        );
+      }
+
+      final categories = CategoryDTO.parseCategoriesResponse(response);
+
+      return categories;
+    } on HttpError catch (e) {
+      if (e.isAuthError) {
+        throw const HttpError(
+          type: HttpErrorType.unauthorized,
+          message: 'Sua sessão expirou. Autentifique-se novamente.',
+        );
+      }
+
+      if (e.isNetworkError) {
+        throw const HttpError(
+          type: HttpErrorType.network,
+          message: 'Verifique sua conexão com a internet.',
+        );
+      }
+
+      throw const HttpError(
+        type: HttpErrorType.unknown,
+        message: 'Ocorreu um erro ao recuperar as categorias. Tente novamente.',
       );
     }
   }

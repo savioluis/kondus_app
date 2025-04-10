@@ -1,3 +1,4 @@
+import 'package:kondus/core/services/dtos/items/category_dto.dart';
 import 'package:kondus/core/services/dtos/items/items_response_dto.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
 
@@ -9,6 +10,10 @@ class CategoryModel {
     required this.id,
     required this.name,
   });
+
+  factory CategoryModel.fromDTO(CategoryDTO dto) {
+    return CategoryModel(id: dto.id, name: dto.name);
+  }
 
   @override
   String toString() => 'CategoryModel(id: $id, name: $name)';
