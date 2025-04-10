@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kondus/core/services/dtos/product_dto.dart';
@@ -20,44 +22,6 @@ class SearchPageController extends ChangeNotifier {
   void dispose() {
     searchController.dispose();
     super.dispose();
-  }
-
-  // Future<void> fetchProducts(String query,
-  //     [List<CategoryModel> selectedCategories = const []]) async {
-  //   if (query.isEmpty) {
-  //     _emitState(SearchInitial());
-  //     return;
-  //   }
-
-  //   _emitState(SearchLoading());
-
-  //   try {
-  //     final response = await _itemsService.getAllItems(
-  //       filters: ItemsFiltersModel(
-  //         categoriesIds: selectedCategories.map((e) => e.id).toList(),
-  //         types: [],
-  //         query: query,
-  //       ),
-  //     );
-
-  //     if (response == null || response.items.isEmpty) {
-  //       _emitState(const SearchFailure('Nenhum produto encontrado.'));
-  //       return;
-  //     }
-
-  //     final items = ProductDTO.fromItemResponseDTO(response);
-
-  //     _emitState(
-  //       SearchSuccess(items, selectedCategories),
-  //     );
-  //   } catch (e) {
-  //     _emitState(const SearchFailure('Erro ao buscar produtos.'));
-  //   }
-  // }
-
-  void onFiltersChanged(List<CategoryModel> newCategories) {
-    selectedCategories = newCategories;
-    fetchItems();
   }
 
   Future<void> fetchItems() async {
@@ -92,22 +56,17 @@ class SearchPageController extends ChangeNotifier {
     }
   }
 
-  void removeCategory(CategoryModel category) {
-  selectedCategories.removeWhere((cat) => cat.id == category.id);
-
-  if (searchController.text.isNotEmpty) {
+  void onFiltersChanged(List<CategoryModel> newCategories) {
+    selectedCategories = newCategories;
     fetchItems();
-  } else {
-    notifyListeners();
   }
-}
-
 
   void onSearchChanged(String query) {
     fetchItems();
   }
 
   void _emitState(SearchState newState) {
+    log('Estado emitido: $newState');
     _state = newState;
     notifyListeners();
   }

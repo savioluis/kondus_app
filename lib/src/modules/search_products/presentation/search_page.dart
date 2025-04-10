@@ -20,6 +20,8 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   final SearchPageController controller = SearchPageController();
 
+  get selectedCategories => controller.selectedCategories;
+
   @override
   void dispose() {
     controller.dispose();
@@ -75,7 +77,7 @@ class _SearchPageState extends State<SearchPage> {
                     Flexible(
                       flex: 1,
                       child: Stack(
-                        alignment: const Alignment(-1.5, 1.5),
+                        alignment: const Alignment(1.5, 1.5),
                         children: [
                           InkWell(
                             onTap: () async {
@@ -83,7 +85,7 @@ class _SearchPageState extends State<SearchPage> {
                                   await NavigatorProvider.navigateTo(
                                 AppRoutes.filter,
                                 arguments: RouteArguments<List<CategoryModel>>(
-                                    controller.selectedCategories),
+                                    selectedCategories),
                               ) as RouteArguments<List<CategoryModel>?>?;
 
                               if (resultOfFilterSelection != null &&
@@ -108,18 +110,19 @@ class _SearchPageState extends State<SearchPage> {
                               ),
                             ),
                           ),
-                          if (controller.selectedCategories.isNotEmpty)
+                          if (selectedCategories.isNotEmpty)
                             Container(
                               height: 24,
                               width: 24,
                               decoration: BoxDecoration(
-                                color: context.whiteColor,
-                                border:
-                                    Border.all(color: context.lightGreyColor),
-                                    borderRadius: BorderRadius.circular(8)
-                              ),
+                                  color: context.whiteColor,
+                                  border:
+                                      Border.all(color: context.lightGreyColor),
+                                  borderRadius: BorderRadius.circular(8)),
                               child: Text(
-                                controller.selectedCategories.length < 10 ? '${controller.selectedCategories.length}' : '9+',
+                                selectedCategories.length < 10
+                                    ? '${selectedCategories.length}'
+                                    : '9+',
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -155,7 +158,7 @@ class _SearchPageState extends State<SearchPage> {
         child: CircularProgressIndicator(),
       );
     } else if (state is SearchSuccess) {
-      return ListView.builder(
+      return ListView.separated(
         itemCount: state.products.length,
         itemBuilder: (context, index) {
           final product = state.products[index];
@@ -166,6 +169,7 @@ class _SearchPageState extends State<SearchPage> {
             ),
           );
         },
+        separatorBuilder: (context, index) => const SizedBox(height: 12),
       );
     } else if (state is SearchFailure) {
       return Center(
