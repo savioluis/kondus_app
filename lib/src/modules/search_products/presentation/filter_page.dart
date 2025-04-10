@@ -89,7 +89,7 @@ class _FilterPageState extends State<FilterPage> {
 
     return Scaffold(
       appBar: KondusAppBar(
-        title: 'Selecione os seus Filtros',
+        title: 'Filtros',
         actions: [
           if (amountSelected > 0)
             Padding(
