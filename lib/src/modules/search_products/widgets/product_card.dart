@@ -88,10 +88,10 @@ class ProductCard extends StatelessWidget {
                         child: Text(
                           product.name,
                           overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                          maxLines: 2,
+                          style: context.labelLarge!.copyWith(
+                            fontSize: 16,
+                            color: context.primaryColor
                           ),
                         ),
                       ),
@@ -102,9 +102,8 @@ class ProductCard extends StatelessWidget {
                     product.category,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16,
+                    style: context.bodyMedium!.copyWith(
+                      fontSize: 14,
                     ),
                   ),
                 ],
