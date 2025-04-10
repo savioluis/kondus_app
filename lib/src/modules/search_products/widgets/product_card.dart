@@ -50,9 +50,9 @@ class ProductCard extends StatelessWidget {
       child: Ink(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
-            color: context.whiteColor,
-            border: Border.all(color: context.lightGreyColor)),
-        padding: const EdgeInsets.all(8),
+            color: context.surfaceColor,
+            border: Border.all(color: context.lightGreyColor.withOpacity(0.5))),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
         child: Row(
           children: [
             product.imageUrl.isNotEmpty
@@ -72,7 +72,7 @@ class ProductCard extends StatelessWidget {
                     child: Icon(
                       Icons.hide_image_outlined,
                       color: context.onSurfaceColor.withOpacity(0.2),
-                      size: 25,
+                      size: 36,
                     ),
                   ),
             const SizedBox(width: 8),

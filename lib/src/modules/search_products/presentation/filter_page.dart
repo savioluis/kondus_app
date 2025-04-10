@@ -115,20 +115,29 @@ class _FilterPageState extends State<FilterPage> {
             )
           : !_hasError
               ? RefreshIndicator(
-                  onRefresh: () async {},
+                  onRefresh: () async {
+                    _loadCategories();
+                  },
                   child: Padding(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                    child: ListView.builder(
+                    child: ListView.separated(
                       itemCount: _categories.length,
                       itemBuilder: (context, index) {
                         final category = _categories[index];
                         return CheckboxListTile(
+                          shape: ContinuousRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                           title: Text(category.name),
                           value: _selectedIndexes.contains(index),
+                          activeColor: context.blueColor,
+                          tileColor: context.lightGreyColor.withOpacity(0.2),
                           onChanged: (_) => toggleSelection(index),
                         );
                       },
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 12),
                     ),
                   ),
                 )

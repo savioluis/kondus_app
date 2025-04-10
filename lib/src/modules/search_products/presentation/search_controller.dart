@@ -27,11 +27,6 @@ class SearchPageController extends ChangeNotifier {
   Future<void> fetchItems() async {
     final query = searchController.text;
 
-    if (query.isEmpty && selectedCategories.isEmpty) {
-      _emitState(SearchInitial());
-      return;
-    }
-
     _emitState(SearchLoading());
 
     try {

@@ -18,7 +18,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  final SearchPageController controller = SearchPageController();
+  final SearchPageController controller = SearchPageController()..fetchItems();
 
   get selectedCategories => controller.selectedCategories;
 
@@ -73,7 +73,7 @@ class _SearchPageState extends State<SearchPage> {
                         onChanged: controller.onSearchChanged,
                       ),
                     ),
-                    const SizedBox(width: 24),
+                    const SizedBox(width: 12),
                     Flexible(
                       flex: 1,
                       child: Stack(
@@ -112,18 +112,26 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                           if (selectedCategories.isNotEmpty)
                             Container(
-                              height: 24,
-                              width: 24,
+                              height: 26,
+                              width: 26,
                               decoration: BoxDecoration(
-                                  color: context.whiteColor,
-                                  border:
-                                      Border.all(color: context.lightGreyColor),
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Text(
-                                selectedCategories.length < 10
-                                    ? '${selectedCategories.length}'
-                                    : '9+',
-                                textAlign: TextAlign.center,
+                                color: context.surfaceColor,
+                                border:
+                                    Border.all(color: context.lightGreyColor),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Center(
+                                child: Text(
+                                  selectedCategories.length < 10
+                                      ? '${selectedCategories.length}'
+                                      : '9+',
+                                  style: TextStyle(
+                                    color: context.secondaryColor,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ),
                         ],
@@ -131,8 +139,6 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   ],
                 ),
-                if (controller.searchController.text.isNotEmpty)
-                  const SizedBox(height: 24),
                 Expanded(
                   child: _buildStateContent(state),
                 ),
@@ -145,20 +151,13 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   Widget _buildStateContent(SearchState state) {
-    if (state is SearchInitial || controller.searchController.text.isEmpty) {
-      return const Center(
-        child: Text(
-          'Digite algo para começar a busca. 😎\nOu cadastre um novo item',
-          style: TextStyle(fontSize: 18),
-          textAlign: TextAlign.center,
-        ),
-      );
-    } else if (state is SearchLoading) {
+    if (state is SearchLoading) {
       return const Center(
         child: CircularProgressIndicator(),
       );
     } else if (state is SearchSuccess) {
       return ListView.separated(
+        padding: const EdgeInsets.only(top: 24),
         itemCount: state.products.length,
         itemBuilder: (context, index) {
           final product = state.products[index];
@@ -169,7 +168,7 @@ class _SearchPageState extends State<SearchPage> {
             ),
           );
         },
-        separatorBuilder: (context, index) => const SizedBox(height: 12),
+        separatorBuilder: (context, index) => const SizedBox(height: 18),
       );
     } else if (state is SearchFailure) {
       return Center(
