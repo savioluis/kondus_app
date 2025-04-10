@@ -92,6 +92,17 @@ class SearchPageController extends ChangeNotifier {
     }
   }
 
+  void removeCategory(CategoryModel category) {
+  selectedCategories.removeWhere((cat) => cat.id == category.id);
+
+  if (searchController.text.isNotEmpty) {
+    fetchItems();
+  } else {
+    notifyListeners();
+  }
+}
+
+
   void onSearchChanged(String query) {
     fetchItems();
   }

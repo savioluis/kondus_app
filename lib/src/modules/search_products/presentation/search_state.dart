@@ -14,7 +14,7 @@ class SearchInitial extends SearchState {}
 class SearchLoading extends SearchState {}
 
 class SearchSuccess extends SearchState {
-  // migrate to itemDTO and fix the dependencies
+  // TODO: migrate to itemDTO and fix the dependencies
   final List<ProductDTO> products;
   final List<CategoryModel> selectedCategories;
 

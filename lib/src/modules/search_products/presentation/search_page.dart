@@ -62,7 +62,7 @@ class _SearchPageState extends State<SearchPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Flexible(
-                      flex: 6,
+                      flex: 5,
                       child: KondusTextFormField(
                         prefixIcon: const Icon(Icons.search),
                         prefixIconColor: context.lightGreyColor,
@@ -71,52 +71,63 @@ class _SearchPageState extends State<SearchPage> {
                         onChanged: controller.onSearchChanged,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 24),
                     Flexible(
                       flex: 1,
-                      child: InkWell(
-                        onTap: () async {
-                          final resultOfFilterSelection =
-                              await NavigatorProvider.navigateTo(
-                            AppRoutes.filter,
-                            arguments: RouteArguments<List<CategoryModel>>(
-                                controller.selectedCategories),
-                          ) as RouteArguments<List<CategoryModel>?>?;
+                      child: Stack(
+                        alignment: const Alignment(-1.5, 1.5),
+                        children: [
+                          InkWell(
+                            onTap: () async {
+                              final resultOfFilterSelection =
+                                  await NavigatorProvider.navigateTo(
+                                AppRoutes.filter,
+                                arguments: RouteArguments<List<CategoryModel>>(
+                                    controller.selectedCategories),
+                              ) as RouteArguments<List<CategoryModel>?>?;
 
-                          if (resultOfFilterSelection != null &&
-                              resultOfFilterSelection.data != null) {
-                            controller.onFiltersChanged(
-                                resultOfFilterSelection.data!);
-                          }
-                        },
-                        borderRadius: BorderRadius.circular(12),
-                        child: Ink(
-                          height: 56,
-                          decoration: BoxDecoration(
-                            color: context.blueColor,
+                              if (resultOfFilterSelection != null &&
+                                  resultOfFilterSelection.data != null) {
+                                controller.onFiltersChanged(
+                                    resultOfFilterSelection.data!);
+                              }
+                            },
                             borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Center(
-                            child: Icon(
-                              Icons.filter_list_sharp,
-                              color: context.whiteColor,
-                              size: 32,
+                            child: Ink(
+                              height: 56,
+                              decoration: BoxDecoration(
+                                color: context.blueColor.withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  Icons.filter_list_sharp,
+                                  color: context.whiteColor,
+                                  size: 32,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                          if (controller.selectedCategories.isNotEmpty)
+                            Container(
+                              height: 24,
+                              width: 24,
+                              decoration: BoxDecoration(
+                                color: context.whiteColor,
+                                border:
+                                    Border.all(color: context.lightGreyColor),
+                                    borderRadius: BorderRadius.circular(8)
+                              ),
+                              child: Text(
+                                controller.selectedCategories.length < 10 ? '${controller.selectedCategories.length}' : '9+',
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-                if (controller.selectedCategories.isNotEmpty)
-                  Wrap(
-                    spacing: 8,
-                    children: controller.selectedCategories
-                        .map((cat) => Chip(
-                              label: Text(cat.name),
-                            ))
-                        .toList(),
-                  ),
                 if (controller.searchController.text.isNotEmpty)
                   const SizedBox(height: 24),
                 Expanded(
