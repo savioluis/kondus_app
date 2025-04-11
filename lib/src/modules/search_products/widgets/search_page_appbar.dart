@@ -27,6 +27,7 @@ class SearchPageAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Material(
       color: context.surfaceColor,
       child: SafeArea(
+        top: true,
         child: AnimatedBuilder(
           animation: controller,
           builder: (_, __) {
@@ -34,11 +35,14 @@ class SearchPageAppBar extends StatelessWidget implements PreferredSizeWidget {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                IconButton(
-                  onPressed: onBackButtonPressed ?? NavigatorProvider.goBack,
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: context.onSurfaceColor,
+                Padding(
+                  padding: const EdgeInsets.only(left: 12),
+                  child: IconButton(
+                    onPressed: onBackButtonPressed ?? NavigatorProvider.goBack,
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: context.onSurfaceColor,
+                    ),
                   ),
                 ),
                 Padding(

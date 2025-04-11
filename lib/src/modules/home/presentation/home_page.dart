@@ -42,8 +42,6 @@ class _HomePageState extends State<HomePage> {
     },
   ];
 
-  final String user = '';
-
   String selectedCategory = 'Todos';
 
   late final HomeController controller;
@@ -156,32 +154,42 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   const SizedBox(height: 18),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _getFilteredItems(currentState.items).length,
-                      itemBuilder: (context, index) {
-                        final product =
-                            _getFilteredItems(currentState.items)[index];
-                        return ProductCard(
-                          imageUrl: product.imagesPaths.isNotEmpty
-                              ? product.imagesPaths.first
-                              : null,
-                          name: product.name,
-                          category: product.categories[0].name,
-                          actionType: product.type.toActionType(),
-                          onTap: () {
-                            NavigatorProvider.navigateTo(
-                              AppRoutes.productDetails,
-                              arguments: RouteArguments<int>(product.id),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
+                  state.isLoadingMoreItems
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: currentState.items.isNotEmpty
+                              ? ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: currentState.items.length,
+                                  itemBuilder: (context, index) {
+                                    final product = currentState.items[index];
+                                    return ProductCard(
+                                      imageUrl: product.imagesPaths.isNotEmpty
+                                          ? product.imagesPaths.first
+                                          : null,
+                                      name: product.name,
+                                      category: product.categories[0].name,
+                                      actionType: product.type
+                                          .toActionType(product.quantity),
+                                      onTap: () {
+                                        NavigatorProvider.navigateTo(
+                                          AppRoutes.productDetails,
+                                          arguments:
+                                              RouteArguments<int>(product.id),
+                                        );
+                                      },
+                                    );
+                                  },
+                                )
+                              : const Padding(
+                                  padding: EdgeInsets.only(top: 24),
+                                  child: Text('Nenhum produto encontrado'),
+                                ),
+                        ),
                 ],
               ),
             ),
@@ -192,24 +200,15 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  List<ItemModel> _getFilteredItems(List<ItemModel> items) {
-    if (selectedCategory == 'Todos') {
-      return items;
-    }
-    return items.where((item) {
-      return item.type.toActionType().toJsonValue() ==
-          selectedCategory.toLowerCase();
-    }).toList();
-  }
-
   Widget _buildCategoryChip(String category) {
     bool isSelected = selectedCategory == category;
 
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         setState(() {
           selectedCategory = category;
         });
+        await controller.loadItemsWithCategoryFilter(category);
       },
       child: Container(
         margin: category == 'Todos'

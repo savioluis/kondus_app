@@ -14,18 +14,24 @@ extension ItemTypeExtension on ItemType {
       ItemType.aluguel => 'aluguel',
     };
   }
-}
 
-extension ItemTypeToActionType on ItemType {
-  ActionType toActionType() {
-    switch (this) {
-      case ItemType.produto:
+  static ItemType fromJsonValue(String category) {
+    return switch (category.toLowerCase()) {
+      'comprar' => ItemType.produto,
+      'contratar' => ItemType.servico,
+      'alugar' => ItemType.aluguel,
+      _ => ItemType.produto,
+    };
+  }
+
+  ActionType toActionType(int quantity) {
+    if (this == ItemType.produto) {
+      if (quantity > 0) {
         return ActionType.comprar;
-      case ItemType.servico:
-        return ActionType.contratar;
-      case ItemType.aluguel:
-        return ActionType.alugar;
+      }
+      return ActionType.alugar;
     }
+    return ActionType.contratar;
   }
 }
 

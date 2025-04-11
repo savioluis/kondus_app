@@ -5,7 +5,9 @@ import 'package:get_it/get_it.dart';
 import 'package:kondus/core/providers/http/error/http_error.dart';
 import 'package:kondus/core/services/auth/auth_service.dart';
 import 'package:kondus/core/services/auth/session_manager.dart';
+import 'package:kondus/core/services/dtos/product_dto.dart';
 import 'package:kondus/core/services/items/items_service.dart';
+import 'package:kondus/core/services/items/models/items_filter_model.dart';
 import 'package:kondus/src/modules/home/models/item_model.dart';
 import 'package:kondus/src/modules/home/models/user_model.dart';
 import 'package:kondus/src/modules/home/presentation/home_state.dart';
@@ -29,7 +31,9 @@ class HomeController extends ChangeNotifier {
         return;
       }
 
-      final itemsData = await loadItems();
+      String initialCategory = 'Todos';
+
+      final itemsData = await loadItems(initialCategory);
 
       if (itemsData == null) {
         _emitState(HomeFailureState(message: 'Falha ao recuperar os items.'));
@@ -64,16 +68,48 @@ class HomeController extends ChangeNotifier {
     }
   }
 
-  Future<List<ItemModel>?> loadItems() async {
+  Future<List<ItemModel>?> loadItems(String category) async {
     try {
-      final itemsResponse = await _itemsService.getAllItems();
+      final type = category.toLowerCase();
 
-      if (itemsResponse != null) {
-        final items = ItemModel.getItemsfromDTO(itemsResponse);
-        return items;
+      final response = await _itemsService.getAllItems(
+        filters: ItemsFiltersModel(
+          query: '',
+          types: type == 'todos'
+              ? []
+              : [
+                  ItemTypeExtension.fromJsonValue(category),
+                ],
+          categoriesIds: [],
+        ),
+      );
+
+      if (response == null) {
+        return null;
       }
 
-      return null;
+      final items = ItemModel.getItemsfromDTO(response);
+
+      return items;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> loadItemsWithCategoryFilter(String category) async {
+    final currentState = state as HomeSuccessState;
+
+    _emitState(currentState.copyWith(isLoadingMoreItems: true));
+
+    try {
+      final items = await loadItems(category);
+
+      if (items == null) {
+        _emitState(HomeFailureState(message: 'Erro ao carregar items'));
+        return;
+      }
+
+      _emitState(currentState.copyWith(items: items));
     } catch (e) {
       rethrow;
     }
