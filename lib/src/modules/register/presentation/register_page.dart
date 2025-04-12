@@ -1,8 +1,6 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:kondus/src/modules/register/presentation/register_controller.dart';
-import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/core/widgets/header_section.dart';
 import 'package:kondus/core/widgets/kondus_elevated_button.dart';

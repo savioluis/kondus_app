@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/app/routing/route_arguments.dart';
+import 'package:kondus/core/error/kondus_error.dart';
+import 'package:kondus/core/providers/http/error/http_error.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
 import 'package:kondus/core/utils/snack_bar_helper.dart';
+import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/core/widgets/kondus_elevated_button.dart';
 import 'package:kondus/src/modules/home/models/item_model.dart';
 import 'package:kondus/src/modules/home/presentation/home_controller.dart';
@@ -42,8 +45,6 @@ class _HomePageState extends State<HomePage> {
     },
   ];
 
-  final String user = '';
-
   String selectedCategory = 'Todos';
 
   late final HomeController controller;
@@ -59,7 +60,7 @@ class _HomePageState extends State<HomePage> {
     final state = controller.state;
     if (state is HomeFailureState) {
       SnackBarHelper.showMessageSnackBar(
-        message: state.message,
+        message: state.error.failureMessage,
         context: context,
       );
     }
@@ -83,8 +84,9 @@ class _HomePageState extends State<HomePage> {
             body: Center(child: CircularProgressIndicator()),
           );
         } else if (state is HomeFailureState) {
-          final currentState = state;
           return Scaffold(
+            appBar: KondusAppBar(
+                onBackButtonPressed: () async => controller.logout()),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Column(
@@ -92,22 +94,12 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    currentState.message,
-                    style: const TextStyle(fontSize: 24),
+                    state.error.failureMessage,
+                    style: context.labelLarge!.copyWith(fontSize: 28),
+                    textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 12),
-                  KondusButton(
-                    label: 'Tentar novamente',
-                    onPressed: () {
-                      controller.loadInitialData();
-                    },
-                  ),
-                  KondusButton(
-                    label: 'Deslogar',
-                    onPressed: () {
-                      controller.logout();
-                    },
-                  ),
+                  const SizedBox(height: 24),
+                  _buildErrorButton(state.error),
                 ],
               ),
             ),
@@ -156,32 +148,42 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   const SizedBox(height: 18),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _getFilteredItems(currentState.items).length,
-                      itemBuilder: (context, index) {
-                        final product =
-                            _getFilteredItems(currentState.items)[index];
-                        return ProductCard(
-                          imageUrl: product.imagesPaths.isNotEmpty
-                              ? product.imagesPaths.first
-                              : null,
-                          name: product.name,
-                          category: product.categories[0].name,
-                          actionType: product.type.toActionType(),
-                          onTap: () {
-                            NavigatorProvider.navigateTo(
-                              AppRoutes.productDetails,
-                              arguments: RouteArguments<int>(product.id),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
+                  state.isLoadingMoreItems
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: currentState.items.isNotEmpty
+                              ? ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: currentState.items.length,
+                                  itemBuilder: (context, index) {
+                                    final product = currentState.items[index];
+                                    return ProductCard(
+                                      imageUrl: product.imagesPaths.isNotEmpty
+                                          ? product.imagesPaths.first
+                                          : null,
+                                      name: product.name,
+                                      category: product.categories[0].name,
+                                      actionType: product.type
+                                          .toActionType(product.quantity),
+                                      onTap: () {
+                                        NavigatorProvider.navigateTo(
+                                          AppRoutes.productDetails,
+                                          arguments:
+                                              RouteArguments<int>(product.id),
+                                        );
+                                      },
+                                    );
+                                  },
+                                )
+                              : const Padding(
+                                  padding: EdgeInsets.only(top: 24),
+                                  child: Text('Nenhum produto encontrado'),
+                                ),
+                        ),
                 ],
               ),
             ),
@@ -192,24 +194,28 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  List<ItemModel> _getFilteredItems(List<ItemModel> items) {
-    if (selectedCategory == 'Todos') {
-      return items;
+  Widget _buildErrorButton(Exception error) {
+    if (error is HttpError && error.type == HttpErrorType.unauthorized) {
+      return KondusButton(
+        label: 'Sair',
+        onPressed: () async => controller.logout(),
+      );
     }
-    return items.where((product) {
-      return product.type.toActionType().toJsonValue() ==
-          selectedCategory.toLowerCase();
-    }).toList();
+    return KondusButton(
+      label: 'Tentar novamente',
+      onPressed: () async => controller.loadInitialData(),
+    );
   }
 
   Widget _buildCategoryChip(String category) {
     bool isSelected = selectedCategory == category;
 
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         setState(() {
           selectedCategory = category;
         });
+        await controller.loadItemsWithCategoryFilter(category);
       },
       child: Container(
         margin: category == 'Todos'

@@ -116,7 +116,7 @@ class AuthService {
     try {
       final token = await _tokenRepository.getAccessToken();
 
-      final response = await _httpProvider.get<Map<String, dynamic>>(
+      final response = await _httpProvider.get(
         '/users/info',
         headers: {'Authorization': 'Bearer $token'},
       );

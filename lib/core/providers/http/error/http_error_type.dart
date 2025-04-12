@@ -10,5 +10,6 @@ enum HttpErrorType {
   validation,
   badRequest,
   conflict,
+  parsing,
   unknown
 }
