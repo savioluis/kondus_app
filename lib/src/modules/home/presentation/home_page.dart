@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/app/routing/route_arguments.dart';
+import 'package:kondus/core/error/kondus_error.dart';
+import 'package:kondus/core/providers/http/error/http_error.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
 import 'package:kondus/core/utils/snack_bar_helper.dart';
+import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/core/widgets/kondus_elevated_button.dart';
 import 'package:kondus/src/modules/home/models/item_model.dart';
 import 'package:kondus/src/modules/home/presentation/home_controller.dart';
@@ -57,7 +60,7 @@ class _HomePageState extends State<HomePage> {
     final state = controller.state;
     if (state is HomeFailureState) {
       SnackBarHelper.showMessageSnackBar(
-        message: state.message,
+        message: state.error.failureMessage,
         context: context,
       );
     }
@@ -81,8 +84,9 @@ class _HomePageState extends State<HomePage> {
             body: Center(child: CircularProgressIndicator()),
           );
         } else if (state is HomeFailureState) {
-          final currentState = state;
           return Scaffold(
+            appBar: KondusAppBar(
+                onBackButtonPressed: () async => controller.logout()),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Column(
@@ -90,22 +94,12 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    currentState.message,
-                    style: const TextStyle(fontSize: 24),
+                    state.error.failureMessage,
+                    style: context.labelLarge!.copyWith(fontSize: 28),
+                    textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 12),
-                  KondusButton(
-                    label: 'Tentar novamente',
-                    onPressed: () {
-                      controller.loadInitialData();
-                    },
-                  ),
-                  KondusButton(
-                    label: 'Deslogar',
-                    onPressed: () {
-                      controller.logout();
-                    },
-                  ),
+                  const SizedBox(height: 24),
+                  _buildErrorButton(state.error),
                 ],
               ),
             ),
@@ -197,6 +191,19 @@ class _HomePageState extends State<HomePage> {
         }
         return const SizedBox.shrink();
       },
+    );
+  }
+
+  Widget _buildErrorButton(Exception error) {
+    if (error is HttpError && error.type == HttpErrorType.unauthorized) {
+      return KondusButton(
+        label: 'Sair',
+        onPressed: () async => controller.logout(),
+      );
+    }
+    return KondusButton(
+      label: 'Tentar novamente',
+      onPressed: () async => controller.loadInitialData(),
     );
   }
 

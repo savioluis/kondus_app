@@ -45,6 +45,26 @@ class HttpProvider implements IHttpProvider {
     _dio.interceptors.addAll(interceptors);
   }
 
+  T? _handleResponse<T>(dynamic data) {
+    if (data == null) return null;
+
+    if (T == String && data is String) {
+      return data as T;
+    } else if (T == Map && data is Map) {
+      return data as T;
+    } else if (T == List && data is List) {
+      return data as T;
+    } else if (data is T) {
+      return data;
+    }
+
+    throw HttpError(
+      type: HttpErrorType.parsing,
+      message:
+          'Tipo de resposta inesperado. Esperado: $T, recebido: ${data.runtimeType}',
+    );
+  }
+
   @override
   Future<T?> get<T>(
     String path, {
@@ -60,7 +80,7 @@ class HttpProvider implements IHttpProvider {
         options: Options(headers: headers),
       );
 
-      return response.data;
+      return _handleResponse<T>(response.data);
     } on DioException catch (e) {
       throw HttpError.fromDioError(e);
     } catch (e, s) {
@@ -88,7 +108,7 @@ class HttpProvider implements IHttpProvider {
         options: Options(headers: headers),
       );
 
-      return response.data;
+      return _handleResponse<T>(response.data);
     } on DioException catch (e) {
       throw HttpError.fromDioError(e);
     } catch (e, s) {
@@ -116,7 +136,7 @@ class HttpProvider implements IHttpProvider {
         options: Options(headers: headers),
       );
 
-      return response.data;
+      return _handleResponse<T>(response.data);
     } on DioException catch (e) {
       throw HttpError.fromDioError(e);
     } catch (e, s) {
@@ -144,7 +164,7 @@ class HttpProvider implements IHttpProvider {
         options: Options(headers: headers),
       );
 
-      return response.data;
+      return _handleResponse<T>(response.data);
     } on DioException catch (e) {
       throw HttpError.fromDioError(e);
     } catch (e, s) {
@@ -172,7 +192,7 @@ class HttpProvider implements IHttpProvider {
         options: Options(headers: headers),
       );
 
-      return response.data;
+      return _handleResponse<T>(response.data);
     } on DioException catch (e) {
       throw HttpError.fromDioError(e);
     } catch (e, s) {

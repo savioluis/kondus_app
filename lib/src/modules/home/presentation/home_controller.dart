@@ -2,7 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
+import 'package:kondus/core/error/kondus_error.dart';
 import 'package:kondus/core/providers/http/error/http_error.dart';
+import 'package:kondus/core/repositories/i_token_repository.dart';
+import 'package:kondus/core/repositories/token_repository.dart';
 import 'package:kondus/core/services/auth/auth_service.dart';
 import 'package:kondus/core/services/auth/session_manager.dart';
 import 'package:kondus/core/services/dtos/product_dto.dart';
@@ -15,6 +18,7 @@ import 'package:kondus/src/modules/home/presentation/home_state.dart';
 class HomeController extends ChangeNotifier {
   final AuthService _authService = GetIt.instance<AuthService>();
   final ItemsService _itemsService = GetIt.instance<ItemsService>();
+  final SessionManager _sessionManager = GetIt.instance<SessionManager>();
 
   HomeState _state = HomeInitialState();
 
@@ -26,8 +30,14 @@ class HomeController extends ChangeNotifier {
       final userData = await loadUserData();
 
       if (userData == null) {
-        _emitState(HomeFailureState(
-            message: 'Falha ao recuperar os dados do usuário.'));
+        _emitState(
+          HomeFailureState(
+            error: KondusError(
+              message: 'Falha ao obter os dados do usuário',
+              type: KondusErrorType.empty,
+            ),
+          ),
+        );
         return;
       }
 
@@ -36,7 +46,14 @@ class HomeController extends ChangeNotifier {
       final itemsData = await loadItems(initialCategory);
 
       if (itemsData == null) {
-        _emitState(HomeFailureState(message: 'Falha ao recuperar os items.'));
+        _emitState(
+          HomeFailureState(
+            error: KondusError(
+              message: 'Falha ao recuperar os items.',
+              type: KondusErrorType.failedToLoad,
+            ),
+          ),
+        );
         return;
       }
 
@@ -47,9 +64,7 @@ class HomeController extends ChangeNotifier {
         ),
       );
     } on HttpError catch (e) {
-      _emitState(HomeFailureState(message: e.message));
-    } catch (e) {
-      _emitState(HomeFailureState(message: e.toString()));
+      _emitState(HomeFailureState(error: e));
     }
   }
 
@@ -57,12 +72,10 @@ class HomeController extends ChangeNotifier {
     try {
       final userInfoResponse = await _authService.getLoggedUserInfo();
 
-      if (userInfoResponse != null) {
-        final userInfo = userInfoResponse.toModel();
-        return userInfo;
-      }
+      if (userInfoResponse == null) return null;
 
-      return null;
+      final userInfo = userInfoResponse.toModel();
+      return userInfo;
     } catch (e) {
       rethrow;
     }
@@ -105,7 +118,14 @@ class HomeController extends ChangeNotifier {
       final items = await loadItems(category);
 
       if (items == null) {
-        _emitState(HomeFailureState(message: 'Erro ao carregar items'));
+        _emitState(
+          HomeFailureState(
+            error: KondusError(
+              message: 'Erro ao carregar items',
+              type: KondusErrorType.failedToLoad,
+            ),
+          ),
+        );
         return;
       }
 
@@ -117,6 +137,12 @@ class HomeController extends ChangeNotifier {
 
   logout() {
     GetIt.instance<SessionManager>().logout();
+  }
+
+  changeToken() async {
+    final tokenrepo = GetIt.instance<ITokenRepository>();
+    await tokenrepo.clearToken();
+    await tokenrepo.saveAccessToken('fsafsa');
   }
 
   void _emitState(HomeState newState) {

@@ -1,3 +1,4 @@
+import 'package:kondus/core/error/kondus_error.dart';
 import 'package:kondus/src/modules/home/models/item_model.dart';
 import 'package:kondus/src/modules/home/models/user_model.dart';
 
@@ -32,7 +33,6 @@ class HomeSuccessState extends HomeState {
 }
 
 class HomeFailureState extends HomeState {
-  HomeFailureState({required this.message, this.isLoggedIn = false});
-  final String message;
-  bool isLoggedIn;
+  HomeFailureState({required this.error});
+  final KondusFailure error;
 }

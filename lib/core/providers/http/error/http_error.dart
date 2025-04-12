@@ -2,10 +2,11 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:kondus/core/error/kondus_error.dart';
 
 part 'http_error_type.dart';
 
-class HttpError implements Exception {
+class HttpError implements Exception, KondusFailure<HttpError> {
   factory HttpError.fromDioError(DioException error) {
     final response = error.response;
     final statusCode = response?.statusCode;
@@ -57,7 +58,7 @@ class HttpError implements Exception {
   final HttpErrorType type;
   final String message;
   final int? statusCode;
-  final Map<String, dynamic>? data;
+  final dynamic data;
   final Object? originalError;
   final StackTrace? stackTrace;
 
@@ -176,4 +177,7 @@ class HttpError implements Exception {
 
     return buffer.toString();
   }
+  
+  @override
+  String get failureMessage => message;
 }
