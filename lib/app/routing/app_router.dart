@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/app/routing/route_arguments.dart';
+import 'package:kondus/core/services/items/models/items_filter_model.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/src/modules/chat/contact_chat/presentation/contact_chat_page.dart';
 import 'package:kondus/src/modules/chat/contact_list/presentation/contact_list_page.dart';
@@ -62,7 +63,9 @@ class AppRouter {
         );
       case AppRoutes.registerItem:
         return MaterialPageRoute(
-          builder: (_) => const RegisterItemPage(),
+          builder: (_) => const RegisterItemPage(
+            itemType: ItemType.produto,
+          ),
           settings: settings,
         );
       case AppRoutes.appSettings:

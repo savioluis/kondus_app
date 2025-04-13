@@ -1,26 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
+import 'package:kondus/core/services/items/models/items_filter_model.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/widgets/header_section.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/core/widgets/kondus_elevated_button.dart';
 import 'package:kondus/core/widgets/kondus_text_field.dart';
 import 'package:kondus/core/widgets/photo_view_page.dart';
+import 'package:kondus/src/modules/home/widgets/product_card.dart';
+import 'package:kondus/src/modules/register_item/presentation/register_item_controller.dart';
 
 class RegisterItemPage extends StatefulWidget {
-  const RegisterItemPage({super.key});
+  const RegisterItemPage({required this.itemType, super.key});
+
+  final ItemType itemType;
 
   @override
   _RegisterItemPageState createState() => _RegisterItemPageState();
 }
 
 class _RegisterItemPageState extends State<RegisterItemPage> {
-  // Lista de URLs das imagens
-  final List<String> _imageUrls = [];
 
-  // Controlador para gerenciar o estado
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  late final RegisterItemController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = RegisterItemController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,18 +53,17 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
             _buildSectionTitle('Nome'),
             KondusTextFormField(
               hintText: 'Digite o nome do produto',
-              controller: _nameController,
+              controller: controller.nameEC,
             ),
             const SizedBox(height: 24),
             _buildSectionTitle('Descrição'),
             KondusTextFormField(
               hintText: 'Digite a descrição do produto',
-              controller: _descriptionController,
+              controller: controller.descriptionEC,
               maxLines: 4,
             ),
             const SizedBox(height: 24),
             _buildSectionTitle('Imagens'),
-            _buildImageListView(context),
             const SizedBox(height: 48),
             Align(
               alignment: Alignment.centerRight,
@@ -65,24 +71,7 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
                 width: 164,
                 child: KondusButton(
                   label: 'CADASTRAR',
-                  onPressed: () {
-                    // Ação ao cadastrar
-                    debugPrint('Nome: ${_nameController.text}');
-                    debugPrint('Descrição: ${_descriptionController.text}');
-                    debugPrint('Imagens: $_imageUrls');
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Item adicionado com sucesso !',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    );
-                    NavigatorProvider.goBack();
-                  },
+                  onPressed: () {},
                 ),
               ),
             ),
@@ -102,69 +91,6 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
     );
   }
 
-  Widget _buildImageListView(BuildContext context) {
-    return SizedBox(
-      height: 148,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: _imageUrls.length + 1,
-        separatorBuilder: (context, index) => const SizedBox(width: 16),
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return _buildAddImageButton(context);
-          }
-          return _buildImageTile(context, _imageUrls[index - 1]);
-        },
-      ),
-    );
-  }
-
-  Widget _buildAddImageButton(BuildContext context) {
-    return Align(
-      alignment: Alignment.center,
-      child: Material(
-        borderRadius: BorderRadius.circular(18),
-        color: context.lightGreyColor.withOpacity(0.3),
-        child: InkWell(
-          onTap: () {
-            setState(() {
-              _imageUrls.add('https://placehold.co/150.png');
-            });
-          },
-          borderRadius: BorderRadius.circular(18),
-          child: Ink(
-            width: 128,
-            height: 128,
-            decoration: BoxDecoration(
-              color: context.lightGreyColor.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.photo_library,
-                  size: 64,
-                  color: context.whiteColor,
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Enviar',
-                  textAlign: TextAlign.center,
-                  style: context.headlineLarge!.copyWith(
-                    color: context.whiteColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildImageTile(BuildContext context, String imageUrl) {
     return Align(
       alignment: Alignment.center,
@@ -179,9 +105,7 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
               ),
             );
           },
-          onLongPress: () {
-            _showDeleteConfirmationDialog(context, imageUrl);
-          },
+          onLongPress: () {},
           borderRadius: BorderRadius.circular(18),
           child: Ink(
             width: 128,
@@ -196,38 +120,6 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
           ),
         ),
       ),
-    );
-  }
-
-  void _showDeleteConfirmationDialog(BuildContext context, String imageUrl) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Excluir imagem"),
-          content: const Text("Tem certeza que deseja excluir esta imagem?"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("Cancelar"),
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  _imageUrls.remove(imageUrl);
-                });
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                "Excluir",
-                style: TextStyle(color: context.errorColor),
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 }
