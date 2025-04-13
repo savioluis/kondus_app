@@ -17,12 +17,11 @@ class SearchLoading extends SearchState {}
 class SearchSuccess extends SearchState {
   // TODO: migrate to itemDTO and fix the dependencies
   final List<ProductDTO> products;
-  final List<CategoryModel> selectedCategories;
 
-  const SearchSuccess(this.products, this.selectedCategories);
+  const SearchSuccess(this.products);
 
   @override
-  List<Object?> get props => [products, selectedCategories];
+  List<Object?> get props => [products];
 }
 
 class SearchFailureState extends SearchState {
@@ -32,4 +31,8 @@ class SearchFailureState extends SearchState {
 
   @override
   List<Object?> get props => [error];
+}
+
+class SearchFailurePageState extends SearchState {
+
 }

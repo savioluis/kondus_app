@@ -41,20 +41,13 @@ class SearchPageController extends ChangeNotifier {
       );
 
       if (response == null || response.items.isEmpty) {
-        _emitState(
-          SearchFailureState(
-            KondusError(
-              message: 'Nenhum produto encontrado.',
-              type: KondusErrorType.empty,
-            ),
-          ),
-        );
+        _emitState(const SearchSuccess([]));
         return;
       }
 
       final products = ProductDTO.fromItemResponseDTO(response);
 
-      _emitState(SearchSuccess(products, selectedCategories));
+      _emitState(SearchSuccess(products));
     } on HttpError catch (e) {
       _emitState(SearchFailureState(e));
     }

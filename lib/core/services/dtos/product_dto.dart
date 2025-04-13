@@ -1,12 +1,14 @@
 import 'package:kondus/core/services/dtos/items/items_response_dto.dart';
 
 class ProductDTO {
+  final int id;
   final String name;
   final String category;
   final String actionType;
   final String imageUrl;
 
   ProductDTO({
+    required this.id,
     required this.name,
     required this.category,
     required this.actionType,
@@ -15,6 +17,7 @@ class ProductDTO {
 
   factory ProductDTO.fromJson(Map<String, dynamic> json) {
     return ProductDTO(
+      id: json['id'],
       name: json['name'],
       category: json['category'],
       actionType: json['actionType'],
@@ -34,6 +37,7 @@ class ProductDTO {
     return dto.items.map((itemContent) {
       final item = itemContent.item;
       return ProductDTO(
+        id: item.id,
         name: item.title,
         category: item.categories.first.name,
         actionType: _getActionType(quantity: item.quantity, type: item.type),

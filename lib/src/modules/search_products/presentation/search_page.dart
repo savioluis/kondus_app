@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/app/routing/app_routes.dart';
+import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/widgets/error_state_widget.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
@@ -91,20 +92,29 @@ class _SearchPageState extends State<SearchPage> {
         onRefresh: () async => await controller.fetchItems(),
         backgroundColor: context.blueColor,
         color: context.whiteColor,
-        child: ListView.separated(
-          padding: const EdgeInsets.only(top: 12),
-          itemCount: state.products.length,
-          itemBuilder: (context, index) {
-            final product = state.products[index];
-            return ProductCard(
-              product: product,
-              onTap: () => NavigatorProvider.navigateTo(
-                AppRoutes.productDetails,
+        child: state.products.isNotEmpty
+            ? ListView.separated(
+                padding: const EdgeInsets.only(top: 12),
+                itemCount: state.products.length,
+                itemBuilder: (context, index) {
+                  final product = state.products[index];
+                  return ProductCard(
+                    product: product,
+                    onTap: () => NavigatorProvider.navigateTo(
+                      AppRoutes.productDetails,
+                      arguments: RouteArguments<int>(product.id),
+                    ),
+                  );
+                },
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 18),
+              )
+            : const Center(
+                child: Text(
+                  'Nenhum produto encontrado',
+                  style: TextStyle(fontSize: 18),
+                ),
               ),
-            );
-          },
-          separatorBuilder: (context, index) => const SizedBox(height: 18),
-        ),
       );
     } else if (state is SearchFailureState) {
       return ErrorStateWidget(

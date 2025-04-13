@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
+import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/src/modules/product_details/domain/product_details_viewmodel.dart';
 import 'package:kondus/src/modules/product_details/widgets/product_details_image_carousel.dart';
 import 'package:kondus/src/modules/product_details/widgets/product_details_owner_banner.dart';
@@ -28,7 +29,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: const KondusAppBar(),
       floatingActionButton: ValueListenableBuilder(
         valueListenable: viewmodel.state,
         builder: (context, state, widget) {

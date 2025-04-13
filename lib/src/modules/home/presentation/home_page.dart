@@ -158,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                                     },
                                   )
                                 : const Padding(
-                                    padding: EdgeInsets.only(top: 24),
+                                    padding: EdgeInsets.only(top: 144),
                                     child: Text('Nenhum produto encontrado'),
                                   ),
                           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/src/modules/settings/widgets/theme_section.dart';
 import 'package:kondus/core/widgets/header_section.dart';
 
@@ -14,9 +15,9 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: const Padding(
+    return const Scaffold(
+      appBar: KondusAppBar(),
+      body: Padding(
         padding: EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
