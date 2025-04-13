@@ -9,8 +9,20 @@ class MyAnnouncementsInitialState extends MyAnnouncementsState {}
 class MyAnnouncementsLoadingState extends MyAnnouncementsState {}
 
 class MyAnnouncementsSuccessState extends MyAnnouncementsState {
-  MyAnnouncementsSuccessState({required this.items});
-  List<ItemDTO> items;
+  MyAnnouncementsSuccessState(
+      {required this.items, this.hasRemovedItem = false});
+  final List<ItemDTO> items;
+  final bool hasRemovedItem;
+
+  MyAnnouncementsSuccessState copyWith({
+    List<ItemDTO>? items,
+    bool? hasRemovedItem,
+  }) {
+    return MyAnnouncementsSuccessState(
+      items: items ?? this.items,
+      hasRemovedItem: hasRemovedItem ?? this.hasRemovedItem,
+    );
+  }
 }
 
 class MyAnnouncementsFailureState extends MyAnnouncementsState {

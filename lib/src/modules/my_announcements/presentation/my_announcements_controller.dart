@@ -38,7 +38,16 @@ class MyAnnouncementsController extends ChangeNotifier {
   }
 
   Future<void> removeAnnouncement({required int id}) async {
-    
+    final successState = state as MyAnnouncementsSuccessState;
+
+    _emitState(MyAnnouncementsLoadingState());
+    try {
+      await _itemsService.removeItem(id: id);
+      
+      _emitState(successState.copyWith(hasRemovedItem: true));
+    } on HttpError catch (e) {
+      _emitState(MyAnnouncementsFailureState(error: e));
+    }
   }
 
   _emitState(MyAnnouncementsState newState) {

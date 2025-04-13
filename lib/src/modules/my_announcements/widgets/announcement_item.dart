@@ -79,7 +79,7 @@ class AnnouncementItem extends StatelessWidget {
             ),
             Flexible(
               child: InkWell(
-                onTap: () {},
+                onTap: onRemove,
                 customBorder: const CircleBorder(),
                 child: Ink(
                   child: Icon(

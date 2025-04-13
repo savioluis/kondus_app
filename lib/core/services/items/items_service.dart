@@ -188,7 +188,47 @@ class ItemsService {
 
       throw const HttpError(
         type: HttpErrorType.unknown,
-        message: 'Ocorreu um erro ao recuperar os seus anúncios. Tente novamente.',
+        message:
+            'Ocorreu um erro ao recuperar os seus anúncios. Tente novamente.',
+      );
+    }
+  }
+
+  Future<void> removeItem({required int id}) async {
+    try {
+      final token = await _tokenRepository.getAccessToken();
+
+      final response = await _httpProvider.delete(
+        '/items/$id',
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response == null) {
+        throw const HttpError(
+          type: HttpErrorType.unknown,
+          message:
+              'Não foi possível recuperar os seus anúncios. Tente novamente.',
+        );
+      }
+
+    } on HttpError catch (e) {
+      if (e.isAuthError) {
+        throw const HttpError(
+          type: HttpErrorType.unauthorized,
+          message: 'Sua sessão expirou. Autentifique-se novamente.',
+        );
+      }
+
+      if (e.isNetworkError) {
+        throw const HttpError(
+          type: HttpErrorType.network,
+          message: 'Verifique sua conexão com a internet.',
+        );
+      }
+
+      throw const HttpError(
+        type: HttpErrorType.unknown,
+        message: 'Ocorreu um erro ao remover o seu anúncio. Tente novamente.',
       );
     }
   }
