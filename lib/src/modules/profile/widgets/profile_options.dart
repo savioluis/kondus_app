@@ -17,10 +17,10 @@ class ProfileOptions extends StatelessWidget {
         Divider(thickness: 0.5, color: context.lightGreyColor),
         ProfileOptionTile(
           iconData: Icons.shopping_bag_outlined,
-          title: "Meus items",
+          title: "Seus anúncios",
           subTitle: "Gerencie seus anúncios ativos no app",
           onTap: () {
-            NavigatorProvider.navigateTo(AppRoutes.history);
+            NavigatorProvider.navigateTo(AppRoutes.myAnnouncements);
           },
         ),
         Divider(thickness: 0.5, color: context.lightGreyColor),
