@@ -13,7 +13,7 @@ import 'package:kondus/src/modules/notifications/presentation/notifications_page
 import 'package:kondus/src/modules/privacy_policy/presentation/privacy_policy_page.dart';
 import 'package:kondus/src/modules/product_details/presentation/product_details_page.dart';
 import 'package:kondus/src/modules/register/presentation/register_page.dart';
-import 'package:kondus/src/modules/register_product/presentation/register_product_page.dart';
+import 'package:kondus/src/modules/register_item/presentation/register_item_page.dart';
 import 'package:kondus/src/modules/search_products/presentation/filter_page.dart';
 import 'package:kondus/src/modules/search_products/presentation/search_page.dart';
 import 'package:kondus/src/modules/settings/presentation/settings_page.dart';
@@ -60,9 +60,9 @@ class AppRouter {
           builder: (_) => const LendYourProductsPage(),
           settings: settings,
         );
-      case AppRoutes.registerProduct:
+      case AppRoutes.registerItem:
         return MaterialPageRoute(
-          builder: (_) => const RegisterProductPage(),
+          builder: (_) => const RegisterItemPage(),
           settings: settings,
         );
       case AppRoutes.appSettings:

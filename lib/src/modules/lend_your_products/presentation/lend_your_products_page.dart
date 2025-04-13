@@ -106,25 +106,27 @@ class _LendYourProductsPageState extends State<LendYourProductsPage> {
                 spacing: 8,
                 runSpacing: 4,
                 children: [
-                  ...items.map((item) {
-                    return ItemChip(
-                      text: item,
-                      isSelected: selectedItems.contains(item),
-                      onTap: () {
-                        setState(() {
-                          if (selectedItems.contains(item)) {
-                            selectedItems.remove(item);
-                          } else if (selectedItems.length < 9) {
-                            selectedItems.add(item);
-                          }
-                        });
-                      },
-                    );
-                  }),
+                  ...items.map(
+                    (item) {
+                      return ItemChip(
+                        text: item,
+                        isSelected: selectedItems.contains(item),
+                        onTap: () {
+                          setState(() {
+                            if (selectedItems.contains(item)) {
+                              selectedItems.remove(item);
+                            } else if (selectedItems.length < 9) {
+                              selectedItems.add(item);
+                            }
+                          });
+                        },
+                      );
+                    },
+                  ),
                   // Chip de adicionar mais
                   GestureDetector(
                     onTap: () =>
-                        NavigatorProvider.navigateTo(AppRoutes.registerProduct),
+                        NavigatorProvider.navigateTo(AppRoutes.registerItem),
                     child: Chip(
                       padding: const EdgeInsets.all(6),
                       label: Row(

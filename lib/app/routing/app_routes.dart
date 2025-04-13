@@ -7,7 +7,7 @@ class AppRoutes {
   static const String searchProducts = '/searchProducts';
   static const String productDetails = '/productDetails';
   static const String lendYourProducts = '/lendYourProducts';
-  static const String registerProduct = '/registerProduct';
+  static const String registerItem = '/registerItem';
 
   static const String contactList = '/contactList';
   static const String contactChat = '/contactChat';

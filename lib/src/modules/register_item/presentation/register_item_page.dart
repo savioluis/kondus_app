@@ -7,14 +7,14 @@ import 'package:kondus/core/widgets/kondus_elevated_button.dart';
 import 'package:kondus/core/widgets/kondus_text_field.dart';
 import 'package:kondus/core/widgets/photo_view_page.dart';
 
-class RegisterProductPage extends StatefulWidget {
-  const RegisterProductPage({super.key});
+class RegisterItemPage extends StatefulWidget {
+  const RegisterItemPage({super.key});
 
   @override
-  _RegisterProductPageState createState() => _RegisterProductPageState();
+  _RegisterItemPageState createState() => _RegisterItemPageState();
 }
 
-class _RegisterProductPageState extends State<RegisterProductPage> {
+class _RegisterItemPageState extends State<RegisterItemPage> {
   // Lista de URLs das imagens
   final List<String> _imageUrls = [];
 
