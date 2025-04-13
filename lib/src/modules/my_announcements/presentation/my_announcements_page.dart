@@ -13,6 +13,7 @@ import 'package:kondus/core/widgets/header_section.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/src/modules/my_announcements/presentation/my_announcements_controller.dart';
 import 'package:kondus/src/modules/my_announcements/presentation/my_announcements_state.dart';
+import 'package:kondus/src/modules/my_announcements/widgets/announcement_appbar.dart';
 import 'package:kondus/src/modules/my_announcements/widgets/announcement_item.dart';
 
 class MyItemsPage extends StatefulWidget {
@@ -67,80 +68,57 @@ class _MyItemsPageState extends State<MyItemsPage> {
           );
         } else if (state is MyAnnouncementsSuccessState) {
           return Scaffold(
-            appBar: const KondusAppBar(),
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const HeaderSection(
-                      title: 'Seus anúncios',
-                      subtitle: [
-                        TextSpan(
-                          text: 'Ajuste suas preferências e configurações',
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-                    RefreshIndicator(
-                      onRefresh: () async =>
-                          await controller.loadAnnouncements(),
-                      child: state.items.isNotEmpty
-                          ? ListView.separated(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return AnnouncementItem(
-                                  item: state.items[index],
-                                  onTap: () async =>
-                                      NavigatorProvider.navigateTo(
-                                    AppRoutes.productDetails,
-                                    arguments: RouteArguments<int>(
-                                      state.items[index].id,
-                                    ),
-                                  ),
-                                  onRemove: () async {
-                                    await DialogHelper.showAlert(
-                                      context: context,
-                                      title: 'Aviso',
-                                      confirmLabel: 'REMOVER',
-                                      cancelLabel: 'CANCELAR',
-                                      onCancel: () =>
-                                          NavigatorProvider.goBack(),
-                                      onConfirm: () async {
-                                        await controller.removeAnnouncement(
-                                            id: state.items[index].id);
-
-                                        await controller.loadAnnouncements();
-
-                                        NavigatorProvider.goBack();
-                                      },
-                                      message:
-                                          'Você está prestes a remover o item ${state.items[index].title}. Tem certeza que deseja fazer isso ?',
-                                    );
-                                  },
-                                );
-                              },
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(
-                                height: 12,
-                              ),
-                              itemCount: state.items.length,
-                            )
-                          : const Padding(
-                              padding: EdgeInsets.only(top: 192),
-                              child: Center(
-                                child: Text(
-                                  'Você não possui nenhum item anunciado.',
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
+            appBar: const AnnouncementAppbar(),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              child: state.items.isNotEmpty
+                  ? RefreshIndicator(
+                    color: context.whiteColor,
+                    backgroundColor: context.blueColor,
+                    onRefresh: () async => controller.loadAnnouncements(),
+                    child: ListView.separated(
+                      itemBuilder: (context, index) {
+                        return AnnouncementItem(
+                          item: state.items[index],
+                          onTap: () async => NavigatorProvider.navigateTo(
+                            AppRoutes.productDetails,
+                            arguments: RouteArguments<int>(
+                              state.items[index].id,
                             ),
+                          ),
+                          onRemove: () async {
+                            await DialogHelper.showAlert(
+                              context: context,
+                              title: 'Aviso',
+                              confirmLabel: 'REMOVER',
+                              cancelLabel: 'CANCELAR',
+                              onCancel: () => NavigatorProvider.goBack(),
+                              onConfirm: () async {
+                                await controller.removeAnnouncement(
+                                    id: state.items[index].id);
+                  
+                                await controller.loadAnnouncements();
+                  
+                                NavigatorProvider.goBack();
+                              },
+                              message:
+                                  'Você está prestes a remover o item ${state.items[index].title}. Tem certeza que deseja fazer isso ?',
+                            );
+                          },
+                        );
+                      },
+                      separatorBuilder: (context, index) => const SizedBox(
+                        height: 12,
+                      ),
+                      itemCount: state.items.length,
                     ),
-                  ],
-                ),
-              ),
+                  )
+                  : const Center(
+                    child: Text(
+                      'Você não possui nenhum item anunciado.',
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
             ),
           );
         }
