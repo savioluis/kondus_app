@@ -16,16 +16,9 @@ class ProfileOptions extends StatelessWidget {
       children: [
         Divider(thickness: 0.5, color: context.lightGreyColor),
         ProfileOptionTile(
-          iconData: Icons.apartment,
-          title: "Seu condomínio",
-          subTitle: "Veja as informações do seu condomínio",
-          onTap: () {},
-        ),
-        Divider(thickness: 0.5, color: context.lightGreyColor),
-        ProfileOptionTile(
           iconData: Icons.shopping_bag_outlined,
-          title: "Histórico",
-          subTitle: "Veja o registro do seu histórico",
+          title: "Meus items",
+          subTitle: "Gerencie seus anúncios ativos no app",
           onTap: () {
             NavigatorProvider.navigateTo(AppRoutes.history);
           },

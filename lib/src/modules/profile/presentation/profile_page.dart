@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/src/modules/profile/domain/profile_viewmodel.dart';
 import 'package:kondus/src/modules/profile/widgets/profile_banner.dart';
 import 'package:kondus/src/modules/profile/widgets/profile_options.dart';
@@ -24,7 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: const KondusAppBar(),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(

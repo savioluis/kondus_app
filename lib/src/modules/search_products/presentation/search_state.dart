@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:kondus/core/error/kondus_error.dart';
 import 'package:kondus/core/services/dtos/product_dto.dart';
 import 'package:kondus/src/modules/home/models/item_model.dart';
 
@@ -24,11 +25,11 @@ class SearchSuccess extends SearchState {
   List<Object?> get props => [products, selectedCategories];
 }
 
-class SearchFailure extends SearchState {
-  final String errorMessage;
+class SearchFailureState extends SearchState {
+  final KondusFailure error;
 
-  const SearchFailure(this.errorMessage);
+  const SearchFailureState(this.error);
 
   @override
-  List<Object?> get props => [errorMessage];
+  List<Object?> get props => [error];
 }

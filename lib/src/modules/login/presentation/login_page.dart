@@ -39,6 +39,7 @@ class _LoginPageState extends State<LoginPage> {
       SnackBarHelper.showMessageSnackBar(
         message: state.message,
         context: context,
+        duration: const Duration(seconds: 3)
       );
     }
   }
@@ -104,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () async {
                           final email = controller.emailEC.value.text;
                           final password = controller.password.value.text;
-                          controller.login(
+                          await controller.login(
                             email: email,
                             password: password,
                           );

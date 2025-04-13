@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:kondus/core/error/kondus_error.dart';
+import 'package:kondus/core/providers/http/error/http_error.dart';
 import 'package:kondus/core/services/dtos/product_dto.dart';
 import 'package:kondus/core/services/items/items_service.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
@@ -39,15 +41,22 @@ class SearchPageController extends ChangeNotifier {
       );
 
       if (response == null || response.items.isEmpty) {
-        _emitState(const SearchFailure('Nenhum produto encontrado.'));
+        _emitState(
+          SearchFailureState(
+            KondusError(
+              message: 'Nenhum produto encontrado.',
+              type: KondusErrorType.empty,
+            ),
+          ),
+        );
         return;
       }
 
       final products = ProductDTO.fromItemResponseDTO(response);
 
       _emitState(SearchSuccess(products, selectedCategories));
-    } catch (e) {
-      _emitState(const SearchFailure('Erro ao buscar produtos.'));
+    } on HttpError catch (e) {
+      _emitState(SearchFailureState(e));
     }
   }
 

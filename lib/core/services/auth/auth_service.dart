@@ -63,9 +63,17 @@ class AuthService {
         );
       }
 
+      if (e.isServerError) {
+        throw const HttpError(
+          type: HttpErrorType.serverError,
+          message: 'Houve um problema com nosso servidor. Tente novamente.',
+        );
+      }
+
       throw const HttpError(
         type: HttpErrorType.unknown,
-        message: 'Ocorreu um erro ao fazer login. Tente novamente.',
+        message:
+            'E-mail ou senha incorretos. Verifique suas credenciais e tente novamente.',
       );
     }
   }

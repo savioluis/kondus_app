@@ -6,6 +6,7 @@ import 'package:kondus/core/providers/http/error/http_error.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
 import 'package:kondus/core/utils/snack_bar_helper.dart';
+import 'package:kondus/core/widgets/error_state_widget.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/core/widgets/kondus_elevated_button.dart';
 import 'package:kondus/src/modules/home/models/item_model.dart';
@@ -53,22 +54,10 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     controller = HomeController()..loadInitialData();
-    controller.addListener(_controllerListener);
-  }
-
-  void _controllerListener() {
-    final state = controller.state;
-    if (state is HomeFailureState) {
-      SnackBarHelper.showMessageSnackBar(
-        message: state.error.failureMessage,
-        context: context,
-      );
-    }
   }
 
   @override
   void dispose() {
-    controller.removeListener(_controllerListener);
     super.dispose();
   }
 
@@ -84,126 +73,103 @@ class _HomePageState extends State<HomePage> {
             body: Center(child: CircularProgressIndicator()),
           );
         } else if (state is HomeFailureState) {
-          return Scaffold(
-            appBar: KondusAppBar(
-                onBackButtonPressed: () async => controller.logout()),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    state.error.failureMessage,
-                    style: context.labelLarge!.copyWith(fontSize: 28),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 24),
-                  _buildErrorButton(state.error),
-                ],
-              ),
-            ),
+          return ErrorStateWidget(
+            error: state.error,
+            onRetryPressed: () => controller.loadInitialData(),
+            onBackButtonPressed: () => controller.logout(),
           );
         } else if (state is HomeSuccessState) {
           final currentState = state;
           return Scaffold(
             appBar: HomeAppBar(username: currentState.user.name),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  const SizedBox(height: 12),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: ContactTitle(
-                      onTap: () => NavigatorProvider.navigateTo(
-                        AppRoutes.contactList,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  ContactItemSlider(
-                    contacts: contacts,
-                    itemCount: contacts.length,
-                  ),
-                  const SizedBox(height: 18),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: SearchBarButton(
-                      onTap: () => NavigatorProvider.navigateTo(
-                        AppRoutes.searchProducts,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  SizedBox(
-                    height: 48,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        _buildCategoryChip('Todos'),
-                        _buildCategoryChip('Comprar'),
-                        _buildCategoryChip('Alugar'),
-                        _buildCategoryChip('Contratar'),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-                  state.isLoadingMoreItems
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: currentState.items.isNotEmpty
-                              ? ListView.builder(
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: currentState.items.length,
-                                  itemBuilder: (context, index) {
-                                    final product = currentState.items[index];
-                                    return ProductCard(
-                                      imageUrl: product.imagesPaths.isNotEmpty
-                                          ? product.imagesPaths.first
-                                          : null,
-                                      name: product.name,
-                                      category: product.categories[0].name,
-                                      actionType: product.type
-                                          .toActionType(product.quantity),
-                                      onTap: () {
-                                        NavigatorProvider.navigateTo(
-                                          AppRoutes.productDetails,
-                                          arguments:
-                                              RouteArguments<int>(product.id),
-                                        );
-                                      },
-                                    );
-                                  },
-                                )
-                              : const Padding(
-                                  padding: EdgeInsets.only(top: 24),
-                                  child: Text('Nenhum produto encontrado'),
-                                ),
+            body: RefreshIndicator(
+              onRefresh: () async => await controller.loadInitialData(),
+              backgroundColor: context.blueColor,
+              color: context.whiteColor,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 12),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: ContactTitle(
+                        onTap: () => NavigatorProvider.navigateTo(
+                          AppRoutes.contactList,
                         ),
-                ],
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    ContactItemSlider(
+                      contacts: contacts,
+                      itemCount: contacts.length,
+                    ),
+                    const SizedBox(height: 18),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: SearchBarButton(
+                        onTap: () => NavigatorProvider.navigateTo(
+                          AppRoutes.searchProducts,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    SizedBox(
+                      height: 48,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          _buildCategoryChip('Todos'),
+                          _buildCategoryChip('Comprar'),
+                          _buildCategoryChip('Alugar'),
+                          _buildCategoryChip('Contratar'),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 18),
+                    state.isLoadingMoreItems
+                        ? const Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: currentState.items.isNotEmpty
+                                ? ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    itemCount: currentState.items.length,
+                                    itemBuilder: (context, index) {
+                                      final product = currentState.items[index];
+                                      return ProductCard(
+                                        imageUrl: product.imagesPaths.isNotEmpty
+                                            ? product.imagesPaths.first
+                                            : null,
+                                        name: product.name,
+                                        category: product.categories[0].name,
+                                        actionType: product.type
+                                            .toActionType(product.quantity),
+                                        onTap: () {
+                                          NavigatorProvider.navigateTo(
+                                            AppRoutes.productDetails,
+                                            arguments:
+                                                RouteArguments<int>(product.id),
+                                          );
+                                        },
+                                      );
+                                    },
+                                  )
+                                : const Padding(
+                                    padding: EdgeInsets.only(top: 24),
+                                    child: Text('Nenhum produto encontrado'),
+                                  ),
+                          ),
+                  ],
+                ),
               ),
             ),
           );
         }
         return const SizedBox.shrink();
       },
-    );
-  }
-
-  Widget _buildErrorButton(Exception error) {
-    if (error is HttpError && error.type == HttpErrorType.unauthorized) {
-      return KondusButton(
-        label: 'Sair',
-        onPressed: () async => controller.logout(),
-      );
-    }
-    return KondusButton(
-      label: 'Tentar novamente',
-      onPressed: () async => controller.loadInitialData(),
     );
   }
 
