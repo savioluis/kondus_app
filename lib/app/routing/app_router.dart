@@ -4,7 +4,6 @@ import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/src/modules/chat/contact_chat/presentation/contact_chat_page.dart';
 import 'package:kondus/src/modules/chat/contact_list/presentation/contact_list_page.dart';
-import 'package:kondus/src/modules/history/presentation/history_page.dart';
 import 'package:kondus/src/modules/home/models/item_model.dart';
 import 'package:kondus/src/modules/home/presentation/home_page.dart';
 import 'package:kondus/src/modules/lend_your_products/presentation/lend_your_products_page.dart';
@@ -102,11 +101,6 @@ class AppRouter {
       case AppRoutes.profile:
         return MaterialPageRoute(
           builder: (_) => const ProfilePage(),
-          settings: settings,
-        );
-      case AppRoutes.history:
-        return MaterialPageRoute(
-          builder: (_) => const HistoryPage(),
           settings: settings,
         );
       case AppRoutes.filter:

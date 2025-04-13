@@ -10,7 +10,6 @@ import 'package:kondus/core/repositories/token_repository.dart';
 import 'package:kondus/core/services/auth/auth_service.dart';
 import 'package:kondus/core/services/auth/session_manager.dart';
 import 'package:kondus/core/services/items/items_service.dart';
-import 'package:kondus/src/modules/history/history_injections.dart';
 import 'package:kondus/src/modules/product_details/product_details_injections.dart';
 import 'package:kondus/src/modules/profile/profile_injections.dart';
 import 'package:kondus/src/modules/settings/settings_injections.dart';
@@ -58,7 +57,6 @@ Future<void> initInjections() async {
     ),
   );
 
-  await historyInjections();
   await profileInjections();
   await productDetailsInjections();
   await settingsInjections();
