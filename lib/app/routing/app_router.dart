@@ -4,11 +4,11 @@ import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/src/modules/chat/contact_chat/presentation/contact_chat_page.dart';
 import 'package:kondus/src/modules/chat/contact_list/presentation/contact_list_page.dart';
-import 'package:kondus/src/modules/history/presentation/history_page.dart';
 import 'package:kondus/src/modules/home/models/item_model.dart';
 import 'package:kondus/src/modules/home/presentation/home_page.dart';
 import 'package:kondus/src/modules/lend_your_products/presentation/lend_your_products_page.dart';
 import 'package:kondus/src/modules/login/presentation/login_page.dart';
+import 'package:kondus/src/modules/my_announcements/presentation/my_announcements_page.dart';
 import 'package:kondus/src/modules/notifications/presentation/notifications_page.dart';
 import 'package:kondus/src/modules/privacy_policy/presentation/privacy_policy_page.dart';
 import 'package:kondus/src/modules/product_details/presentation/product_details_page.dart';
@@ -104,9 +104,9 @@ class AppRouter {
           builder: (_) => const ProfilePage(),
           settings: settings,
         );
-      case AppRoutes.history:
+      case AppRoutes.myAnnouncements:
         return MaterialPageRoute(
-          builder: (_) => const HistoryPage(),
+          builder: (_) => const MyItemsPage(),
           settings: settings,
         );
       case AppRoutes.filter:

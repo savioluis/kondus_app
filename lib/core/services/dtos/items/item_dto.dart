@@ -27,6 +27,12 @@ class ItemDTO {
     required this.imagesPaths,
   });
 
+  static List<ItemDTO> fromList(List<dynamic> list) {
+    return list
+        .map((json) => ItemDTO.fromJson(json as Map<String, dynamic>))
+        .toList();
+  }
+
   factory ItemDTO.fromJson(Map<String, dynamic> json) =>
       _$ItemDTOFromJson(json);
 
