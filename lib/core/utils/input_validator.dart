@@ -21,7 +21,8 @@ class InputValidator {
   }
 
   static bool isValidPhone(String? value, {int maxLength = 14}) {
-    if (value == null || value.isEmpty || value.length > maxLength) return false;
+    if (value == null || value.isEmpty || value.length > maxLength)
+      return false;
 
     const pattern = r'^\+?[1-9]\d{1,14}$';
     final regex = RegExp(pattern);
@@ -32,7 +33,8 @@ class InputValidator {
   static bool isValidUrl(String? value) {
     if (value == null || value.isEmpty) return false;
 
-    const pattern = r'^(https?:\/\/)?([\w\d\-_]+(\.[\w\d\-_]+)+)([\w\d\-\.,@?^=%&:\/~\+#]*)?$';
+    const pattern =
+        r'^(https?:\/\/)?([\w\d\-_]+(\.[\w\d\-_]+)+)([\w\d\-\.,@?^=%&:\/~\+#]*)?$';
     final regex = RegExp(pattern);
 
     return regex.hasMatch(value);
@@ -63,6 +65,13 @@ class InputValidator {
     if (password.isEmpty) return 'A senha é obrigatória.';
     if (password.length < 6) return 'A senha deve ter pelo menos 6 caracteres.';
     if (password != passwordConfirmation) return 'As senhas não coincidem.';
+    return null;
+  }
+
+  static String? validatePrice({required String value}) {
+    final valueAsDouble = double.tryParse(value);
+    if (value.isEmpty) return 'O preço é obrigatório.';
+    if (valueAsDouble != null && valueAsDouble < 0) return 'O preço deve ser um valor válido.';
     return null;
   }
 }

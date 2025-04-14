@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 
 class KondusTextFormField extends StatelessWidget {
@@ -16,6 +17,8 @@ class KondusTextFormField extends StatelessWidget {
   final Function(String)? onChanged;
   final InputDecoration? decoration;
   final int maxLines;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
 
   const KondusTextFormField({
     this.formKey,
@@ -32,6 +35,8 @@ class KondusTextFormField extends StatelessWidget {
     this.onChanged,
     this.decoration,
     this.maxLines = 1,
+    this.keyboardType,
+    this.inputFormatters,
     super.key,
   });
 
@@ -59,6 +64,8 @@ class KondusTextFormField extends StatelessWidget {
       onTapOutside: (event) {
         FocusManager.instance.primaryFocus?.unfocus();
       },
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
     );
   }
 }

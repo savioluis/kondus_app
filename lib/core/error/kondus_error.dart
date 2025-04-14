@@ -18,5 +18,6 @@ class KondusError implements KondusFailure<KondusError> {
 enum KondusErrorType {
   empty,
   failedToLoad,
+  validation,
   unknown,
 }
