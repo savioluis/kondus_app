@@ -1,18 +1,19 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:kondus/core/error/kondus_error.dart';
 
 sealed class RegisterItemState {}
 
 class RegisterItemLoadingState extends RegisterItemState {}
 
-class RegisterItemStep1State extends RegisterItemState {
-  RegisterItemStep1State({this.validationErrorMessage});
+class RegisterItemInitialState extends RegisterItemState {}
+
+class RegisterItemValidationErrorState extends RegisterItemState {
+  RegisterItemValidationErrorState({this.validationErrorMessage});
   final String? validationErrorMessage;
 
-  RegisterItemStep1State copyWith({
+  RegisterItemValidationErrorState copyWith({
     String? validationErrorMessage,
   }) {
-    return RegisterItemStep1State(
+    return RegisterItemValidationErrorState(
       validationErrorMessage:
           validationErrorMessage ?? this.validationErrorMessage,
     );

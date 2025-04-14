@@ -219,37 +219,41 @@ class _AnimatedDropdownContentState extends State<AnimatedDropdownContent>
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: context.lightGreyColor),
           ),
-          child: ListView(
-            padding: const EdgeInsets.all(8),
-            shrinkWrap: true,
-            children: widget.items.map((item) {
-              final isSelected = item == widget.selectedValue;
-              return GestureDetector(
-                onTap: () => widget.onItemSelected(item),
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? context.blueColor.withOpacity(0.2)
-                        : context.surfaceColor,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          item,
-                          style: context.bodyLarge!.copyWith(fontSize: 16),
+          child: ConstrainedBox(
+            constraints:
+                const BoxConstraints(maxHeight: 250), // Limita a altura
+            child: ListView(
+              padding: const EdgeInsets.all(8),
+              shrinkWrap: true,
+              children: widget.items.map((item) {
+                final isSelected = item == widget.selectedValue;
+                return GestureDetector(
+                  onTap: () => widget.onItemSelected(item),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 14),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? context.blueColor.withOpacity(0.2)
+                          : context.surfaceColor,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            item,
+                            style: context.bodyLarge!.copyWith(fontSize: 16),
+                          ),
                         ),
-                      ),
-                      if (isSelected)
-                        Icon(Icons.check, color: context.primaryColor),
-                    ],
+                        if (isSelected)
+                          Icon(Icons.check, color: context.primaryColor),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            }).toList(),
+                );
+              }).toList(),
+            ),
           ),
         ),
       ),

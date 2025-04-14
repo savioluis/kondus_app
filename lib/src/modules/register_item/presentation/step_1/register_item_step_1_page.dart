@@ -14,7 +14,7 @@ import 'package:kondus/src/modules/home/widgets/product_card.dart';
 import 'package:kondus/src/modules/register_item/presentation/register_item_controller.dart';
 import 'package:kondus/src/modules/register_item/presentation/register_item_state.dart';
 import 'package:kondus/src/modules/register_item/widgets/custom_dropdown_field.dart';
-import 'package:kondus/src/modules/register_item/widgets/register_item_appbar.dart';
+import 'package:kondus/src/modules/register_item/widgets/register_item_step_1_appbar.dart';
 
 class RegisterItemPage extends StatefulWidget {
   const RegisterItemPage({this.itemType, super.key});
@@ -38,7 +38,7 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
   _controllerListener() {
     final state = controller.state;
 
-    if (state is RegisterItemStep1State &&
+    if (state is RegisterItemValidationErrorState &&
         state.validationErrorMessage != null) {
       SnackBarHelper.showMessageSnackBar(
         message: state.validationErrorMessage!,
@@ -63,7 +63,7 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
               child: KondusButton(
                 label: 'Próximo',
                 onPressed: () {
-                  controller.goToStep2();
+                  controller.goToStep2(widget.itemType);
                 },
               ),
             ),

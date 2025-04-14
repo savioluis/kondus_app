@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/app/routing/app_routes.dart';
+import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
+import 'package:kondus/core/services/items/models/items_filter_model.dart';
 import 'package:kondus/src/modules/lend_your_products/widgets/item_chip.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/theme/theme_extension.dart';
@@ -125,8 +127,10 @@ class _LendYourProductsPageState extends State<LendYourProductsPage> {
                   ),
                   // Chip de adicionar mais
                   GestureDetector(
-                    onTap: () =>
-                        NavigatorProvider.navigateTo(AppRoutes.registerItemStep1),
+                    onTap: () => NavigatorProvider.navigateTo(
+                      AppRoutes.registerItemStep1,
+                      arguments: RouteArguments<ItemType?>(null),
+                    ),
                     child: Chip(
                       padding: const EdgeInsets.all(6),
                       label: Row(
