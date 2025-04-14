@@ -126,7 +126,7 @@ class _LendYourProductsPageState extends State<LendYourProductsPage> {
                   // Chip de adicionar mais
                   GestureDetector(
                     onTap: () =>
-                        NavigatorProvider.navigateTo(AppRoutes.registerItem),
+                        NavigatorProvider.navigateTo(AppRoutes.registerItemStep1),
                     child: Chip(
                       padding: const EdgeInsets.all(6),
                       label: Row(

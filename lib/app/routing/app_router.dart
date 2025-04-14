@@ -14,7 +14,8 @@ import 'package:kondus/src/modules/notifications/presentation/notifications_page
 import 'package:kondus/src/modules/privacy_policy/presentation/privacy_policy_page.dart';
 import 'package:kondus/src/modules/product_details/presentation/product_details_page.dart';
 import 'package:kondus/src/modules/register/presentation/register_page.dart';
-import 'package:kondus/src/modules/register_item/presentation/register_item_page.dart';
+import 'package:kondus/src/modules/register_item/presentation/step_1/register_item_step_1_page.dart';
+import 'package:kondus/src/modules/register_item/presentation/step_2/register_item_step_2_page.dart';
 import 'package:kondus/src/modules/search_products/presentation/filter_page.dart';
 import 'package:kondus/src/modules/search_products/presentation/search_page.dart';
 import 'package:kondus/src/modules/settings/presentation/settings_page.dart';
@@ -61,11 +62,16 @@ class AppRouter {
           builder: (_) => const LendYourProductsPage(),
           settings: settings,
         );
-      case AppRoutes.registerItem:
+      case AppRoutes.registerItemStep1:
         return MaterialPageRoute(
           builder: (_) => const RegisterItemPage(
             itemType: ItemType.produto,
           ),
+          settings: settings,
+        );
+      case AppRoutes.registerItemStep2:
+        return MaterialPageRoute(
+          builder: (_) => const RegisterItemStep2Page(),
           settings: settings,
         );
       case AppRoutes.appSettings:
