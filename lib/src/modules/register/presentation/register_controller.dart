@@ -20,6 +20,6 @@ class RegisterController {
         fontSize: 18,
       ),
     )));
-    NavigatorProvider.replaceWith(AppRoutes.lendYourProducts);
+    NavigatorProvider.replaceWith(AppRoutes.shareYourItems);
   }
 }

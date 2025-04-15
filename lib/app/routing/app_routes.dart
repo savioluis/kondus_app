@@ -6,7 +6,8 @@ class AppRoutes {
   static const String profile = "/profile";
   static const String searchProducts = '/searchProducts';
   static const String productDetails = '/productDetails';
-  static const String lendYourProducts = '/lendYourProducts';
+
+  static const String shareYourItems = '/shareYourItems';
 
   static const String registerItemStep1 = '/registerItemStep1';
   static const String registerItemStep2 = '/registerItemStep2';

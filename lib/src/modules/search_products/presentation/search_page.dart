@@ -63,7 +63,7 @@ class _SearchPageState extends State<SearchPage> {
                   ),
                   backgroundColor: context.blueColor,
                   onPressed: () =>
-                      NavigatorProvider.navigateTo(AppRoutes.lendYourProducts),
+                      NavigatorProvider.navigateTo(AppRoutes.shareYourItems),
                 )
               : null,
           body: Padding(

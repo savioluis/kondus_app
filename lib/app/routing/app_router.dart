@@ -7,7 +7,7 @@ import 'package:kondus/src/modules/chat/contact_chat/presentation/contact_chat_p
 import 'package:kondus/src/modules/chat/contact_list/presentation/contact_list_page.dart';
 import 'package:kondus/src/modules/home/models/item_model.dart';
 import 'package:kondus/src/modules/home/presentation/home_page.dart';
-import 'package:kondus/src/modules/lend_your_products/presentation/lend_your_products_page.dart';
+import 'package:kondus/src/modules/share_your_items/presentation/share_your_items_page.dart';
 import 'package:kondus/src/modules/login/presentation/login_page.dart';
 import 'package:kondus/src/modules/my_announcements/presentation/my_announcements_page.dart';
 import 'package:kondus/src/modules/notifications/presentation/notifications_page.dart';
@@ -57,9 +57,9 @@ class AppRouter {
           builder: (_) => ProductDetailsPage(productId: id.data),
           settings: settings,
         );
-      case AppRoutes.lendYourProducts:
+      case AppRoutes.shareYourItems:
         return MaterialPageRoute(
-          builder: (_) => const LendYourProductsPage(),
+          builder: (_) => const ShareYourItemsPage(),
           settings: settings,
         );
       case AppRoutes.registerItemStep1:
