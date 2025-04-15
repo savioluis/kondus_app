@@ -17,9 +17,10 @@ import 'package:kondus/src/modules/register_item/widgets/custom_dropdown_field.d
 import 'package:kondus/src/modules/register_item/widgets/register_item_step_1_appbar.dart';
 
 class RegisterItemPage extends StatefulWidget {
-  const RegisterItemPage({this.itemType, super.key});
+  const RegisterItemPage({this.itemType, this.itemName, super.key});
 
   final ItemType? itemType;
+  final String? itemName;
 
   @override
   _RegisterItemPageState createState() => _RegisterItemPageState();
@@ -33,6 +34,8 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
     super.initState();
     controller = RegisterItemController();
     controller.addListener(_controllerListener);
+
+    _applyItemNameIfExists();
   }
 
   _controllerListener() {
@@ -44,6 +47,12 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
         message: state.validationErrorMessage!,
         context: context,
       );
+    }
+  }
+
+  _applyItemNameIfExists() {
+    if (widget.itemName != null) {
+      controller.nameEC.text = widget.itemName!;
     }
   }
 

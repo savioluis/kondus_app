@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
 import 'package:kondus/core/theme/app_theme.dart';
@@ -6,10 +7,16 @@ import 'package:kondus/core/widgets/header_section.dart';
 
 class RegisterItemAppbarStep2 extends StatelessWidget
     implements PreferredSizeWidget {
-  const RegisterItemAppbarStep2({this.isOnlyItem = true, this.itemType, super.key});
+  const RegisterItemAppbarStep2({
+    required this.itemName,
+    this.isOnlyItem = true,
+    this.itemType,
+    super.key,
+  });
 
   final bool isOnlyItem;
   final ItemType? itemType;
+  final String itemName;
 
   String _getContentTypeValue() {
     if (isOnlyItem) return 'item';
@@ -19,8 +26,7 @@ class RegisterItemAppbarStep2 extends StatelessWidget
   }
 
   @override
-  Widget build(BuildContext context) {  
-
+  Widget build(BuildContext context) {
     final String contentTypeValue = _getContentTypeValue();
 
     return Material(
@@ -41,13 +47,35 @@ class RegisterItemAppbarStep2 extends StatelessWidget
               child: HeaderSection(
                 title: 'Insira os detalhes do seu $contentTypeValue',
                 titleSize: 30,
-                subtitle: [
-                  const TextSpan(text: '🚀 Finalize os detalhes para '),
+                subtitle: const [
+                  TextSpan(text: '🚀 Finalize os detalhes para '),
                   TextSpan(
                     text: 'anunciar',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 24, right: 24, top: 24),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: context.blueColor.withOpacity(0.2),
+                  border: Border.all(color: context.blueColor),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 4,
+                ),
+                child: Text(
+                  '✅$itemName',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: context.blueColor,
+                  ),
+                ),
               ),
             ),
           ],
@@ -57,5 +85,5 @@ class RegisterItemAppbarStep2 extends StatelessWidget
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(164);
+  Size get preferredSize => const Size.fromHeight(216);
 }

@@ -63,10 +63,13 @@ class AppRouter {
           settings: settings,
         );
       case AppRoutes.registerItemStep1:
-        final itemType = settings.arguments as RouteArguments<ItemType?>;
+        final args = settings.arguments as RouteArguments<List<dynamic>>;
+        final itemType = args.data[0];
+        final itemName = args.data[1];
         return MaterialPageRoute(
           builder: (_) => RegisterItemPage(
-            itemType: itemType.data,
+            itemType: itemType,
+            itemName: itemName,
           ),
           settings: settings,
         );

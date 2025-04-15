@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
+import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/utils/input_validator.dart';
 import 'package:kondus/core/utils/snack_bar_helper.dart';
 import 'package:kondus/core/widgets/error_state_widget.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/core/widgets/kondus_elevated_button.dart';
 import 'package:kondus/core/widgets/kondus_text_field.dart';
+import 'package:kondus/src/modules/my_announcements/presentation/my_announcements_page.dart';
 import 'package:kondus/src/modules/register_item/presentation/register_item_controller.dart';
 import 'package:kondus/src/modules/register_item/presentation/register_item_state.dart';
 import 'package:kondus/src/modules/register_item/widgets/register_item_step_2_appbar.dart';
@@ -77,6 +79,7 @@ class _RegisterItemStep2PageState extends State<RegisterItemStep2Page> {
             appBar: RegisterItemAppbarStep2(
               isOnlyItem: widget.itemType == null,
               itemType: widget.itemType,
+              itemName: widget.name,
             ),
             bottomNavigationBar: SafeArea(
               child: Padding(
@@ -102,13 +105,13 @@ class _RegisterItemStep2PageState extends State<RegisterItemStep2Page> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    
+                    const SizedBox(height: 24),
                     _buildSectionTitle('Preço'),
                     KondusTextFormField(
                       hintText: 'Digite o nome do produto',
                       controller: controller.priceEC,
-                      inputFormatters: [
-                        ProgressiveNumberInputFormatter()
-                      ],
+                      inputFormatters: [ProgressiveNumberInputFormatter()],
                     ),
                     const SizedBox(height: 24),
                     _buildSectionTitle('Categorias'),

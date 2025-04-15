@@ -19,7 +19,7 @@ class ItemChip extends StatelessWidget {
       onTap: onTap,
       child: Chip(
         label: Text(text.toUpperCase()),
-        backgroundColor: isSelected ? context.blueColor : context.surfaceColor,
+        backgroundColor: isSelected ? context.blueColor.withOpacity(0.5) : context.surfaceColor,
         shape: RoundedRectangleBorder(
           side: BorderSide(
             color: context.lightGreyColor.withOpacity(0.1),
@@ -28,6 +28,7 @@ class ItemChip extends StatelessWidget {
         ),
         labelStyle: TextStyle(
           color: isSelected ? context.whiteColor : context.primaryColor,
+          fontWeight: isSelected ? FontWeight.bold : null,
         ),
       ),
     );

@@ -19,17 +19,17 @@ class ShareYourItemsPage extends StatefulWidget {
 
 class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
   final items = [
-    {"name": "Reparo de ar condicionado", "type": "serviço"},
-    {"name": "Aspirador", "type": "produto"},
-    {"name": "Chave de Fenda", "type": "produto"},
-    {"name": "Personal Trainer", "type": "serviço"},
-    {"name": "Aula Particular", "type": "serviço"},
-    {"name": "Cortador de Grama", "type": "produto"},
-    {"name": "Escada", "type": "produto"},
-    {"name": "Furadeira", "type": "produto"}
+    {"name": "Reparo de ar condicionado", "type": ItemType.servico},
+    {"name": "Aspirador", "type": ItemType.produto},
+    {"name": "Chave de Fenda", "type": ItemType.produto},
+    {"name": "Personal Trainer", "type": ItemType.servico},
+    {"name": "Aula Particular", "type": ItemType.servico},
+    {"name": "Cortador de Grama", "type": ItemType.produto},
+    {"name": "Escada", "type": ItemType.produto},
+    {"name": "Furadeira", "type": ItemType.produto}
   ]..shuffle();
 
-  Map<String, String>? selectedItem;
+  Map<String, Object>? selectedItem;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
               child: TextButton(
                 onPressed: () => NavigatorProvider.navigateTo(
                   AppRoutes.registerItemStep1,
-                  arguments: RouteArguments<ItemType?>(null),
+                  arguments: RouteArguments<List<dynamic>>([null, null]),
                 ),
                 child: Text(
                   'Pular Etapa',
@@ -61,13 +61,22 @@ class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
               child: SizedBox(
                 width: 148,
                 child: KondusButton(
-                  label: 'FINALIZAR',
-                  onPressed: () {
-                    NavigatorProvider.navigateTo(
-                      AppRoutes.registerItemStep1,
-                      arguments: RouteArguments<ItemType?>(null),
-                    );
-                  },
+                  label: 'ANUNCIAR',
+                  onPressed: selectedItem != null
+                      ? () {
+                          final selectedItemName =
+                              selectedItem!['name'] as String;
+                          final selectedItemType =
+                              selectedItem!['type'] as ItemType;
+
+                          NavigatorProvider.navigateTo(
+                            AppRoutes.registerItemStep1,
+                            arguments: RouteArguments<List<dynamic>>(
+                              [selectedItemType, selectedItemName],
+                            ),
+                          );
+                        }
+                      : null,
                 ),
               ),
             ),
@@ -81,12 +90,12 @@ class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const HeaderSection(
-                titleSize: 34,
+                titleSize: 32,
                 subTitleSize: 16,
                 title:
                     'Você possui algum desses itens para compartilhar com seus vizinhos?',
                 subtitle: [
-                  TextSpan(text: 'Compartilhe seus '),
+                  TextSpan(text: '🎁 Compartilhe seus '),
                   TextSpan(
                     text: 'serviços ',
                     style: TextStyle(fontWeight: FontWeight.bold),
@@ -104,18 +113,17 @@ class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
                 runSpacing: 4,
                 children: [
                   ...items.map((item) {
-                    final itemName = item['name']!;
+                    final itemName = item['name']! as String;
                     return ItemChip(
                       text: itemName,
-                      isSelected: selectedItem?.containsKey(itemName) ?? false,
+                      isSelected:
+                          selectedItem?.containsValue(itemName) ?? false,
                       onTap: () {
                         setState(() {
-                          if (selectedItem?.containsKey(itemName) ?? false) {
+                          if (selectedItem?.containsValue(itemName) ?? false) {
                             selectedItem = null;
                           } else {
-                            selectedItem = {
-                              itemName: item['type']!,
-                            };
+                            selectedItem = item;
                           }
                         });
                       },
