@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
+import 'package:kondus/core/utils/input_validator.dart';
+import 'package:kondus/core/utils/snack_bar_helper.dart';
 import 'package:kondus/core/widgets/error_state_widget.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/core/widgets/kondus_elevated_button.dart';
@@ -17,13 +20,11 @@ class RegisterItemStep2Page extends StatefulWidget {
     this.itemType,
     super.key,
     required this.name,
-    required this.price,
     required this.description,
   });
 
   final ItemType? itemType;
   final String name;
-  final String price;
   final String description;
 
   @override
@@ -37,6 +38,19 @@ class _RegisterItemStep2PageState extends State<RegisterItemStep2Page> {
   void initState() {
     super.initState();
     controller = RegisterItemController()..loadCategories();
+    controller.addListener(_controllerListener);
+  }
+
+  _controllerListener() {
+    final state = controller.state;
+
+    if (state is RegisterItemSuccessState &&
+        state.validationErrorMessage != null) {
+      SnackBarHelper.showMessageSnackBar(
+        message: state.validationErrorMessage!,
+        context: context,
+      );
+    }
   }
 
   @override
@@ -73,10 +87,8 @@ class _RegisterItemStep2PageState extends State<RegisterItemStep2Page> {
                 child: KondusButton(
                   label: 'Próximo',
                   onPressed: () {
-                    controller.goToStep3(
-                      itemType: widget.itemType,
+                    controller.registerItem(
                       name: widget.name,
-                      price: widget.price,
                       description: widget.description,
                     );
                   },
@@ -90,6 +102,23 @@ class _RegisterItemStep2PageState extends State<RegisterItemStep2Page> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    _buildSectionTitle('Preço'),
+                    KondusTextFormField(
+                      hintText: 'Digite o nome do produto',
+                      controller: controller.priceEC,
+                      inputFormatters: [
+                        ProgressiveNumberInputFormatter()
+                      ],
+                    ),
+                    const SizedBox(height: 24),
+                    _buildSectionTitle('Categorias'),
+                    CategorySelectorField(
+                      selectedCategories: controller.selectedCategories,
+                      allCategories: state.categories,
+                      onSelectionChanged: (newCategories) =>
+                          controller.updateCategories(newCategories),
+                    ),
+                    const SizedBox(height: 24),
                     _buildSectionTitle('Tipo'),
                     CustomDropdownField(
                       hint: 'Selecione o tipo do item',
@@ -97,17 +126,20 @@ class _RegisterItemStep2PageState extends State<RegisterItemStep2Page> {
                       value: controller.selectedType,
                       enabled: !controller.isAutoFilledType,
                       onChanged: (value) {
-                        controller.selectedType = value;
+                        setState(() {
+                          controller.selectedType = value;
+                        });
                       },
                     ),
-                    const SizedBox(height: 24),
-                    _buildSectionTitle('Categoria'),
-                    CategorySelectorField(
-                      selectedCategories: controller.selectedCategories,
-                      allCategories: state.categories,
-                      onSelectionChanged: (newCategories) =>
-                          controller.updateCategories(newCategories),
-                    ),
+                    if (controller.selectedType != 'Aluguel') ...[
+                      const SizedBox(height: 24),
+                      _buildSectionTitle('Quantidade'),
+                      KondusTextFormField(
+                        hintText: 'Digite a quantidade',
+                        controller: controller.quantityEC,
+                      ),
+                      const SizedBox(height: 24),
+                    ],
                     const SizedBox(height: 24),
                   ],
                 ),

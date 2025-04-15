@@ -10,7 +10,6 @@ class AppRoutes {
 
   static const String registerItemStep1 = '/registerItemStep1';
   static const String registerItemStep2 = '/registerItemStep2';
-  static const String registerItemStep3 = '/registerItemStep3';
 
   static const String contactList = '/contactList';
   static const String contactChat = '/contactChat';

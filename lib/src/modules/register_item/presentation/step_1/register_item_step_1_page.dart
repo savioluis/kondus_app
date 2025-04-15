@@ -80,14 +80,6 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
                     controller: controller.nameEC,
                   ),
                   const SizedBox(height: 24),
-                  _buildSectionTitle('Preço'),
-                  KondusTextFormField(
-                    hintText: 'Digite o valor do produto',
-                    controller: controller.priceEC,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  ),
-                  const SizedBox(height: 24),
                   _buildSectionTitle('Descrição'),
                   KondusTextFormField(
                     hintText: 'Digite a descrição do produto',

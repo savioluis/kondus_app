@@ -16,7 +16,6 @@ import 'package:kondus/src/modules/product_details/presentation/product_details_
 import 'package:kondus/src/modules/register/presentation/register_page.dart';
 import 'package:kondus/src/modules/register_item/presentation/step_1/register_item_step_1_page.dart';
 import 'package:kondus/src/modules/register_item/presentation/step_2/register_item_step_2_page.dart';
-import 'package:kondus/src/modules/register_item/presentation/step_3/register_item_step_3_page.dart';
 import 'package:kondus/src/modules/search_products/presentation/filter_page.dart';
 import 'package:kondus/src/modules/search_products/presentation/search_page.dart';
 import 'package:kondus/src/modules/settings/presentation/settings_page.dart';
@@ -75,33 +74,12 @@ class AppRouter {
         final args = settings.arguments as RouteArguments<List<dynamic>>;
         final ItemType? itemType = args.data[0];
         final String name = args.data[1];
-        final String price = args.data[2];
-        final String description = args.data[3];
+        final String description = args.data[2];
         return MaterialPageRoute(
           builder: (_) => RegisterItemStep2Page(
             itemType: itemType,
             name: name,
-            price: price,
             description: description,
-          ),
-          settings: settings,
-        );
-      case AppRoutes.registerItemStep3:
-        final args = settings.arguments as RouteArguments<List<dynamic>>;
-        final ItemType? itemType = args.data[0];
-        final String name = args.data[1];
-        final String price = args.data[2];
-        final String description = args.data[3];
-        final String type = args.data[4];
-        final List<String> categories = args.data[5];
-        return MaterialPageRoute(
-          builder: (_) => RegisterItemStep3Page(
-            itemType: itemType,
-            name: name,
-            price: price,
-            description: description,
-            type: type,
-            categories: categories,
           ),
           settings: settings,
         );

@@ -39,12 +39,12 @@ class RegisterItemAppbarStep2 extends StatelessWidget
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: HeaderSection(
-                title: 'Escolha o tipo e a categoria do seu $contentTypeValue',
+                title: 'Insira os detalhes do seu $contentTypeValue',
                 titleSize: 30,
                 subtitle: [
-                  const TextSpan(text: 'Organize o seu '),
+                  const TextSpan(text: '🚀 Finalize os detalhes para '),
                   TextSpan(
-                    text: contentTypeValue,
+                    text: 'anunciar',
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],

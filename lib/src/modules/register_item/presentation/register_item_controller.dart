@@ -7,9 +7,11 @@ import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/error/kondus_error.dart';
 import 'package:kondus/core/providers/http/error/http_error.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
+import 'package:kondus/core/services/dtos/items/category_dto.dart';
 import 'package:kondus/core/services/items/items_service.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
 import 'package:kondus/core/utils/input_validator.dart';
+import 'package:kondus/src/modules/register_item/model/register_item_model.dart';
 import 'package:kondus/src/modules/register_item/presentation/register_item_state.dart';
 
 class RegisterItemController extends ChangeNotifier {
@@ -25,9 +27,9 @@ class RegisterItemController extends ChangeNotifier {
 
   String? selectedType;
   bool isAutoFilledType = false;
-  List<String> selectedCategories = [];
+  List<CategoryDTO> selectedCategories = [];
 
-  Future<void> registerItem() async {}
+  final quantityEC = TextEditingController();
 
   Future<void> loadCategories() async {
     _emitState(RegisterItemLoadingState());
@@ -45,7 +47,7 @@ class RegisterItemController extends ChangeNotifier {
         );
       }
 
-      final categories = response.map((e) => e.name).toList();
+      final categories = response;
 
       _emitState(RegisterItemSuccessState(categories: categories));
     } on HttpError catch (e) {
@@ -53,15 +55,17 @@ class RegisterItemController extends ChangeNotifier {
     }
   }
 
-  updateCategories(List<String> newCategories) {
+  updateCategories(List<CategoryDTO> newCategories) {
     selectedCategories = newCategories;
-    notifyListeners();
+    final currentState = state as RegisterItemSuccessState;
+    _emitState(
+      currentState.copyWith(validationErrorMessage: null),
+    );
   }
 
   goToStep2(ItemType? itemType) {
     final validationError = _validateFieldsStep1(
       name: nameEC.value.text,
-      price: priceEC.value.text,
       description: descriptionEC.value.text,
     );
 
@@ -75,58 +79,59 @@ class RegisterItemController extends ChangeNotifier {
     }
 
     final name = nameEC.value.text;
-    final price = priceEC.value.text;
     final description = descriptionEC.value.text;
 
     NavigatorProvider.navigateTo(
       AppRoutes.registerItemStep2,
       arguments: RouteArguments<List<dynamic>>(
-        [itemType, name, price, description],
+        [itemType, name, description],
       ),
     );
   }
 
-  goToStep3(
-      {ItemType? itemType,
-      required String name,
-      required String price,
-      required String description}) {
+  registerItem({
+    required String name,
+    required String description,
+  }) {
+    final currentState = state as RegisterItemSuccessState;
+
     final validationError = _validateFieldsStep2(
-      type: selectedType,
+      price: priceEC.value.text,
       categories: selectedCategories,
+      type: selectedType,
+      quantity: quantityEC.value.text,
     );
 
     if (validationError != null) {
       _emitState(
-        RegisterItemValidationErrorState(
-          validationErrorMessage: validationError,
-        ),
+        currentState.copyWith(validationErrorMessage: validationError),
       );
       return;
     }
 
-    final type = selectedType!;
+    final price = priceEC.value.text;
     final categories = selectedCategories;
+    final type = selectedType!;
+    final quantity = quantityEC.value.text;
 
-    NavigatorProvider.navigateTo(
-      AppRoutes.registerItemStep3,
-      arguments: RouteArguments<List<dynamic>>(
-        [itemType, name, price, description, type, categories],
-      ),
+    final itemModel = RegisterItemModel(
+      title: name,
+      description: description,
+      type: type,
+      price: double.parse(price),
+      quantity: int.tryParse(quantity) ?? 0,
+      categoriesIds: categories.map((category) => category.id).toList(),
     );
+
+    print(itemModel);
   }
 
   String? _validateFieldsStep1({
     required String name,
-    required String price,
     required String description,
   }) {
     final nameValidationError = InputValidator.validateName(name: name);
     if (nameValidationError != null) return nameValidationError;
-
-    final priceValidationError = InputValidator.validatePrice(value: price);
-
-    if (priceValidationError != null) return priceValidationError;
 
     final descriptionValidationError =
         description.isEmpty ? 'A descrição é obrigatória.' : null;
@@ -137,18 +142,38 @@ class RegisterItemController extends ChangeNotifier {
   }
 
   String? _validateFieldsStep2({
+    required String price,
+    required List<CategoryDTO> categories,
     required String? type,
-    required List<String> categories,
+    required String? quantity,
   }) {
-    final typeValidationError =
-        (type == null || type.isEmpty) ? 'O tipo é obrigatório.' : null;
+    final priceValidationError = InputValidator.validatePrice(value: price);
 
-    if (typeValidationError != null) return typeValidationError;
+    if (priceValidationError != null) return priceValidationError;
 
     final categoriesValidationErrorr =
         categories.isEmpty ? 'Categoria é obrigatória.' : null;
 
     if (categoriesValidationErrorr != null) return categoriesValidationErrorr;
+
+    final typeValidationError =
+        (type == null || type.isEmpty) ? 'O tipo é obrigatório.' : null;
+
+    if (typeValidationError != null) return typeValidationError;
+
+    String? quantityValidationError;
+
+    if (type != 'Aluguel') {
+      if (quantity != null && quantity.isNotEmpty) {
+        int quantityAsDouble = int.tryParse(quantity) ?? 0;
+        if (quantityAsDouble < 1)
+          quantityValidationError = 'Insira uma quantidade válida.';
+      } else {
+        quantityValidationError = 'A quantidade é obrigatória.';
+      }
+    }
+
+    if (quantityValidationError != null) return quantityValidationError;
 
     return null;
   }

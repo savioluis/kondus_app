@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 class InputValidator {
   static bool isValidEmail(String? value) {
     if (value == null || value.isEmpty) return false;
@@ -40,6 +42,11 @@ class InputValidator {
     return regex.hasMatch(value);
   }
 
+  static bool isValidNumber(String input) {
+    final regex = RegExp(r'^\d+(\.\d+)?$');
+    return regex.hasMatch(input);
+  }
+
   static String? validateName({required String name}) {
     if (name.isEmpty) return 'O nome é obrigatório';
     if (name.length < 2) return 'Nome inválido';
@@ -71,7 +78,25 @@ class InputValidator {
   static String? validatePrice({required String value}) {
     final valueAsDouble = double.tryParse(value);
     if (value.isEmpty) return 'O preço é obrigatório.';
-    if (valueAsDouble != null && valueAsDouble < 0) return 'O preço deve ser um valor válido.';
+    if ((valueAsDouble != null && valueAsDouble < 0) || valueAsDouble == null)
+      return 'O preço deve ser um valor válido.';
     return null;
+  }
+}
+
+
+class ProgressiveNumberInputFormatter extends TextInputFormatter {
+  static final _partialNumberRegex = RegExp(r'^-?(\d+)?(\.)?(\d*)?$');
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    if (_partialNumberRegex.hasMatch(newValue.text)) {
+      return newValue;
+    } else {
+      return oldValue;
+    }
   }
 }

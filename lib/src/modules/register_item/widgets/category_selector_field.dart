@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:kondus/core/services/dtos/items/category_dto.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/widgets/kondus_elevated_button.dart';
 
 class CategorySelectorField extends StatelessWidget {
-  final List<String> selectedCategories;
-  final List<String> allCategories;
-  final void Function(List<String>) onSelectionChanged;
+  final List<CategoryDTO> selectedCategories;
+  final List<CategoryDTO> allCategories;
+  final void Function(List<CategoryDTO>) onSelectionChanged;
 
   const CategorySelectorField({
     super.key,
@@ -55,7 +56,7 @@ class CategorySelectorField extends StatelessWidget {
                               ),
                             ),
                             child: Text(
-                              categorie,
+                              categorie.name,
                               style: const TextStyle(fontSize: 14),
                             ),
                           ),
@@ -71,7 +72,7 @@ class CategorySelectorField extends StatelessWidget {
   }
 
   Future<void> _openCategoryModal(BuildContext context) async {
-    final selected = await showModalBottomSheet<List<String>>(
+    final selected = await showModalBottomSheet<List<CategoryDTO>>(
       context: context,
       isScrollControlled: true,
       backgroundColor: context.surfaceColor,
@@ -91,8 +92,8 @@ class CategorySelectorField extends StatelessWidget {
 }
 
 class _CategorySelectionModal extends StatefulWidget {
-  final List<String> allCategories;
-  final List<String> initialSelection;
+  final List<CategoryDTO> allCategories;
+  final List<CategoryDTO> initialSelection;
 
   const _CategorySelectionModal({
     required this.allCategories,
@@ -105,7 +106,7 @@ class _CategorySelectionModal extends StatefulWidget {
 }
 
 class _CategorySelectionModalState extends State<_CategorySelectionModal> {
-  late Set<String> _selected;
+  late Set<CategoryDTO> _selected;
 
   @override
   void initState() {
@@ -113,7 +114,7 @@ class _CategorySelectionModalState extends State<_CategorySelectionModal> {
     _selected = widget.initialSelection.toSet();
   }
 
-  void _toggle(String category) {
+  void _toggle(CategoryDTO category) {
     setState(() {
       if (_selected.contains(category)) {
         _selected.remove(category);
@@ -188,7 +189,7 @@ class _CategorySelectionModalState extends State<_CategorySelectionModal> {
                         shape: ContinuousRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        title: Text(category),
+                        title: Text(category.name),
                         value: _selected.contains(category),
                         activeColor: context.blueColor,
                         tileColor: context.lightGreyColor.withOpacity(0.2),

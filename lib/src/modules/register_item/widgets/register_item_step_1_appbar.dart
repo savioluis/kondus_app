@@ -39,10 +39,10 @@ class RegisterItemAppbar extends StatelessWidget
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: HeaderSection(
-                title: 'Insira as informações do seu $contentTypeValue',
+                title: 'Insira as informações do seu anúncio',
                 titleSize: 30,
                 subtitle: [
-                  const TextSpan(text: 'Cadastre o seu '),
+                  const TextSpan(text: '📌 Cadastre o seu '),
                   TextSpan(
                     text: contentTypeValue,
                     style: const TextStyle(fontWeight: FontWeight.bold),

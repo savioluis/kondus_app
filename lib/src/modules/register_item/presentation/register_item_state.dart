@@ -1,4 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:kondus/core/error/kondus_error.dart';
+import 'package:kondus/core/services/dtos/items/category_dto.dart';
 
 sealed class RegisterItemState {}
 
@@ -21,8 +23,20 @@ class RegisterItemValidationErrorState extends RegisterItemState {
 }
 
 class RegisterItemSuccessState extends RegisterItemState {
-  RegisterItemSuccessState({required this.categories});
-  final List<String> categories;
+  RegisterItemSuccessState(
+      {required this.categories, this.validationErrorMessage});
+  final List<CategoryDTO> categories;
+  final String? validationErrorMessage;
+
+  RegisterItemSuccessState copyWith({
+    List<CategoryDTO>? categories,
+    String? validationErrorMessage,
+  }) {
+    return RegisterItemSuccessState(
+      categories: categories ?? this.categories,
+      validationErrorMessage: validationErrorMessage,
+    );
+  }
 }
 
 class RegisterItemFailureState extends RegisterItemState {
