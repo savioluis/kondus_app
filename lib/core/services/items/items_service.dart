@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:kondus/core/providers/http/error/http_error.dart';
 import 'package:kondus/core/providers/http/i_http_provider.dart';
 import 'package:kondus/core/repositories/i_token_repository.dart';
@@ -269,6 +270,54 @@ class ItemsService {
       throw const HttpError(
         type: HttpErrorType.unknown,
         message: 'Ocorreu um erro ao register o seu item. Tente novamente.',
+      );
+    }
+  }
+
+  Future uploadImageForItem({
+    required String imageFilePath,
+    required int itemId,
+  }) async {
+    try {
+      final token = await _tokenRepository.getAccessToken();
+
+      final response = await _httpProvider.post(
+        '/items/images',
+        headers: {'Authorization': 'Bearer $token'},
+        data: FormData.fromMap({
+          "image": await MultipartFile.fromFile(imageFilePath),
+          "itemId": itemId,
+        }),
+      );
+
+      if (response == null) {
+        throw const HttpError(
+          type: HttpErrorType.unknown,
+          message:
+              'Não foi possível fazer o upload da imagem. Tente novamente.',
+        );
+      }
+
+      return response;
+    } on HttpError catch (e) {
+      if (e.isAuthError) {
+        throw const HttpError(
+          type: HttpErrorType.unauthorized,
+          message: 'Sua sessão expirou. Autentifique-se novamente.',
+        );
+      }
+
+      if (e.isNetworkError) {
+        throw const HttpError(
+          type: HttpErrorType.network,
+          message: 'Verifique sua conexão com a internet.',
+        );
+      }
+
+      throw const HttpError(
+        type: HttpErrorType.unknown,
+        message:
+            'Ocorreu um erro ao fazer o upload da imagem. Tente novamente.',
       );
     }
   }

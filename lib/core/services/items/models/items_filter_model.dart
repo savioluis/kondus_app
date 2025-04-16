@@ -24,6 +24,15 @@ extension ItemTypeExtension on ItemType {
     };
   }
 
+  static ItemType fromRegisterItemType(String type) {
+    return switch (type.toLowerCase()) {
+      'venda' => ItemType.produto,
+      'aluguel' => ItemType.produto,
+      'serviço' => ItemType.servico,
+      _ => ItemType.produto,
+    };
+  }
+
   ActionType toActionType(int quantity) {
     if (this == ItemType.produto) {
       if (quantity > 0) {
