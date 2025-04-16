@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hugeicons/hugeicons.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
 import 'package:kondus/core/theme/app_theme.dart';
@@ -95,6 +99,107 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
                     controller: controller.descriptionEC,
                     maxLines: 4,
                   ),
+                  const SizedBox(height: 24),
+                  _buildSectionTitle('Imagens'),
+                  if (controller.imagesFiles.isNotEmpty) ...{
+                    SizedBox(
+                      height: 156,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          if (index == controller.imagesFiles.length) {
+                            return InkWell(
+                              onTap: () async {
+                                final picker = ImagePicker();
+                                final result = await picker.pickMultiImage();
+
+                                if (result.isNotEmpty) {
+                                  final files = result
+                                      .map((xfile) => File(xfile.path))
+                                      .toList();
+                                  setState(() {
+                                    controller.imagesFiles.addAll(files);
+                                  });
+                                }
+                              },
+                              borderRadius: BorderRadius.circular(18),
+                              child: Ink(
+                                height: 156,
+                                width: 156,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(18),
+                                    color:
+                                        context.lightGreyColor.withOpacity(0),
+                                    border: Border.all(
+                                        color: context.lightGreyColor)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      HugeIcons.strokeRoundedImageAdd02,
+                                      size: 82,
+                                      color: context.lightGreyColor,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    const Text(
+                                      'Enviar mais imagens',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
+                          final currentImageFile =
+                              controller.imagesFiles[index];
+                          return _buildImageTile(context, currentImageFile);
+                        },
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(width: 12),
+                        itemCount: controller.imagesFiles.length + 1,
+                      ),
+                    ),
+                  } else
+                    InkWell(
+                      onTap: () async {
+                        final picker = ImagePicker();
+                        final result = await picker.pickMultiImage();
+
+                        if (result.isNotEmpty) {
+                          final files =
+                              result.map((xfile) => File(xfile.path)).toList();
+                          setState(() {
+                            controller.imagesFiles.addAll(files);
+                          });
+                        }
+                      },
+                      borderRadius: BorderRadius.circular(18),
+                      child: Ink(
+                        height: 156,
+                        width: 156,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(18),
+                            color: context.lightGreyColor.withOpacity(0),
+                            border: Border.all(color: context.lightGreyColor)),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              HugeIcons.strokeRoundedImageAdd02,
+                              size: 82,
+                              color: context.lightGreyColor,
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Enviar imagens',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 14),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -114,31 +219,28 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
     );
   }
 
-  Widget _buildImageTile(BuildContext context, String imageUrl) {
-    return Align(
-      alignment: Alignment.center,
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PhotoViewPage(imageUrl: imageUrl),
-              ),
-            );
-          },
-          onLongPress: () {},
-          borderRadius: BorderRadius.circular(18),
-          child: Ink(
-            width: 128,
-            height: 128,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(18),
-              image: DecorationImage(
-                image: NetworkImage(imageUrl),
-                fit: BoxFit.cover,
-              ),
+  Widget _buildImageTile(BuildContext context, File imageFile) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PhotoViewPage(imageFile: imageFile),
+            ),
+          );
+        },
+        onLongPress: () {},
+        borderRadius: BorderRadius.circular(18),
+        child: Ink(
+          width: 156,
+          height: 156,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18),
+            image: DecorationImage(
+              image: FileImage(imageFile),
+              fit: BoxFit.cover,
             ),
           ),
         ),

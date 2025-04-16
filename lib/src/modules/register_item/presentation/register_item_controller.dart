@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -30,6 +31,7 @@ class RegisterItemController extends ChangeNotifier {
   List<CategoryDTO> selectedCategories = [];
 
   final quantityEC = TextEditingController();
+  final List<File> imagesFiles = [];
 
   Future<void> loadCategories() async {
     _emitState(RegisterItemLoadingState());
