@@ -6,6 +6,7 @@ import 'package:kondus/core/services/dtos/items/category_dto.dart';
 import 'package:kondus/core/services/dtos/items/item_content_dto.dart';
 import 'package:kondus/core/services/dtos/items/item_dto.dart';
 import 'package:kondus/core/services/dtos/items/items_response_dto.dart';
+import 'package:kondus/core/services/dtos/items/register_item_request_dto.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
 
 class ItemsService {
@@ -210,7 +211,6 @@ class ItemsService {
               'Não foi possível recuperar os seus anúncios. Tente novamente.',
         );
       }
-
     } on HttpError catch (e) {
       if (e.isAuthError) {
         throw const HttpError(
@@ -229,6 +229,46 @@ class ItemsService {
       throw const HttpError(
         type: HttpErrorType.unknown,
         message: 'Ocorreu um erro ao remover o seu anúncio. Tente novamente.',
+      );
+    }
+  }
+
+  Future<int> registerItem({required RegisterItemRequestDTO request}) async {
+    try {
+      final token = await _tokenRepository.getAccessToken();
+
+      final response = await _httpProvider.post(
+        '/items',
+        headers: {'Authorization': 'Bearer $token'},
+        data: request.toJson(),
+      );
+
+      if (response == null) {
+        throw const HttpError(
+          type: HttpErrorType.unknown,
+          message: 'Não foi possível reegistrar o seu item. Tente novamente.',
+        );
+      }
+
+      return response;
+    } on HttpError catch (e) {
+      if (e.isAuthError) {
+        throw const HttpError(
+          type: HttpErrorType.unauthorized,
+          message: 'Sua sessão expirou. Autentifique-se novamente.',
+        );
+      }
+
+      if (e.isNetworkError) {
+        throw const HttpError(
+          type: HttpErrorType.network,
+          message: 'Verifique sua conexão com a internet.',
+        );
+      }
+
+      throw const HttpError(
+        type: HttpErrorType.unknown,
+        message: 'Ocorreu um erro ao register o seu item. Tente novamente.',
       );
     }
   }
