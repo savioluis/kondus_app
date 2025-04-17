@@ -1,9 +1,19 @@
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/error/kondus_error.dart';
 import 'package:kondus/core/providers/http/error/http_error.dart';
+import 'package:kondus/core/providers/http/i_http_provider.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
+import 'package:kondus/core/repositories/i_token_repository.dart';
+import 'package:kondus/core/services/items/items_service.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
 import 'package:kondus/core/utils/snack_bar_helper.dart';
 import 'package:kondus/core/widgets/error_state_widget.dart';
@@ -67,7 +77,6 @@ class _HomePageState extends State<HomePage> {
       animation: controller,
       builder: (context, child) {
         final state = controller.state;
-
         if (state is HomeLoadingState) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
@@ -135,7 +144,8 @@ class _HomePageState extends State<HomePage> {
                             child: currentState.items.isNotEmpty
                                 ? ListView.builder(
                                     shrinkWrap: true,
-                                    physics: const NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     itemCount: currentState.items.length,
                                     itemBuilder: (context, index) {
                                       final product = currentState.items[index];
@@ -204,4 +214,66 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+_testTela(VoidCallback setState) {
+  File? imageFile;
+  return Scaffold(
+    body: SingleChildScrollView(
+      child: Column(
+        children: [
+          if (imageFile != null) Image.file(imageFile),
+          ElevatedButton(
+            onPressed: () async {
+              final picker = ImagePicker();
+              final result = await picker.pickMultiImage();
+
+              if (result.isNotEmpty) {
+                final files = result.map((xfile) => File(xfile.path)).toList();
+                imageFile = files[0];
+                setState();
+              }
+            },
+            child: Text('Upload'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final _tokenRepository = GetIt.instance<ITokenRepository>();
+              final token = await _tokenRepository.getAccessToken();
+              final imageFilePath = imageFile!.path;
+              final itemId = 50;
+              final body = FormData.fromMap({
+                "image": await MultipartFile.fromFile(imageFilePath),
+                "itemId": itemId.toString(),
+              });
+
+              final dio = Dio(BaseOptions(baseUrl: 'http://0.0.0.0:8080'));
+
+              dio.interceptors.add(
+                LogInterceptor(
+                  requestBody: true,
+                  responseBody: true,
+                  error: true,
+                ),
+              );
+
+              final response = await dio.post(
+                '/items/images',
+                options: Options(
+                  headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': 'Bearer $token',
+                  },
+                ),
+                data: body,
+              );
+
+              log(response.toString());
+            },
+            child: Text('Enviar'),
+          ),
+        ],
+      ),
+    ),
+  );
 }

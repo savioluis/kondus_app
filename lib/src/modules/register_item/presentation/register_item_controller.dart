@@ -9,6 +9,7 @@ import 'package:kondus/core/error/kondus_error.dart';
 import 'package:kondus/core/providers/http/error/http_error.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/services/dtos/items/category_dto.dart';
+import 'package:kondus/core/services/dtos/items/register_item_request_dto.dart';
 import 'package:kondus/core/services/items/items_service.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
 import 'package:kondus/core/utils/input_validator.dart';
@@ -82,11 +83,12 @@ class RegisterItemController extends ChangeNotifier {
 
     final name = nameEC.value.text;
     final description = descriptionEC.value.text;
+    final imagesPaths = imagesFiles.map((e) => e.path).toList();
 
     NavigatorProvider.navigateTo(
       AppRoutes.registerItemStep2,
       arguments: RouteArguments<List<dynamic>>(
-        [itemType, name, description],
+        [itemType, name, description, imagesPaths],
       ),
     );
   }
@@ -94,7 +96,8 @@ class RegisterItemController extends ChangeNotifier {
   registerItem({
     required String name,
     required String description,
-  }) {
+    List<String>? imagesFilesPaths,
+  }) async {
     final currentState = state as RegisterItemSuccessState;
 
     final validationError = _validateFieldsStep2(
@@ -116,16 +119,29 @@ class RegisterItemController extends ChangeNotifier {
     final type = selectedType!;
     final quantity = quantityEC.value.text;
 
-    final itemModel = RegisterItemModel(
+    final item = RegisterItemRequestDTO(
       title: name,
       description: description,
-      type: type,
+      type: ItemTypeExtension.fromRegisterItemType(type).toJsonValue(),
       price: double.parse(price),
       quantity: int.tryParse(quantity) ?? 0,
       categoriesIds: categories.map((category) => category.id).toList(),
     );
 
-    print(itemModel);
+    try {
+      final itemId = await _itemsService.registerItem(request: item);
+
+      if (imagesFilesPaths != null) {
+        await _itemsService.uploadImagesForItem(
+          imagesFilesPaths: imagesFilesPaths,
+          itemId: itemId,
+        );
+      }
+
+      _emitState(RegisteredItemWithSuccess(itemName: name));
+    } on HttpError catch (e) {
+      _emitState(RegisterItemFailureState(error: e));
+    }
   }
 
   String? _validateFieldsStep1({
@@ -141,6 +157,18 @@ class RegisterItemController extends ChangeNotifier {
     if (descriptionValidationError != null) return descriptionValidationError;
 
     return null;
+  }
+
+  void addImages(List<File> images) {
+    final allowedExtensions = ['.png', '.jpg', '.jpeg'];
+
+    final validImages = images.where((file) {
+      final extens = file.path.toLowerCase();
+      return allowedExtensions.any((ext) => extens.endsWith(ext));
+    }).toList();
+
+    imagesFiles.addAll(validImages);
+    notifyListeners();
   }
 
   String? _validateFieldsStep2({
@@ -184,5 +212,15 @@ class RegisterItemController extends ChangeNotifier {
     _state = newState;
     notifyListeners();
     log('Novo estado emitido: $newState');
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    imagesFiles.clear();
+    nameEC.dispose();
+    descriptionEC.dispose();
+    priceEC.dispose();
+    quantityEC.dispose();
   }
 }

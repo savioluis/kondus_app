@@ -49,6 +49,7 @@ dependencies:
   json_annotation: ^4.9.0
   json_serializable: ^6.9.0
   hugeicons: ^0.0.10
+  http_parser: ^4.0.2
 
 dev_dependencies:
   flutter_test:

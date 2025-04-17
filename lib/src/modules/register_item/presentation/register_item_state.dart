@@ -43,3 +43,8 @@ class RegisterItemFailureState extends RegisterItemState {
   RegisterItemFailureState({required this.error});
   final KondusFailure error;
 }
+
+class RegisteredItemWithSuccess extends RegisterItemState {
+  RegisteredItemWithSuccess({required this.itemName});
+  final String itemName;
+}

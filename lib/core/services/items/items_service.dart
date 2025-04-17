@@ -1,4 +1,8 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:kondus/core/providers/http/error/http_error.dart';
 import 'package:kondus/core/providers/http/i_http_provider.dart';
 import 'package:kondus/core/repositories/i_token_repository.dart';
@@ -274,27 +278,53 @@ class ItemsService {
     }
   }
 
-  Future uploadImageForItem({
-    required String imageFilePath,
+  Future<void> uploadImagesForItem({
+    required List<String> imagesFilesPaths,
     required int itemId,
   }) async {
     try {
       final token = await _tokenRepository.getAccessToken();
 
+      final List<MultipartFile> imageFiles = [];
+
+      for (final path in imagesFilesPaths) {
+        final imageFile = File(path);
+        if (!imageFile.existsSync()) {
+          log('Arquivo de Imagem não existe: $path');
+          return;
+        }
+
+        final fileExtension = path.split('.').last.toLowerCase();
+        String subtype = 'jpeg';
+        if (fileExtension == 'png') subtype = 'png';
+
+        final multipartFile = await MultipartFile.fromFile(
+          path,
+          filename: path.split('/').last,
+          contentType: MediaType('image', subtype),
+        );
+
+        imageFiles.add(multipartFile);
+      }
+
+      final body = FormData.fromMap({
+        "image": imageFiles,
+        "itemId": itemId.toString(),
+      });
+
       final response = await _httpProvider.post(
         '/items/images',
-        headers: {'Authorization': 'Bearer $token'},
-        data: FormData.fromMap({
-          "image": await MultipartFile.fromFile(imageFilePath),
-          "itemId": itemId,
-        }),
+        data: body,
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
       );
 
       if (response == null) {
         throw const HttpError(
           type: HttpErrorType.unknown,
           message:
-              'Não foi possível fazer o upload da imagem. Tente novamente.',
+              'Não foi possível fazer o upload das imagens. Tente novamente.',
         );
       }
 
@@ -316,8 +346,7 @@ class ItemsService {
 
       throw const HttpError(
         type: HttpErrorType.unknown,
-        message:
-            'Ocorreu um erro ao fazer o upload da imagem. Tente novamente.',
+        message: 'Ocorreu um erro ao enviar as imagens. Tente novamente.',
       );
     }
   }

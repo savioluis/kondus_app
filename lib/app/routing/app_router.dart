@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/app/routing/route_arguments.dart';
@@ -7,6 +9,7 @@ import 'package:kondus/src/modules/chat/contact_chat/presentation/contact_chat_p
 import 'package:kondus/src/modules/chat/contact_list/presentation/contact_list_page.dart';
 import 'package:kondus/src/modules/home/models/item_model.dart';
 import 'package:kondus/src/modules/home/presentation/home_page.dart';
+import 'package:kondus/src/modules/register_item/presentation/register_item_controller.dart';
 import 'package:kondus/src/modules/share_your_items/presentation/share_your_items_page.dart';
 import 'package:kondus/src/modules/login/presentation/login_page.dart';
 import 'package:kondus/src/modules/my_announcements/presentation/my_announcements_page.dart';
@@ -78,11 +81,13 @@ class AppRouter {
         final ItemType? itemType = args.data[0];
         final String name = args.data[1];
         final String description = args.data[2];
+        final List<String>? imagesPaths = args.data[3];
         return MaterialPageRoute(
           builder: (_) => RegisterItemStep2Page(
             itemType: itemType,
             name: name,
             description: description,
+            imagesPaths: imagesPaths,
           ),
           settings: settings,
         );

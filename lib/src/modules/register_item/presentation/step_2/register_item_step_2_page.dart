@@ -1,6 +1,11 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kondus/app/routing/app_routes.dart';
+import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/utils/input_validator.dart';
@@ -23,11 +28,13 @@ class RegisterItemStep2Page extends StatefulWidget {
     super.key,
     required this.name,
     required this.description,
+    this.imagesPaths,
   });
 
   final ItemType? itemType;
   final String name;
   final String description;
+  final List<String>? imagesPaths;
 
   @override
   State<RegisterItemStep2Page> createState() => _RegisterItemStep2PageState();
@@ -41,6 +48,7 @@ class _RegisterItemStep2PageState extends State<RegisterItemStep2Page> {
     super.initState();
     controller = RegisterItemController()..loadCategories();
     controller.addListener(_controllerListener);
+    log('quantidade de imagens ${widget.imagesPaths?.length}');
   }
 
   _controllerListener() {
@@ -52,8 +60,20 @@ class _RegisterItemStep2PageState extends State<RegisterItemStep2Page> {
         message: state.validationErrorMessage!,
         context: context,
       );
+    } else if (state is RegisteredItemWithSuccess) {
+      SnackBarHelper.showMessageSnackBar(
+        message: '${state.itemName} foi anunciado com sucesso!',
+        context: context,
+      );
+      NavigatorProvider.navigateAndRemoveUntil(AppRoutes.home);
     }
   }
+
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   controller.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +113,7 @@ class _RegisterItemStep2PageState extends State<RegisterItemStep2Page> {
                     controller.registerItem(
                       name: widget.name,
                       description: widget.description,
+                      imagesFilesPaths: widget.imagesPaths,
                     );
                   },
                 ),

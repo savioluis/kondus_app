@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -117,9 +118,8 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
                                   final files = result
                                       .map((xfile) => File(xfile.path))
                                       .toList();
-                                  setState(() {
-                                    controller.imagesFiles.addAll(files);
-                                  });
+                                  
+                                  controller.addImages(files);
                                 }
                               },
                               borderRadius: BorderRadius.circular(18),
