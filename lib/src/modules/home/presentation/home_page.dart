@@ -121,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 96),
                     SizedBox(
                       height: 48,
                       child: ListView(
@@ -275,5 +275,15 @@ _testTela(VoidCallback setState) {
         ],
       ),
     ),
+  );
+}
+
+Image imageteste() {
+  return Image.network(
+    "http://0.0.0.0:8080/items/images/RvUC-SZVqM8sAgi-image_picker_935FB777-60A0-4C8C-8C9F-A9DEDBB78207-68682-0000032A06403D1A.jpg",
+    headers: {
+      'Authorization':
+          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJteS1hdWRpZW5jZSIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJpZCI6MSwiZXhwIjoxNzQ1MjcwMzYzfQ.Xp5eEGm6xAxlM0FJqG-oeZRNl761J_7H3I_CTSaTtQg',
+    },
   );
 }
