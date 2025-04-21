@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/core/services/auth/session_manager.dart';
 import 'package:kondus/src/modules/profile/widgets/profile_option_tile.dart';
@@ -16,7 +17,7 @@ class ProfileOptions extends StatelessWidget {
       children: [
         Divider(thickness: 0.5, color: context.lightGreyColor),
         ProfileOptionTile(
-          iconData: Icons.shopping_bag_outlined,
+          iconData: HugeIcons.strokeRoundedPackageSearch,
           title: "Seus anúncios",
           subTitle: "Gerencie seus anúncios ativos no app",
           onTap: () {
@@ -25,7 +26,7 @@ class ProfileOptions extends StatelessWidget {
         ),
         Divider(thickness: 0.5, color: context.lightGreyColor),
         ProfileOptionTile(
-          iconData: Icons.settings_outlined,
+          iconData: HugeIcons.strokeRoundedSettings02,
           title: "Configurações",
           subTitle: "Ajuste suas preferências e configurações",
           onTap: () {
@@ -34,7 +35,7 @@ class ProfileOptions extends StatelessWidget {
         ),
         Divider(thickness: 0.5, color: context.lightGreyColor),
         ProfileOptionTile(
-          iconData: Icons.logout_outlined,
+          iconData: HugeIcons.strokeRoundedLogout05,
           title: "Sair",
           onTap: () async {
             final sessionManager = GetIt.instance<SessionManager>();

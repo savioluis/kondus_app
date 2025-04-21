@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
@@ -51,14 +52,14 @@ class _SearchPageState extends State<SearchPage> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(32)),
                   label: Text(
-                    'CADASTRAR',
+                    'ANUNCIAR',
                     style: context.headlineLarge!.copyWith(
                       color: context.whiteColor,
-                      fontSize: 20,
+                      fontSize: 16,
                     ),
                   ),
                   icon: Icon(
-                    Icons.add_business,
+                    HugeIcons.strokeRoundedPackageAdd,
                     color: context.whiteColor,
                   ),
                   backgroundColor: context.blueColor,

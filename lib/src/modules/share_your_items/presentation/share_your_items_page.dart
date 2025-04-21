@@ -59,9 +59,9 @@ class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: SizedBox(
-                width: 148,
+                width: 158,
                 child: KondusButton(
-                  label: 'ANUNCIAR',
+                  label: 'CONTINUAR',
                   onPressed: selectedItem != null
                       ? () {
                           final selectedItemName =
