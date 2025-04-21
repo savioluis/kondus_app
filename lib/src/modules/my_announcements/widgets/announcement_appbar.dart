@@ -28,7 +28,7 @@ class AnnouncementAppbar extends StatelessWidget
                 title: 'Seus anúncios',
                 subtitle: [
                   TextSpan(
-                    text: 'Ajuste suas preferências e configurações',
+                    text: 'Gerencia seus anúncios ativos no app',
                   ),
                 ],
               ),

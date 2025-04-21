@@ -69,12 +69,6 @@ class _RegisterItemStep2PageState extends State<RegisterItemStep2Page> {
     }
   }
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   controller.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -126,7 +120,6 @@ class _RegisterItemStep2PageState extends State<RegisterItemStep2Page> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    
                     const SizedBox(height: 24),
                     _buildSectionTitle('Preço'),
                     KondusTextFormField(

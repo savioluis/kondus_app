@@ -19,5 +19,6 @@ enum KondusErrorType {
   empty,
   failedToLoad,
   validation,
+  upload,
   unknown,
 }

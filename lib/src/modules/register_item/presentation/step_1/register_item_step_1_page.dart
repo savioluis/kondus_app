@@ -118,7 +118,7 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
                                   final files = result
                                       .map((xfile) => File(xfile.path))
                                       .toList();
-                                  
+
                                   controller.addImages(files);
                                 }
                               },
@@ -227,7 +227,10 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => PhotoViewPage(imageFile: imageFile),
+              builder: (context) => PhotoViewPage(
+                isFromNetwork: false,
+                imageFile: imageFile,
+              ),
             ),
           );
         },

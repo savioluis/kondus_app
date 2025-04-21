@@ -93,7 +93,7 @@ class RegisterItemController extends ChangeNotifier {
     );
   }
 
-  registerItem({
+  Future<void> registerItem({
     required String name,
     required String description,
     List<String>? imagesFilesPaths,
@@ -131,14 +131,27 @@ class RegisterItemController extends ChangeNotifier {
     try {
       final itemId = await _itemsService.registerItem(request: item);
 
-      if (imagesFilesPaths != null) {
-        await _itemsService.uploadImagesForItem(
-          imagesFilesPaths: imagesFilesPaths,
-          itemId: itemId,
-        );
-      }
+      if (imagesFilesPaths != null && imagesFilesPaths.isNotEmpty) {
+        try {
+          await _itemsService.uploadImagesForItem(
+            imagesFilesPaths: imagesFilesPaths,
+            itemId: itemId,
+          );
 
-      _emitState(RegisteredItemWithSuccess(itemName: name));
+          _emitState(RegisteredItemWithSuccess(itemName: name));
+        } catch (uploadError) {
+          _emitState(
+            RegisterItemFailureState(
+              error: KondusError(
+                message: 'Falha ao salvar as imagens. Tente novamente',
+                type: KondusErrorType.upload,
+              ),
+            ),
+          );
+        }
+      } else {
+        _emitState(RegisteredItemWithSuccess(itemName: name));
+      }
     } on HttpError catch (e) {
       _emitState(RegisterItemFailureState(error: e));
     }

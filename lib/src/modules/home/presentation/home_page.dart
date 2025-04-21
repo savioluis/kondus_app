@@ -95,85 +95,87 @@ class _HomePageState extends State<HomePage> {
               onRefresh: () async => await controller.loadInitialData(),
               backgroundColor: context.blueColor,
               color: context.whiteColor,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 12),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: ContactTitle(
-                        onTap: () => NavigatorProvider.navigateTo(
-                          AppRoutes.contactList,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    ContactItemSlider(
-                      contacts: contacts,
-                      itemCount: contacts.length,
-                    ),
-                    const SizedBox(height: 18),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: SearchBarButton(
-                        onTap: () => NavigatorProvider.navigateTo(
-                          AppRoutes.searchProducts,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 96),
-                    SizedBox(
-                      height: 48,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          _buildCategoryChip('Todos'),
-                          _buildCategoryChip('Comprar'),
-                          _buildCategoryChip('Alugar'),
-                          _buildCategoryChip('Contratar'),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 18),
-                    state.isLoadingMoreItems
-                        ? const Center(
-                            child: CircularProgressIndicator(),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: currentState.items.isNotEmpty
-                                ? ListView.builder(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: currentState.items.length,
-                                    itemBuilder: (context, index) {
-                                      final product = currentState.items[index];
-                                      return ProductCard(
-                                        imageUrl: product.imagesPaths.isNotEmpty
-                                            ? product.imagesPaths.first
-                                            : null,
-                                        name: product.name,
-                                        category: product.categories[0].name,
-                                        actionType: product.type
-                                            .toActionType(product.quantity),
-                                        onTap: () {
-                                          NavigatorProvider.navigateTo(
-                                            AppRoutes.productDetails,
-                                            arguments:
-                                                RouteArguments<int>(product.id),
-                                          );
-                                        },
-                                      );
-                                    },
-                                  )
-                                : const Padding(
-                                    padding: EdgeInsets.only(top: 144),
-                                    child: Text('Nenhum produto encontrado'),
-                                  ),
+              child: ListView(
+                children: [
+                  Column(
+                    children: [
+                      const SizedBox(height: 12),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: ContactTitle(
+                          onTap: () => NavigatorProvider.navigateTo(
+                            AppRoutes.contactList,
                           ),
-                  ],
-                ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      ContactItemSlider(
+                        contacts: contacts,
+                        itemCount: contacts.length,
+                      ),
+                      const SizedBox(height: 18),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: SearchBarButton(
+                          onTap: () => NavigatorProvider.navigateTo(
+                            AppRoutes.searchProducts,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 18),
+                      SizedBox(
+                        height: 48,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            _buildCategoryChip('Todos'),
+                            _buildCategoryChip('Comprar'),
+                            _buildCategoryChip('Alugar'),
+                            _buildCategoryChip('Contratar'),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 18),
+                      state.isLoadingMoreItems
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              child: currentState.items.isNotEmpty
+                                  ? ListView.builder(
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: currentState.items.length,
+                                      itemBuilder: (context, index) {
+                                        final product = currentState.items[index];
+                                        return ProductCard(
+                                          imageUrl: product.imagesPaths.isNotEmpty
+                                              ? product.imagesPaths.first
+                                              : null,
+                                          name: product.name,
+                                          category: product.categories[0].name,
+                                          actionType: product.type
+                                              .toActionType(product.quantity),
+                                          onTap: () {
+                                            NavigatorProvider.navigateTo(
+                                              AppRoutes.productDetails,
+                                              arguments:
+                                                  RouteArguments<int>(product.id),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    )
+                                  : const Padding(
+                                      padding: EdgeInsets.only(top: 144),
+                                      child: Text('Nenhum produto encontrado'),
+                                    ),
+                            ),
+                    ],
+                  ),
+                ],
               ),
             ),
           );

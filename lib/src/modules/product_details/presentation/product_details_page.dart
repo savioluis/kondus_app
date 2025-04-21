@@ -61,7 +61,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(data.name, style: context.headlineLarge),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 18),
                       ProductDetailsOwnerBanner(owner: data.owner),
                       Padding(
                         padding: const EdgeInsets.only(top: 25, bottom: 25),
