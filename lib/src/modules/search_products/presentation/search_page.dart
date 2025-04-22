@@ -26,7 +26,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
-    controller = SearchPageController()..fetchItems();
+    controller = SearchPageController()..loadInitialData();
   }
 
   @override
@@ -94,22 +94,24 @@ class _SearchPageState extends State<SearchPage> {
         backgroundColor: context.blueColor,
         color: context.whiteColor,
         child: state.products.isNotEmpty
-            ? ListView.separated(
-                padding: const EdgeInsets.only(top: 12),
-                itemCount: state.products.length,
-                itemBuilder: (context, index) {
-                  final product = state.products[index];
-                  return ProductCard(
-                    product: product,
-                    onTap: () => NavigatorProvider.navigateTo(
-                      AppRoutes.productDetails,
-                      arguments: RouteArguments<int>(product.id),
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 18),
-              )
+            ? state.isLoadingMoreItems
+                ? const Center(child: CircularProgressIndicator())
+                : ListView.separated(
+                    padding: const EdgeInsets.only(top: 12),
+                    itemCount: state.products.length,
+                    itemBuilder: (context, index) {
+                      final product = state.products[index];
+                      return ProductCard(
+                        product: product,
+                        onTap: () => NavigatorProvider.navigateTo(
+                          AppRoutes.productDetails,
+                          arguments: RouteArguments<int>(product.id),
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 18),
+                  )
             : const Center(
                 child: Text(
                   'Nenhum produto encontrado',

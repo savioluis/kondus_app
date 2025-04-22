@@ -17,11 +17,22 @@ class SearchLoading extends SearchState {}
 class SearchSuccess extends SearchState {
   // TODO: migrate to itemDTO and fix the dependencies
   final List<ProductDTO> products;
+  final bool isLoadingMoreItems;
 
-  const SearchSuccess(this.products);
+  const SearchSuccess({required this.products ,this.isLoadingMoreItems = false});
 
   @override
-  List<Object?> get props => [products];
+  List<Object?> get props => [products, isLoadingMoreItems];
+
+  SearchSuccess copyWith({
+    List<ProductDTO>? products,
+    bool? isLoadingMoreItems,
+  }) {
+    return SearchSuccess(
+      products: products ?? this.products,
+      isLoadingMoreItems: isLoadingMoreItems ?? this.isLoadingMoreItems,
+    );
+  }
 }
 
 class SearchFailureState extends SearchState {
@@ -33,6 +44,4 @@ class SearchFailureState extends SearchState {
   List<Object?> get props => [error];
 }
 
-class SearchFailurePageState extends SearchState {
-
-}
+class SearchFailurePageState extends SearchState {}
