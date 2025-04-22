@@ -34,6 +34,10 @@ class RegisterItemController extends ChangeNotifier {
   final quantityEC = TextEditingController();
   final List<File> imagesFiles = [];
 
+  int? createdItemId;
+
+  bool isSubmitting = false;
+
   Future<void> loadCategories() async {
     _emitState(RegisterItemLoadingState());
     try {
@@ -98,6 +102,10 @@ class RegisterItemController extends ChangeNotifier {
     required String description,
     List<String>? imagesFilesPaths,
   }) async {
+    if (isSubmitting) return;
+
+    isSubmitting = true;
+
     final currentState = state as RegisterItemSuccessState;
 
     final validationError = _validateFieldsStep2(
@@ -129,13 +137,16 @@ class RegisterItemController extends ChangeNotifier {
     );
 
     try {
-      final itemId = await _itemsService.registerItem(request: item);
+      if (createdItemId == null) {
+        final itemId = await _itemsService.registerItem(request: item);
+        createdItemId = itemId;
+      }
 
       if (imagesFilesPaths != null && imagesFilesPaths.isNotEmpty) {
         try {
           await _itemsService.uploadImagesForItem(
             imagesFilesPaths: imagesFilesPaths,
-            itemId: itemId,
+            itemId: createdItemId!,
           );
 
           _emitState(RegisteredItemWithSuccess(itemName: name));
@@ -154,6 +165,8 @@ class RegisterItemController extends ChangeNotifier {
       }
     } on HttpError catch (e) {
       _emitState(RegisterItemFailureState(error: e));
+    } finally {
+      isSubmitting = false;
     }
   }
 

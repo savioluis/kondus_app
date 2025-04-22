@@ -102,7 +102,7 @@ class _RegisterItemStep2PageState extends State<RegisterItemStep2Page> {
                   vertical: 18,
                 ),
                 child: KondusButton(
-                  label: 'Próximo',
+                  label: 'Anunciar',
                   onPressed: () {
                     controller.registerItem(
                       name: widget.name,
