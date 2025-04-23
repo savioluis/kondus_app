@@ -81,7 +81,7 @@ class _MyItemsPageState extends State<MyItemsPage> {
                         return AnnouncementItem(
                           item: state.items[index],
                           onTap: () async => NavigatorProvider.navigateTo(
-                            AppRoutes.productDetails,
+                            AppRoutes.itemDetails,
                             arguments: RouteArguments<int>(
                               state.items[index].id,
                             ),

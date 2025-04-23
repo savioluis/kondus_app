@@ -3,9 +3,9 @@ import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/widgets/authenticated_image_widget.dart';
 import 'package:kondus/core/widgets/photo_view_page.dart';
 
-class ProductDetailsImageCarousel extends StatelessWidget {
+class ItemDetailsImageCarousel extends StatelessWidget {
   final List<String> imageUrls;
-  const ProductDetailsImageCarousel({super.key, required this.imageUrls});
+  const ItemDetailsImageCarousel({super.key, required this.imageUrls});
 
   @override
   Widget build(BuildContext context) {

@@ -160,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                                               .toActionType(product.quantity),
                                           onTap: () {
                                             NavigatorProvider.navigateTo(
-                                              AppRoutes.productDetails,
+                                              AppRoutes.itemDetails,
                                               arguments:
                                                   RouteArguments<int>(product.id),
                                             );

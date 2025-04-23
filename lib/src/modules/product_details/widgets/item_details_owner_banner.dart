@@ -1,22 +1,21 @@
 
 import 'package:flutter/material.dart';
-import 'package:kondus/src/modules/product_details/domain/product_details_model.dart';
+import 'package:kondus/src/modules/product_details/domain/item_details_model.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 
-class ProductDetailsOwnerBanner extends StatelessWidget {
-  final ProductDetailsOwnerModel owner;
-  const ProductDetailsOwnerBanner({super.key, required this.owner});
+class ItemDetailsOwnerBanner extends StatelessWidget {
+  final ItemDetailsOwnerModel owner;
+  const ItemDetailsOwnerBanner({super.key, required this.owner});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(minWidth: 200),
       decoration: BoxDecoration(
         color: context.lightGreyColor.withOpacity(0.2),
         borderRadius: BorderRadius.circular(18),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(18),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
