@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/core/theme/app_theme.dart';
-import 'package:kondus/src/modules/product_details/presentation/product_details_page.dart';
+import 'package:kondus/core/widgets/authenticated_image_widget.dart';
+import 'package:kondus/core/widgets/photo_view_page.dart';
 
 class ProductDetailsImageCarousel extends StatelessWidget {
   final List<String> imageUrls;
@@ -15,12 +16,22 @@ class ProductDetailsImageCarousel extends StatelessWidget {
             child: CarouselView(
               itemExtent: double.infinity,
               itemSnapping: true,
+              onTap: (value) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PhotoViewPage(
+                      isFromNetwork: true,
+                      imagePath: imageUrls[value],
+                    ),
+                  ),
+                );
+              },
               children: [
                 for (final url in imageUrls)
-                  Image.network(
-                    url,
-                    fit: BoxFit.cover,
-                  )
+                  AuthenticatedImage(
+                    imagePath: url,
+                  ),
               ],
             ),
           )

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kondus/core/services/dtos/items/item_dto.dart';
 import 'package:kondus/core/services/dtos/product_dto.dart';
 import 'package:kondus/core/theme/app_theme.dart';
+import 'package:kondus/core/widgets/authenticated_image_widget.dart';
 
 class AnnouncementItem extends StatelessWidget {
   const AnnouncementItem({
@@ -31,11 +32,9 @@ class AnnouncementItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             item.imagesPaths.isNotEmpty
-                ? Image.network(
-                    item.imagesPaths[0],
-                    width: 72,
-                    height: 72,
-                    fit: BoxFit.cover,
+                ? AuthenticatedImage(
+                    imagePath: item.imagesPaths.first,
+                    size: 72,
                   )
                 : Container(
                     width: 72,

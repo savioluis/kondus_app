@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 class InputValidator {
   static bool isValidEmail(String? value) {
     if (value == null || value.isEmpty) return false;
@@ -21,7 +23,8 @@ class InputValidator {
   }
 
   static bool isValidPhone(String? value, {int maxLength = 14}) {
-    if (value == null || value.isEmpty || value.length > maxLength) return false;
+    if (value == null || value.isEmpty || value.length > maxLength)
+      return false;
 
     const pattern = r'^\+?[1-9]\d{1,14}$';
     final regex = RegExp(pattern);
@@ -32,10 +35,16 @@ class InputValidator {
   static bool isValidUrl(String? value) {
     if (value == null || value.isEmpty) return false;
 
-    const pattern = r'^(https?:\/\/)?([\w\d\-_]+(\.[\w\d\-_]+)+)([\w\d\-\.,@?^=%&:\/~\+#]*)?$';
+    const pattern =
+        r'^(https?:\/\/)?([\w\d\-_]+(\.[\w\d\-_]+)+)([\w\d\-\.,@?^=%&:\/~\+#]*)?$';
     final regex = RegExp(pattern);
 
     return regex.hasMatch(value);
+  }
+
+  static bool isValidNumber(String input) {
+    final regex = RegExp(r'^\d+(\.\d+)?$');
+    return regex.hasMatch(input);
   }
 
   static String? validateName({required String name}) {
@@ -64,5 +73,30 @@ class InputValidator {
     if (password.length < 6) return 'A senha deve ter pelo menos 6 caracteres.';
     if (password != passwordConfirmation) return 'As senhas não coincidem.';
     return null;
+  }
+
+  static String? validatePrice({required String value}) {
+    final valueAsDouble = double.tryParse(value);
+    if (value.isEmpty) return 'O preço é obrigatório.';
+    if ((valueAsDouble != null && valueAsDouble < 0) || valueAsDouble == null)
+      return 'O preço deve ser um valor válido.';
+    return null;
+  }
+}
+
+
+class ProgressiveNumberInputFormatter extends TextInputFormatter {
+  static final _partialNumberRegex = RegExp(r'^-?(\d+)?(\.)?(\d*)?$');
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    if (_partialNumberRegex.hasMatch(newValue.text)) {
+      return newValue;
+    } else {
+      return oldValue;
+    }
   }
 }

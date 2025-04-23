@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/theme/theme_extension.dart';
+import 'package:kondus/core/widgets/authenticated_image_widget.dart';
 
 import '../../../../core/theme/theme_data/colors/app_colors.dart';
 
@@ -58,13 +59,10 @@ class ProductCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(8),
               child: imageUrl != null
-                  ? Image.network(
-                      imageUrl!,
-                      width: 64,
-                      height: 64,
-                      fit: BoxFit.cover,
+                  ? AuthenticatedImage(
+                      imagePath: imageUrl!,
                     )
                   : Container(
                       width: 64,

@@ -1,19 +1,24 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/app/routing/route_arguments.dart';
+import 'package:kondus/core/services/items/models/items_filter_model.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/src/modules/chat/contact_chat/presentation/contact_chat_page.dart';
 import 'package:kondus/src/modules/chat/contact_list/presentation/contact_list_page.dart';
 import 'package:kondus/src/modules/home/models/item_model.dart';
 import 'package:kondus/src/modules/home/presentation/home_page.dart';
-import 'package:kondus/src/modules/lend_your_products/presentation/lend_your_products_page.dart';
+import 'package:kondus/src/modules/register_item/presentation/register_item_controller.dart';
+import 'package:kondus/src/modules/share_your_items/presentation/share_your_items_page.dart';
 import 'package:kondus/src/modules/login/presentation/login_page.dart';
 import 'package:kondus/src/modules/my_announcements/presentation/my_announcements_page.dart';
 import 'package:kondus/src/modules/notifications/presentation/notifications_page.dart';
 import 'package:kondus/src/modules/privacy_policy/presentation/privacy_policy_page.dart';
 import 'package:kondus/src/modules/product_details/presentation/product_details_page.dart';
 import 'package:kondus/src/modules/register/presentation/register_page.dart';
-import 'package:kondus/src/modules/register_product/presentation/register_product_page.dart';
+import 'package:kondus/src/modules/register_item/presentation/step_1/register_item_step_1_page.dart';
+import 'package:kondus/src/modules/register_item/presentation/step_2/register_item_step_2_page.dart';
 import 'package:kondus/src/modules/search_products/presentation/filter_page.dart';
 import 'package:kondus/src/modules/search_products/presentation/search_page.dart';
 import 'package:kondus/src/modules/settings/presentation/settings_page.dart';
@@ -55,14 +60,35 @@ class AppRouter {
           builder: (_) => ProductDetailsPage(productId: id.data),
           settings: settings,
         );
-      case AppRoutes.lendYourProducts:
+      case AppRoutes.shareYourItems:
         return MaterialPageRoute(
-          builder: (_) => const LendYourProductsPage(),
+          builder: (_) => const ShareYourItemsPage(),
           settings: settings,
         );
-      case AppRoutes.registerProduct:
+      case AppRoutes.registerItemStep1:
+        final args = settings.arguments as RouteArguments<List<dynamic>>;
+        final itemType = args.data[0];
+        final itemName = args.data[1];
         return MaterialPageRoute(
-          builder: (_) => const RegisterProductPage(),
+          builder: (_) => RegisterItemPage(
+            itemType: itemType,
+            itemName: itemName,
+          ),
+          settings: settings,
+        );
+      case AppRoutes.registerItemStep2:
+        final args = settings.arguments as RouteArguments<List<dynamic>>;
+        final ItemType? itemType = args.data[0];
+        final String name = args.data[1];
+        final String description = args.data[2];
+        final List<String>? imagesPaths = args.data[3];
+        return MaterialPageRoute(
+          builder: (_) => RegisterItemStep2Page(
+            itemType: itemType,
+            name: name,
+            description: description,
+            imagesPaths: imagesPaths,
+          ),
           settings: settings,
         );
       case AppRoutes.appSettings:

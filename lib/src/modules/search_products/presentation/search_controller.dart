@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -20,16 +21,27 @@ class SearchPageController extends ChangeNotifier {
 
   List<CategoryModel> selectedCategories = [];
 
+  Timer? _debounce;
+
   @override
   void dispose() {
     searchController.dispose();
     super.dispose();
   }
 
+  loadInitialData() {
+    _emitState(SearchLoading());
+    fetchItems();
+  }
+
   Future<void> fetchItems() async {
     final query = searchController.text;
 
-    _emitState(SearchLoading());
+    final currentState = state;
+
+    if (currentState is SearchSuccess) {
+      _emitState(currentState.copyWith(isLoadingMoreItems: true));
+    }
 
     try {
       final response = await _itemsService.getAllItems(
@@ -41,13 +53,13 @@ class SearchPageController extends ChangeNotifier {
       );
 
       if (response == null || response.items.isEmpty) {
-        _emitState(const SearchSuccess([]));
+        _emitState(const SearchSuccess(products: [], isLoadingMoreItems: false));
         return;
       }
 
       final products = ProductDTO.fromItemResponseDTO(response);
 
-      _emitState(SearchSuccess(products));
+      _emitState(SearchSuccess(products: products, isLoadingMoreItems: false));
     } on HttpError catch (e) {
       _emitState(SearchFailureState(e));
     }
@@ -59,7 +71,11 @@ class SearchPageController extends ChangeNotifier {
   }
 
   void onSearchChanged(String query) {
-    fetchItems();
+    _debounce?.cancel();
+
+    _debounce = Timer(const Duration(milliseconds: 750), () {
+      fetchItems();
+    });
   }
 
   void _emitState(SearchState newState) {

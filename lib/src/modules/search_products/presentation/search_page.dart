@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
@@ -25,7 +26,7 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
-    controller = SearchPageController()..fetchItems();
+    controller = SearchPageController()..loadInitialData();
   }
 
   @override
@@ -51,19 +52,19 @@ class _SearchPageState extends State<SearchPage> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(32)),
                   label: Text(
-                    'CADASTRAR',
+                    'ANUNCIAR',
                     style: context.headlineLarge!.copyWith(
                       color: context.whiteColor,
-                      fontSize: 20,
+                      fontSize: 16,
                     ),
                   ),
                   icon: Icon(
-                    Icons.add_business,
+                    HugeIcons.strokeRoundedPackageAdd,
                     color: context.whiteColor,
                   ),
                   backgroundColor: context.blueColor,
                   onPressed: () =>
-                      NavigatorProvider.navigateTo(AppRoutes.lendYourProducts),
+                      NavigatorProvider.navigateTo(AppRoutes.shareYourItems),
                 )
               : null,
           body: Padding(
@@ -93,22 +94,24 @@ class _SearchPageState extends State<SearchPage> {
         backgroundColor: context.blueColor,
         color: context.whiteColor,
         child: state.products.isNotEmpty
-            ? ListView.separated(
-                padding: const EdgeInsets.only(top: 12),
-                itemCount: state.products.length,
-                itemBuilder: (context, index) {
-                  final product = state.products[index];
-                  return ProductCard(
-                    product: product,
-                    onTap: () => NavigatorProvider.navigateTo(
-                      AppRoutes.productDetails,
-                      arguments: RouteArguments<int>(product.id),
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 18),
-              )
+            ? state.isLoadingMoreItems
+                ? const Center(child: CircularProgressIndicator())
+                : ListView.separated(
+                    padding: const EdgeInsets.only(top: 12),
+                    itemCount: state.products.length,
+                    itemBuilder: (context, index) {
+                      final product = state.products[index];
+                      return ProductCard(
+                        product: product,
+                        onTap: () => NavigatorProvider.navigateTo(
+                          AppRoutes.productDetails,
+                          arguments: RouteArguments<int>(product.id),
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 18),
+                  )
             : const Center(
                 child: Text(
                   'Nenhum produto encontrado',

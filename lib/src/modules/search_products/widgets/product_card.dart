@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kondus/core/services/dtos/product_dto.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/theme/theme_data/colors/app_colors.dart';
+import 'package:kondus/core/widgets/authenticated_image_widget.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -56,11 +57,10 @@ class ProductCard extends StatelessWidget {
         child: Row(
           children: [
             product.imageUrl.isNotEmpty
-                ? Image.network(
-                    product.imageUrl,
-                    width: 72,
-                    height: 72,
-                    fit: BoxFit.cover,
+                ? AuthenticatedImage(
+                    imagePath: product.imageUrl,
+                    size: 72,
+                    radius: 18,
                   )
                 : Container(
                     width: 72,
@@ -90,9 +90,7 @@ class ProductCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                           style: context.labelLarge!.copyWith(
-                            fontSize: 16,
-                            color: context.primaryColor
-                          ),
+                              fontSize: 16, color: context.primaryColor),
                         ),
                       ),
                       Flexible(child: _buildActionTypeChip())

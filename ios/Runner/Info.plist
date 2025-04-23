@@ -45,5 +45,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Este aplicativo precisa acessar sua biblioteca de fotos para permitir que você selecione imagens do seu dispositivo.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Este aplicativo precisa acessar a câmera para que você possa capturar novas fotos diretamente pelo app.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Este aplicativo requer acesso ao microfone para possibilitar a gravação de vídeos com áudio.</string>
 </dict>
 </plist>
