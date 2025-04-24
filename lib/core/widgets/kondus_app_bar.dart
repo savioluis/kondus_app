@@ -5,14 +5,17 @@ import 'package:kondus/core/theme/app_theme.dart';
 class KondusAppBar extends StatelessWidget implements PreferredSizeWidget {
   const KondusAppBar({
     this.title,
+    this.titleWidget,
     this.onBackButtonPressed,
     this.backButtonColor,
     this.actions,
     this.backgroundColor,
     super.key,
-  });
+  }) : assert(title == null || titleWidget == null,
+            'Can not have both title and titleWidget in this Widget');
 
   final String? title;
+  final Widget? titleWidget;
   final void Function()? onBackButtonPressed;
   final Color? backButtonColor;
   final List<Widget>? actions;
@@ -32,7 +35,7 @@ class KondusAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       backgroundColor: backgroundColor ?? context.surfaceColor,
       surfaceTintColor: context.surfaceColor,
-      title: title != null ? Text(title!) : null,
+      title: title != null ? Text(title!) : titleWidget,
       actions: actions,
     );
   }

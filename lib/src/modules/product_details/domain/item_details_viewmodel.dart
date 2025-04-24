@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:kondus/core/error/kondus_error.dart';
 import 'package:kondus/src/modules/product_details/domain/get_item_details_usecase.dart';
 import 'package:kondus/src/modules/product_details/domain/item_details_model.dart';
 
@@ -29,7 +30,7 @@ final class ItemDetailsSuccessState implements ItemDetailsState {
 }
 
 final class ItemDetailsFailureState implements ItemDetailsState {
-  final String message;
+  final KondusFailure error;
 
-  ItemDetailsFailureState({required this.message});
+  ItemDetailsFailureState({required this.error});
 }

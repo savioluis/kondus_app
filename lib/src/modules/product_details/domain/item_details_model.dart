@@ -20,6 +20,14 @@ final class ItemDetailsModel {
     required this.type,
   });
 
+  static String _getActionType({required int quantity, required String type}) {
+    if (type == 'produto') {
+      if (quantity == 0) return 'Alugar';
+      return 'Comprar';
+    }
+    return 'Contratar';
+  }
+
   factory ItemDetailsModel.fromDTO(ItemContentDTO dto) {
     return ItemDetailsModel(
       name: dto.item.title,
@@ -31,7 +39,7 @@ final class ItemDetailsModel {
       ),
       price: dto.item.price,
       categories: dto.item.categories,
-      type: dto.item.type,
+      type: _getActionType(quantity: dto.item.quantity, type: dto.item.type),
     );
   }
 }
