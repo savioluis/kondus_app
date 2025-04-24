@@ -6,14 +6,13 @@ import 'package:kondus/core/widgets/authenticated_image_widget.dart';
 import 'package:kondus/core/widgets/error_state_widget.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/core/widgets/photo_view_page.dart';
-import 'package:kondus/src/modules/home/widgets/product_card.dart';
 import 'package:kondus/src/modules/product_details/domain/item_details_model.dart';
 import 'package:kondus/src/modules/product_details/domain/item_details_viewmodel.dart';
+import 'package:kondus/src/modules/product_details/widgets/item_details_header.dart';
 import 'package:kondus/src/modules/product_details/widgets/item_details_image_carousel.dart';
 import 'package:kondus/src/modules/product_details/widgets/item_details_owner_banner.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/src/modules/product_details/widgets/item_details_price_info_widget.dart';
-import 'package:kondus/src/modules/share_your_items/widgets/item_chip.dart';
 import '../../../../app/injections.dart';
 
 class ItemDetailsPage extends StatefulWidget {
@@ -76,8 +75,8 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                           : data.imageUrls.isEmpty
                               ? Container(
                                   decoration: BoxDecoration(
-                                    color: context.lightGreyColor
-                                        .withOpacity(0.2),
+                                    color:
+                                        context.lightGreyColor.withOpacity(0.2),
                                     borderRadius: const BorderRadius.all(
                                       Radius.circular(16),
                                     ),
@@ -86,8 +85,8 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                                   width: double.infinity,
                                   child: Icon(
                                     Icons.hide_image_outlined,
-                                    color: context.onSurfaceColor
-                                        .withOpacity(0.2),
+                                    color:
+                                        context.onSurfaceColor.withOpacity(0.2),
                                     size: 96,
                                   ),
                                 )
@@ -134,30 +133,10 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Flexible(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          data.name,
-                                          style: context.headlineLarge!
-                                              .copyWith(fontSize: 28),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          '${data.type[0].toUpperCase()}${data.type.substring(1)}',
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  _buildActionTypeChip(data.actionType),
-                                ],
+                              ItemDetailsHeader(
+                                name: data.name,
+                                type: data.type,
+                                actionType: data.actionType,
                               ),
                               const SizedBox(height: 8),
                               Divider(
@@ -184,8 +163,8 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                                 data.description,
                                 maxLines: 6,
                                 overflow: TextOverflow.ellipsis,
-                                style: context.bodyMedium!
-                                    .copyWith(fontSize: 18),
+                                style:
+                                    context.bodyMedium!.copyWith(fontSize: 18),
                               ),
                               const SizedBox(height: 24),
                               Divider(
@@ -243,7 +222,7 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 96),
+                              const SizedBox(height: 48),
                             ],
                           ),
                         ),
@@ -257,32 +236,4 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
       },
     );
   }
-}
-
-Widget _buildActionTypeChip(String actionType) {
-  final colors = {
-    'Comprar': Colors.green,
-    'Alugar': Colors.orange,
-    'Contratar': Colors.blue,
-  };
-
-  final chipColor = colors[actionType] ?? AppColors.lightGrey;
-
-  return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-    decoration: BoxDecoration(
-      color: chipColor.withOpacity(0.2),
-      border: Border.all(color: chipColor),
-      borderRadius: BorderRadius.circular(16),
-    ),
-    child: Text(
-      maxLines: 1,
-      actionType.toUpperCase(),
-      style: TextStyle(
-        color: chipColor,
-        fontSize: 14,
-        fontWeight: FontWeight.bold,
-      ),
-    ),
-  );
 }
