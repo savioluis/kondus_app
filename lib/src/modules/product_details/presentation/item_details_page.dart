@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
-import 'package:kondus/core/theme/theme_data/colors/app_colors.dart';
 import 'package:kondus/core/widgets/authenticated_image_widget.dart';
 import 'package:kondus/core/widgets/error_state_widget.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/core/widgets/photo_view_page.dart';
-import 'package:kondus/src/modules/product_details/domain/item_details_model.dart';
 import 'package:kondus/src/modules/product_details/domain/item_details_viewmodel.dart';
 import 'package:kondus/src/modules/product_details/widgets/item_details_header.dart';
 import 'package:kondus/src/modules/product_details/widgets/item_details_image_carousel.dart';
@@ -16,9 +14,14 @@ import 'package:kondus/src/modules/product_details/widgets/item_details_price_in
 import '../../../../app/injections.dart';
 
 class ItemDetailsPage extends StatefulWidget {
-  const ItemDetailsPage({required this.productId, super.key});
+  const ItemDetailsPage({
+    required this.productId,
+    this.isOwnerAcessing = false,
+    super.key,
+  });
 
   final int productId;
+  final bool isOwnerAcessing;
 
   @override
   State<ItemDetailsPage> createState() => ItemtDetailsPageState();
@@ -53,13 +56,15 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
             ),
           ItemDetailsSuccessState(data: final data) => Scaffold(
               appBar: const KondusAppBar(),
-              floatingActionButton: FloatingActionButton.extended(
-                onPressed: () =>
-                    NavigatorProvider.navigateTo(AppRoutes.contactChat),
-                backgroundColor: context.blueColor,
-                label: const Text("RESERVAR"),
-                icon: const Icon(Icons.chat),
-              ),
+              floatingActionButton: widget.isOwnerAcessing
+                  ? null
+                  : FloatingActionButton.extended(
+                      onPressed: () =>
+                          NavigatorProvider.navigateTo(AppRoutes.contactChat),
+                      backgroundColor: context.blueColor,
+                      label: const Text("RESERVAR"),
+                      icon: const Icon(Icons.chat),
+                    ),
               body: CustomScrollView(
                 slivers: [
                   SliverToBoxAdapter(

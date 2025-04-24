@@ -55,9 +55,14 @@ class AppRouter {
           settings: settings,
         );
       case AppRoutes.itemDetails:
-        final id = settings.arguments as RouteArguments<int>;
+        final args = settings.arguments as RouteArguments<List<dynamic>>;
+        final id = args.data[0];
+        final isOwnerAcessing = args.data[1];
         return MaterialPageRoute(
-          builder: (_) => ItemDetailsPage(productId: id.data),
+          builder: (_) => ItemDetailsPage(
+            productId: id,
+            isOwnerAcessing: isOwnerAcessing,
+          ),
           settings: settings,
         );
       case AppRoutes.shareYourItems:
