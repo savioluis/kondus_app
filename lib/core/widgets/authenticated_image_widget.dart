@@ -31,10 +31,10 @@ class AuthenticatedImage extends StatelessWidget {
       future: tokenRepository.getAccessToken(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const SizedBox(
-            width: 64,
-            height: 64,
-            child: Center(child: CircularProgressIndicator()),
+          return SizedBox(
+            width: size,
+            height: size,
+            child: const Center(child: CircularProgressIndicator()),
           );
         }
 
@@ -42,6 +42,7 @@ class AuthenticatedImage extends StatelessWidget {
 
         return ClipRRect(
           borderRadius: BorderRadius.circular(radius),
+          clipBehavior: Clip.antiAliasWithSaveLayer,
           child: Image.network(
             _getImageUrl(imagePath),
             width: size,

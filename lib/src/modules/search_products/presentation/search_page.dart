@@ -104,8 +104,13 @@ class _SearchPageState extends State<SearchPage> {
                       return ProductCard(
                         product: product,
                         onTap: () => NavigatorProvider.navigateTo(
-                          AppRoutes.productDetails,
-                          arguments: RouteArguments<int>(product.id),
+                          AppRoutes.itemDetails,
+                          arguments: RouteArguments<List<dynamic>>(
+                            [
+                              product.id,
+                              false,
+                            ],
+                          ),
                         ),
                       );
                     },

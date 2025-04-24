@@ -15,7 +15,7 @@ import 'package:kondus/src/modules/login/presentation/login_page.dart';
 import 'package:kondus/src/modules/my_announcements/presentation/my_announcements_page.dart';
 import 'package:kondus/src/modules/notifications/presentation/notifications_page.dart';
 import 'package:kondus/src/modules/privacy_policy/presentation/privacy_policy_page.dart';
-import 'package:kondus/src/modules/product_details/presentation/product_details_page.dart';
+import 'package:kondus/src/modules/product_details/presentation/item_details_page.dart';
 import 'package:kondus/src/modules/register/presentation/register_page.dart';
 import 'package:kondus/src/modules/register_item/presentation/step_1/register_item_step_1_page.dart';
 import 'package:kondus/src/modules/register_item/presentation/step_2/register_item_step_2_page.dart';
@@ -54,10 +54,15 @@ class AppRouter {
           builder: (_) => const SearchPage(),
           settings: settings,
         );
-      case AppRoutes.productDetails:
-        final id = settings.arguments as RouteArguments<int>;
+      case AppRoutes.itemDetails:
+        final args = settings.arguments as RouteArguments<List<dynamic>>;
+        final id = args.data[0];
+        final isOwnerAcessing = args.data[1];
         return MaterialPageRoute(
-          builder: (_) => ProductDetailsPage(productId: id.data),
+          builder: (_) => ItemDetailsPage(
+            productId: id,
+            isOwnerAcessing: isOwnerAcessing,
+          ),
           settings: settings,
         );
       case AppRoutes.shareYourItems:

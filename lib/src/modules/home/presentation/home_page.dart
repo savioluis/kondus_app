@@ -141,7 +141,8 @@ class _HomePageState extends State<HomePage> {
                               child: CircularProgressIndicator(),
                             )
                           : Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
                               child: currentState.items.isNotEmpty
                                   ? ListView.builder(
                                       shrinkWrap: true,
@@ -149,20 +150,27 @@ class _HomePageState extends State<HomePage> {
                                           const NeverScrollableScrollPhysics(),
                                       itemCount: currentState.items.length,
                                       itemBuilder: (context, index) {
-                                        final product = currentState.items[index];
+                                        final product =
+                                            currentState.items[index];
                                         return ProductCard(
-                                          imageUrl: product.imagesPaths.isNotEmpty
-                                              ? product.imagesPaths.first
-                                              : null,
+                                          imageUrl:
+                                              product.imagesPaths.isNotEmpty
+                                                  ? product.imagesPaths.first
+                                                  : null,
                                           name: product.name,
                                           category: product.categories[0].name,
                                           actionType: product.type
                                               .toActionType(product.quantity),
                                           onTap: () {
                                             NavigatorProvider.navigateTo(
-                                              AppRoutes.productDetails,
+                                              AppRoutes.itemDetails,
                                               arguments:
-                                                  RouteArguments<int>(product.id),
+                                                  RouteArguments<List<dynamic>>(
+                                                [
+                                                  product.id,
+                                                  false,
+                                                ],
+                                              ),
                                             );
                                           },
                                         );
