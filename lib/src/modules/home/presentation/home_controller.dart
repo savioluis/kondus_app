@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kondus/core/error/kondus_error.dart';
 import 'package:kondus/core/providers/http/error/http_error.dart';
@@ -137,12 +138,6 @@ class HomeController extends ChangeNotifier {
 
   logout() {
     GetIt.instance<SessionManager>().logout();
-  }
-
-  changeToken() async {
-    final tokenrepo = GetIt.instance<ITokenRepository>();
-    await tokenrepo.clearToken();
-    await tokenrepo.saveAccessToken('fsafsa');
   }
 
   void _emitState(HomeState newState) {

@@ -95,36 +95,48 @@ class _HomePageState extends State<HomePage> {
               onRefresh: () async => await controller.loadInitialData(),
               backgroundColor: context.blueColor,
               color: context.whiteColor,
-              child: ListView(
-                children: [
-                  Column(
-                    children: [
-                      const SizedBox(height: 12),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: ContactTitle(
-                          onTap: () => NavigatorProvider.navigateTo(
-                            AppRoutes.contactList,
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 12),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: ContactTitle(
+                            onTap: () => NavigatorProvider.navigateTo(
+                              AppRoutes.contactList,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      ContactItemSlider(
-                        contacts: contacts,
-                        itemCount: contacts.length,
-                      ),
-                      const SizedBox(height: 18),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: SearchBarButton(
-                          onTap: () => NavigatorProvider.navigateTo(
-                            AppRoutes.searchProducts,
+                        const SizedBox(height: 8),
+                        ContactItemSlider(
+                          contacts: contacts,
+                          itemCount: contacts.length,
+                        ),
+                        const SizedBox(height: 18),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: SearchBarButton(
+                            onTap: () => NavigatorProvider.navigateTo(
+                              AppRoutes.searchProducts,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 18),
-                      SizedBox(
-                        height: 48,
+                        const SizedBox(height: 18),
+                      ],
+                    ),
+                  ),
+
+                  SliverPersistentHeader(
+                    pinned: true,
+                    delegate: _PinnedCategoryHeader(
+                      minExtent: 60,
+                      maxExtent: 60,
+                      child: Container(
+                        color: context.surfaceColor,
+                        padding: const EdgeInsets.only(left: 12),
+                        alignment: Alignment.centerLeft,
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           children: [
@@ -135,54 +147,55 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 18),
-                      state.isLoadingMoreItems
-                          ? const Center(
-                              child: CircularProgressIndicator(),
-                            )
-                          : Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 12),
-                              child: currentState.items.isNotEmpty
-                                  ? ListView.builder(
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      itemCount: currentState.items.length,
-                                      itemBuilder: (context, index) {
-                                        final product =
-                                            currentState.items[index];
-                                        return ProductCard(
-                                          imageUrl:
-                                              product.imagesPaths.isNotEmpty
-                                                  ? product.imagesPaths.first
-                                                  : null,
-                                          name: product.name,
-                                          category: product.categories[0].name,
-                                          actionType: product.type
-                                              .toActionType(product.quantity),
-                                          onTap: () {
-                                            NavigatorProvider.navigateTo(
-                                              AppRoutes.itemDetails,
-                                              arguments:
-                                                  RouteArguments<List<dynamic>>(
-                                                [
-                                                  product.id,
-                                                  false,
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        );
-                                      },
-                                    )
-                                  : const Padding(
-                                      padding: EdgeInsets.only(top: 144),
-                                      child: Text('Nenhum produto encontrado'),
-                                    ),
-                            ),
-                    ],
+                    ),
                   ),
+
+                  const SliverToBoxAdapter(child: SizedBox(height: 18)),
+
+                  // LISTA DE PRODUTOS
+                  if (state.isLoadingMoreItems)
+                    const SliverToBoxAdapter(
+                      child: Center(child: CircularProgressIndicator()),
+                    )
+                  else if (currentState.items.isNotEmpty)
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                        childCount: currentState.items.length,
+                        (context, index) {
+                          final product = currentState.items[index];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: ProductCard(
+                              imageUrl: product.imagesPaths.isNotEmpty
+                                  ? product.imagesPaths.first
+                                  : null,
+                              name: product.name,
+                              category: product.categories[0].name,
+                              actionType:
+                                  product.type.toActionType(product.quantity),
+                              onTap: () {
+                                NavigatorProvider.navigateTo(
+                                  AppRoutes.itemDetails,
+                                  arguments: RouteArguments<List<dynamic>>([
+                                    product.id,
+                                    false,
+                                  ]),
+                                );
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  else
+                    const SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 144),
+                        child: Center(child: Text('Nenhum produto encontrado')),
+                      ),
+                    ),
+
+                  const SliverToBoxAdapter(child: SizedBox(height: 96)),
                 ],
               ),
             ),
@@ -226,74 +239,37 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-_testTela(VoidCallback setState) {
-  File? imageFile;
-  return Scaffold(
-    body: SingleChildScrollView(
-      child: Column(
-        children: [
-          if (imageFile != null) Image.file(imageFile),
-          ElevatedButton(
-            onPressed: () async {
-              final picker = ImagePicker();
-              final result = await picker.pickMultiImage();
+class _PinnedCategoryHeader extends SliverPersistentHeaderDelegate {
+  @override
+  final double minExtent;
 
-              if (result.isNotEmpty) {
-                final files = result.map((xfile) => File(xfile.path)).toList();
-                imageFile = files[0];
-                setState();
-              }
-            },
-            child: Text('Upload'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              final _tokenRepository = GetIt.instance<ITokenRepository>();
-              final token = await _tokenRepository.getAccessToken();
-              final imageFilePath = imageFile!.path;
-              final itemId = 50;
-              final body = FormData.fromMap({
-                "image": await MultipartFile.fromFile(imageFilePath),
-                "itemId": itemId.toString(),
-              });
+  @override
+  final double maxExtent;
+  
+  final Widget child;
 
-              final dio = Dio(BaseOptions(baseUrl: 'http://0.0.0.0:8080'));
+  _PinnedCategoryHeader({
+    required this.child,
+    required this.minExtent,
+    required this.maxExtent,
+  });
 
-              dio.interceptors.add(
-                LogInterceptor(
-                  requestBody: true,
-                  responseBody: true,
-                  error: true,
-                ),
-              );
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return Material(
+      color: context.surfaceColor,
+      child: child,
+    );
+  }
 
-              final response = await dio.post(
-                '/items/images',
-                options: Options(
-                  headers: {
-                    'Content-Type': 'multipart/form-data',
-                    'Authorization': 'Bearer $token',
-                  },
-                ),
-                data: body,
-              );
-
-              log(response.toString());
-            },
-            child: Text('Enviar'),
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-Image imageteste() {
-  return Image.network(
-    "http://0.0.0.0:8080/items/images/RvUC-SZVqM8sAgi-image_picker_935FB777-60A0-4C8C-8C9F-A9DEDBB78207-68682-0000032A06403D1A.jpg",
-    headers: {
-      'Authorization':
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJteS1hdWRpZW5jZSIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3QiLCJpZCI6MSwiZXhwIjoxNzQ1MjcwMzYzfQ.Xp5eEGm6xAxlM0FJqG-oeZRNl761J_7H3I_CTSaTtQg',
-    },
-  );
+  @override
+  bool shouldRebuild(covariant _PinnedCategoryHeader oldDelegate) {
+    return oldDelegate.child != child ||
+        oldDelegate.minExtent != minExtent ||
+        oldDelegate.maxExtent != maxExtent;
+  }
 }
