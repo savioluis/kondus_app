@@ -9,6 +9,8 @@ final class ItemDetailsModel {
   final double price;
   final List<CategoryDTO> categories;
   final String type;
+  final String actionType;
+  final int quantity;
 
   ItemDetailsModel({
     required this.name,
@@ -18,6 +20,8 @@ final class ItemDetailsModel {
     required this.price,
     required this.categories,
     required this.type,
+    required this.actionType,
+    required this.quantity,
   });
 
   static String _getActionType({required int quantity, required String type}) {
@@ -39,7 +43,9 @@ final class ItemDetailsModel {
       ),
       price: dto.item.price,
       categories: dto.item.categories,
-      type: _getActionType(quantity: dto.item.quantity, type: dto.item.type),
+      type: dto.item.type,
+      actionType: _getActionType(quantity: dto.item.quantity, type: dto.item.type),
+      quantity: dto.item.quantity,
     );
   }
 }
@@ -48,5 +54,6 @@ final class ItemDetailsOwnerModel {
   final String name;
   final String complement;
 
-  ItemDetailsOwnerModel({required this.name, required this.complement});
+  ItemDetailsOwnerModel(
+      {required this.name, required this.complement});
 }

@@ -144,7 +144,7 @@ class AuthService {
       if (e.isAuthError) {
         throw const HttpError(
           type: HttpErrorType.unauthorized,
-          message: 'Não autorizado. Autentifique-se novamente.',
+          message: 'Sua sessão expirou. Autentifique-se novamente.',
         );
       }
 
