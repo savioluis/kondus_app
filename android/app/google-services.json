@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "853711397764",
+    "project_id": "kondus-a31e0",
+    "storage_bucket": "kondus-a31e0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:853711397764:android:01d197159578591eb033d1",
+        "android_client_info": {
+          "package_name": "com.example.kondus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCCobHZNw-DNlr4VvyXvBHFHFdof6rFrc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
