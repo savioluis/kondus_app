@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:kondus/core/services/chat/chat_service.dart';
+import 'package:kondus/core/widgets/kondus_elevated_button.dart';
 import 'package:kondus/src/modules/chat/contact_chat/presentation/contact_chat_page.dart';
 import 'package:kondus/src/modules/chat/contact_list/widgets/contact_tile.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
@@ -25,7 +28,20 @@ class ContactListPage extends StatelessWidget {
             return Center(child: Text('Erro: ${state.errorMessage}'));
           } else if (state is ContactListSuccess) {
             if (state.contacts.isEmpty) {
-              return const Center(child: Text('Nenhum contato disponível'));
+              return Center(
+                  child: Column(
+                children: [
+                  const Text('Nenhum contato disponível'),
+                  KondusButton(
+                    label: 'Enviar',
+                    onPressed: () async {
+                      final chat = GetIt.instance<ChatService>();
+                      await chat.sendMessage(
+                          '2', '1', 'Mensagem enviada do id 2 para o id 1');
+                    },
+                  ),
+                ],
+              ));
             }
             return SingleChildScrollView(
               child: Padding(
@@ -50,16 +66,16 @@ class ContactListPage extends StatelessWidget {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 6),
                           child: ContactTile(
-                            name: contact['name']!,
-                            apartment: contact['apartment']!,
+                            name: contact.name,
+                            apartment: contact.location,
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ContactChatPage(
-                                    uid: contact['uid']!,
-                                    name: contact['name']!,
-                                    apartment: contact['apartment']!,
+                                    uid: contact.id,
+                                    name: contact.name,
+                                    apartment: contact.location,
                                   ),
                                 ),
                               );
