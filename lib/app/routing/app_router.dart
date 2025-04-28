@@ -107,11 +107,15 @@ class AppRouter {
           settings: settings,
         );
       case AppRoutes.contactChat:
+      final args = settings.arguments as RouteArguments<List<dynamic>>;
+      final String uid = args.data[0];
+      final String name = args.data[1];
+      final String location = args.data[2];
         return MaterialPageRoute(
-          builder: (_) => const ContactChatPage(
-            apartment: 'Casa 7',
-            name: 'Teresa',
-            uid: '1',
+          builder: (_) => ContactChatPage(
+            uid: uid,
+            name: name,
+            apartment: location,
           ),
           settings: settings,
         );

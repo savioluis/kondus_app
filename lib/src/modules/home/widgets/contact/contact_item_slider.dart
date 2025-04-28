@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/src/modules/chat/contact_chat/presentation/contact_chat_page.dart';
+import 'package:kondus/src/modules/chat/contact_list/model/contact_model.dart';
 import 'package:kondus/src/modules/home/widgets/contact/contact_item.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/theme/theme_data/colors/color_utils.dart';
@@ -12,7 +13,7 @@ class ContactItemSlider extends StatelessWidget {
   });
 
   final int itemCount;
-  final List<Map<String, String>> contacts;
+  final List<ContactModel> contacts;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,14 +31,14 @@ class ContactItemSlider extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ContactChatPage(
-                      uid: contacts[index]['uid']!,
-                      name: contacts[index]['name']!,
-                      apartment: contacts[index]['apartment']!,
+                      uid: contacts[index].id,
+                      name: contacts[index].name,
+                      apartment: contacts[index].location,
                     ),
                   ),
                 );
               },
-              name: contacts[index]['name']!,
+              name: contacts[index].name,
               iconColor: context.whiteColor,
               backgroundColor: ColorUtils.generateTonalColors(
                 baseColor: context.blueColor,
