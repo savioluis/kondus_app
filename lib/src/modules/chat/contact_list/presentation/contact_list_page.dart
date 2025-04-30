@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:kondus/core/widgets/kondus_elevated_button.dart';
+import 'package:kondus/app/routing/app_routes.dart';
+import 'package:kondus/app/routing/route_arguments.dart';
+import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/src/modules/chat/contact_chat/presentation/contact_chat_page.dart';
 import 'package:kondus/src/modules/chat/contact_list/widgets/contact_tile.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
@@ -56,14 +58,10 @@ class ContactListPage extends StatelessWidget {
                             name: contact.name,
                             apartment: contact.location,
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ContactChatPage(
-                                    uid: contact.id,
-                                    name: contact.name,
-                                    apartment: contact.location,
-                                  ),
+                              NavigatorProvider.navigateTo(
+                                AppRoutes.contactChat,
+                                arguments: RouteArguments<List<String>>(
+                                  [contact.id, contact.name],
                                 ),
                               );
                             },

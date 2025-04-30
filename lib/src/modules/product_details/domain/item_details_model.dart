@@ -38,22 +38,28 @@ final class ItemDetailsModel {
       description: dto.item.description,
       imageUrls: dto.item.imagesPaths,
       owner: ItemDetailsOwnerModel(
+        id: dto.user.id.toString(),
         name: dto.user.name,
         complement: dto.user.house,
       ),
       price: dto.item.price,
       categories: dto.item.categories,
       type: dto.item.type,
-      actionType: _getActionType(quantity: dto.item.quantity, type: dto.item.type),
+      actionType:
+          _getActionType(quantity: dto.item.quantity, type: dto.item.type),
       quantity: dto.item.quantity,
     );
   }
 }
 
 final class ItemDetailsOwnerModel {
+  final String id;
   final String name;
   final String complement;
 
-  ItemDetailsOwnerModel(
-      {required this.name, required this.complement});
+  ItemDetailsOwnerModel({
+    required this.id,
+    required this.name,
+    required this.complement,
+  });
 }

@@ -30,6 +30,10 @@ class ColorUtils {
     // Converter a cor base para HSL
     final hslBase = HSLColor.fromColor(baseColor);
 
+    if (count == 1) {
+      return [baseColor];
+    }
+
     return List<Color>.generate(count, (index) {
       // Distribuir as variações uniformemente
       final factor = (index - count ~/ 2) / (count ~/ 2);

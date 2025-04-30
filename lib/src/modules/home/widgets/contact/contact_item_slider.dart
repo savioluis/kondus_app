@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kondus/app/routing/app_routes.dart';
+import 'package:kondus/app/routing/route_arguments.dart';
+import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/src/modules/chat/contact_chat/presentation/contact_chat_page.dart';
 import 'package:kondus/src/modules/chat/contact_list/model/contact_model.dart';
 import 'package:kondus/src/modules/home/widgets/contact/contact_item.dart';
@@ -14,37 +17,30 @@ class ContactItemSlider extends StatelessWidget {
 
   final int itemCount;
   final List<ContactModel> contacts;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.transparent,
+    return SizedBox(
       height: 110,
       child: ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
-          return Padding(
-            padding:
-                index == 0 ? const EdgeInsets.only(left: 12) : EdgeInsets.zero,
-            child: ContactItem(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ContactChatPage(
-                      uid: contacts[index].id,
-                      name: contacts[index].name,
-                      apartment: contacts[index].location,
-                    ),
-                  ),
-                );
-              },
-              name: contacts[index].name,
-              iconColor: context.whiteColor,
-              backgroundColor: ColorUtils.generateTonalColors(
-                baseColor: context.blueColor,
-                count: itemCount,
-              ).toList()[index].withOpacity(0.38),
-            ),
+          return ContactItem(
+            onPressed: () {
+              NavigatorProvider.navigateTo(
+                AppRoutes.contactChat,
+                arguments: RouteArguments<List<String>>(
+                  [contacts[index].id, contacts[index].name],
+                ),
+              );
+            },
+            name: contacts[index].name,
+            iconColor: context.whiteColor,
+            backgroundColor: ColorUtils.generateTonalColors(
+              baseColor: context.blueColor,
+              count: itemCount,
+            ).toList()[index].withOpacity(0.38),
           );
         },
         separatorBuilder: (context, index) => const SizedBox(

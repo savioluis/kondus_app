@@ -7,14 +7,12 @@ import 'package:kondus/core/widgets/kondus_text_field.dart';
 import 'package:kondus/src/modules/chat/contact_chat/presentation/contact_chat_controller.dart';
 
 class ContactChatPage extends StatelessWidget {
-  final String uid;
+  final String targetId;
   final String name;
-  final String apartment;
 
   ContactChatPage({
-    required this.uid,
+    required this.targetId,
     required this.name,
-    required this.apartment,
     super.key,
   });
 
@@ -28,7 +26,7 @@ class ContactChatPage extends StatelessWidget {
         children: [
           Expanded(
             child: StreamBuilder<List<MessageModel>>(
-              stream: controller.getMessages(uid),
+              stream: controller.getMessages(targetId),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -55,7 +53,7 @@ class ContactChatPage extends StatelessWidget {
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
                     final message = messages[index];
-                    final isUserMessage = message.toId == uid;
+                    final isUserMessage = message.toId == targetId;
 
                     return Align(
                       alignment: isUserMessage
@@ -100,9 +98,7 @@ class ContactChatPage extends StatelessWidget {
                 const SizedBox(width: 8),
                 IconButton(
                   onPressed: () async {
-                    await controller.sendMessage(
-                      targetId: uid,
-                    );
+                    await controller.sendMessage(targetId: targetId);
                   },
                   icon: const Icon(Icons.send),
                   color: Colors.blue,

@@ -44,32 +44,38 @@ class ChatService {
     });
   }
 
-  Future<List<String>> getUsersIdsContacts() async {
+  Future<List<String>> getUsersIdsContacts({int? limit}) async {
     final currentUserId = (await _authService.getUserId())?.toString();
 
     if (currentUserId == null) return [];
 
-    QuerySnapshot querySnapshot = await _cloudFireStore
+    final Set<String> usersIdsWithWhomUserHasChated = {};
+
+    QuerySnapshot sentMessagesSnapshot = await _cloudFireStore
         .collection('messages')
         .where('fromId', isEqualTo: currentUserId)
         .get();
 
-    Set<String> usersIdsWithWhomUserHasConversed = {};
-
-    for (final doc in querySnapshot.docs) {
-      usersIdsWithWhomUserHasConversed.add(doc['toId']);
+    for (final doc in sentMessagesSnapshot.docs) {
+      usersIdsWithWhomUserHasChated.add(doc['toId']);
     }
 
-    querySnapshot = await _cloudFireStore
+    QuerySnapshot receivedMessagesSnapshot = await _cloudFireStore
         .collection('messages')
         .where('toId', isEqualTo: currentUserId)
         .get();
 
-    for (final doc in querySnapshot.docs) {
-      usersIdsWithWhomUserHasConversed.add(doc['fromId']);
+    for (final doc in receivedMessagesSnapshot.docs) {
+      usersIdsWithWhomUserHasChated.add(doc['fromId']);
     }
 
-    return usersIdsWithWhomUserHasConversed.toList();
+    final allUserIds = usersIdsWithWhomUserHasChated.toList();
+
+    if (limit != null && limit < allUserIds.length) {
+      return allUserIds.take(limit).toList();
+    }
+
+    return allUserIds;
   }
 }
 

@@ -1,25 +1,9 @@
-import 'dart:developer';
-import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:http_parser/http_parser.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/app/routing/route_arguments.dart';
-import 'package:kondus/core/error/kondus_error.dart';
-import 'package:kondus/core/providers/http/error/http_error.dart';
-import 'package:kondus/core/providers/http/i_http_provider.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
-import 'package:kondus/core/repositories/i_token_repository.dart';
-import 'package:kondus/core/services/items/items_service.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
-import 'package:kondus/core/utils/snack_bar_helper.dart';
 import 'package:kondus/core/widgets/error_state_widget.dart';
-import 'package:kondus/core/widgets/kondus_app_bar.dart';
-import 'package:kondus/core/widgets/kondus_elevated_button.dart';
-import 'package:kondus/src/modules/home/models/item_model.dart';
 import 'package:kondus/src/modules/home/presentation/home_controller.dart';
 import 'package:kondus/src/modules/home/presentation/home_state.dart';
 import 'package:kondus/src/modules/home/widgets/contact/contact_item_slider.dart';
@@ -39,7 +23,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   String selectedCategory = 'Todos';
 
   late final HomeController controller;
@@ -81,23 +64,31 @@ class _HomePageState extends State<HomePage> {
               color: context.whiteColor,
               child: CustomScrollView(
                 slivers: [
+                  if (state.contacts.isNotEmpty)
+                    SliverToBoxAdapter(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 12),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: ContactTitle(
+                              onTap: () => NavigatorProvider.navigateTo(
+                                AppRoutes.contactList,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          ContactItemSlider(
+                            contacts: state.contacts,
+                            itemCount: state.contacts.length,
+                          ),
+                        ],
+                      ),
+                    ),
+
                   SliverToBoxAdapter(
                     child: Column(
                       children: [
-                        const SizedBox(height: 12),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 24),
-                          child: ContactTitle(
-                            onTap: () => NavigatorProvider.navigateTo(
-                              AppRoutes.contactList,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        ContactItemSlider(
-                          contacts: state.contacts,
-                          itemCount: state.contacts.length,
-                        ),
                         const SizedBox(height: 18),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -119,9 +110,9 @@ class _HomePageState extends State<HomePage> {
                       maxExtent: 60,
                       child: Container(
                         color: context.surfaceColor,
-                        padding: const EdgeInsets.only(left: 12),
                         alignment: Alignment.centerLeft,
                         child: ListView(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
                           scrollDirection: Axis.horizontal,
                           children: [
                             _buildCategoryChip('Todos'),
@@ -173,10 +164,7 @@ class _HomePageState extends State<HomePage> {
                     )
                   else
                     const SliverToBoxAdapter(
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 144),
-                        child: Center(child: Text('Nenhum produto encontrado')),
-                      ),
+                      child: Center(child: Text('Nenhum produto encontrado')),
                     ),
 
                   const SliverToBoxAdapter(child: SizedBox(height: 96)),
@@ -229,7 +217,7 @@ class _PinnedCategoryHeader extends SliverPersistentHeaderDelegate {
 
   @override
   final double maxExtent;
-  
+
   final Widget child;
 
   _PinnedCategoryHeader({

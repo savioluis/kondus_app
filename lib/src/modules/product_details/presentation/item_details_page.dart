@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/app/routing/app_routes.dart';
+import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/widgets/authenticated_image_widget.dart';
 import 'package:kondus/core/widgets/error_state_widget.dart';
@@ -59,8 +60,12 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
               floatingActionButton: widget.isOwnerAcessing
                   ? null
                   : FloatingActionButton.extended(
-                      onPressed: () =>
-                          NavigatorProvider.navigateTo(AppRoutes.contactChat),
+                      onPressed: () => NavigatorProvider.navigateTo(
+                        AppRoutes.contactChat,
+                        arguments: RouteArguments<List<String>>(
+                          [data.owner.id, data.owner.name],
+                        ),
+                      ),
                       backgroundColor: context.blueColor,
                       label: const Text("RESERVAR"),
                       icon: const Icon(Icons.chat),
