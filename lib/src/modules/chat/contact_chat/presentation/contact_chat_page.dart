@@ -18,7 +18,6 @@ class ContactChatPage extends StatelessWidget {
     super.key,
   });
 
-  final ChatService _chatService = GetIt.instance<ChatService>();
   final controller = ContactChatController();
 
   @override
@@ -28,56 +27,60 @@ class ContactChatPage extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-              child: StreamBuilder<List<MessageModel>>(
-            stream: _chatService.getMessages(uid),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
+            child: StreamBuilder<List<MessageModel>>(
+              stream: controller.getMessages(uid),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-              if (snapshot.hasError) {
-                return Center(
-                    child:
-                        Text('Erro ao carregar mensagens: ${snapshot.error}'));
-              }
-
-              if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(child: Text('Nenhuma mensagem ainda.'));
-              }
-
-              final messages = snapshot.data!;
-
-              return ListView.builder(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                itemCount: messages.length,
-                itemBuilder: (context, index) {
-                  final message = messages[index];
-                  final isUserMessage = message.toId == uid;
-
-                  return Align(
-                    alignment: isUserMessage
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: isUserMessage
-                            ? context.blueColor.withOpacity(0.15)
-                            : context.lightGreyColor.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(18),
-                      ),
+                if (snapshot.hasError) {
+                  return Center(
                       child: Text(
-                        message.text,
-                        style: const TextStyle(fontSize: 14),
+                          'Erro ao carregar mensagens: ${snapshot.error}'));
+                }
+
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('Nenhuma mensagem ainda.'));
+                }
+
+                controller.scrollToBottom();
+
+                final messages = snapshot.data!;
+
+                return ListView.builder(
+                  controller: controller.scrollController,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) {
+                    final message = messages[index];
+                    final isUserMessage = message.toId == uid;
+
+                    return Align(
+                      alignment: isUserMessage
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: isUserMessage
+                              ? context.blueColor.withOpacity(0.15)
+                              : context.lightGreyColor.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        child: Text(
+                          message.text,
+                          style: const TextStyle(fontSize: 14),
+                        ),
                       ),
-                    ),
-                  );
-                },
-              );
-            },
-          )),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
 
           // Campo de texto e botão de envio
           Padding(
@@ -98,7 +101,7 @@ class ContactChatPage extends StatelessWidget {
                 IconButton(
                   onPressed: () async {
                     await controller.sendMessage(
-                      toId: uid,
+                      targetId: uid,
                     );
                   },
                   icon: const Icon(Icons.send),

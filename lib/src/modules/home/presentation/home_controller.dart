@@ -45,15 +45,14 @@ class HomeController extends ChangeNotifier {
         return;
       }
 
-      final userId = await _authService.getUserId();
-      final usersIdsWithWhomUserHasConversed = await _chatService
-          .getUsersIdsWithWhomUserHasConversed(userId.toString());
+      final usersIdsWithWhomUserHasChated =
+          await _chatService.getUsersIdsContacts();
       final usersFromLocal = await _authService.getUsersInfo();
 
       final contacts = usersFromLocal.users
           .where(
             (user) =>
-                usersIdsWithWhomUserHasConversed.contains(user.id.toString()),
+                usersIdsWithWhomUserHasChated.contains(user.id.toString()),
           )
           .toList();
 
@@ -75,10 +74,9 @@ class HomeController extends ChangeNotifier {
 
       _emitState(
         HomeSuccessState(
-          user: userData,
-          items: itemsData,
-          contacts: ContactModel.fromUserDTOList(contacts)
-        ),
+            user: userData,
+            items: itemsData,
+            contacts: ContactModel.fromUserDTOList(contacts)),
       );
     } on HttpError catch (e) {
       _emitState(HomeFailureState(error: e));

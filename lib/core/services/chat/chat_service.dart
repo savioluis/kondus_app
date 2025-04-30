@@ -7,39 +7,51 @@ class ChatService {
   final AuthService _authService = GetIt.instance<AuthService>();
 
   Future<void> sendMessage({
-    required String fromId,
-    required String toId,
+    required String targetId,
     required String text,
   }) async {
-    await _cloudFireStore.collection('messages').add({
-      'fromId': fromId,
-      'toId': toId,
+    if (text.trim().isEmpty) return;
+
+    final currentUserId = (await _authService.getUserId())?.toString();
+
+    if (currentUserId == null) return;
+
+    final messageData = {
+      'fromId': currentUserId,
+      'toId': targetId,
       'text': text.trim(),
       'timestamp': Timestamp.now(),
+    };
+
+    await _cloudFireStore.collection('messages').add(messageData);
+  }
+
+  Stream<List<MessageModel>> getUserMessages(String otherUserId) async* {
+    final currentUserId = (await _authService.getUserId())?.toString();
+
+    if (currentUserId == null) return;
+
+    final query = _cloudFireStore.collection('messages').where(
+      'fromId',
+      whereIn: [currentUserId, otherUserId],
+    ).where(
+      'toId',
+      whereIn: [currentUserId, otherUserId],
+    ).orderBy('timestamp', descending: false);
+
+    yield* query.snapshots().map((snapshot) {
+      return snapshot.docs.map(MessageModel.fromFirestore).toList();
     });
   }
 
-  Stream<List<MessageModel>> getMessages(String toId) async* {
-    final fromId = await _authService.getUserId();
+  Future<List<String>> getUsersIdsContacts() async {
+    final currentUserId = (await _authService.getUserId())?.toString();
 
-    yield* _cloudFireStore
-        .collection('messages')
-        .where('fromId', whereIn: [fromId.toString(), toId])
-        .where('toId', whereIn: [fromId.toString(), toId])
-        .orderBy('timestamp', descending: false)
-        .snapshots()
-        .map((snapshot) {
-          return snapshot.docs.map((doc) {
-            return MessageModel.fromFirestore(doc);
-          }).toList();
-        });
-  }
+    if (currentUserId == null) return [];
 
-  Future<List<String>> getUsersIdsWithWhomUserHasConversed(
-      String userId) async {
-    var querySnapshot = await _cloudFireStore
+    QuerySnapshot querySnapshot = await _cloudFireStore
         .collection('messages')
-        .where('fromId', isEqualTo: userId)
+        .where('fromId', isEqualTo: currentUserId)
         .get();
 
     Set<String> usersIdsWithWhomUserHasConversed = {};
@@ -50,7 +62,7 @@ class ChatService {
 
     querySnapshot = await _cloudFireStore
         .collection('messages')
-        .where('toId', isEqualTo: userId)
+        .where('toId', isEqualTo: currentUserId)
         .get();
 
     for (final doc in querySnapshot.docs) {

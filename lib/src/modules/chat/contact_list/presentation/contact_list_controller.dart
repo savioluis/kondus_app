@@ -23,11 +23,10 @@ class ContactListController extends ChangeNotifier {
     _emitState(ContactListLoading());
 
     try {
-      final userId = await _authService.getUserId();
-      final usersIdsWithWhomUserHasConversed = await _chatService
-          .getUsersIdsWithWhomUserHasConversed(userId.toString());
+      final usersIdsWithWhomUserHasChated =
+          await _chatService.getUsersIdsContacts();
 
-      if (usersIdsWithWhomUserHasConversed.isEmpty) {
+      if (usersIdsWithWhomUserHasChated.isEmpty) {
         _emitState(ContactListSuccess(const []));
         return;
       }
@@ -37,7 +36,7 @@ class ContactListController extends ChangeNotifier {
       final filteredUsers = users.users
           .where(
             (user) =>
-                usersIdsWithWhomUserHasConversed.contains(user.id.toString()),
+                usersIdsWithWhomUserHasChated.contains(user.id.toString()),
           )
           .toList();
 
