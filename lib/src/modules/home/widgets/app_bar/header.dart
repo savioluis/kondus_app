@@ -23,59 +23,48 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-          height: kToolbarHeight,
-          child: Row(
-            children: [
-              Material(
-                shape: const CircleBorder(),
-                clipBehavior: Clip.antiAlias,
-                child: InkWell(
-                  onTap: () {
-                    NavigatorProvider.navigateTo(AppRoutes.profile);
-                  },
-                  child: CircleAvatar(
-                    radius: 25,
-                    backgroundColor: context.primaryColor.withOpacity(0.08),
-                    child: Text(
-                      _getInitials(username),
-                      style: TextStyle(
-                        color: context.blueColor,
-                        fontSize: 24,
-                      ),
-                    ),
+    return SizedBox(
+      height: kToolbarHeight,
+      child: Row(
+        children: [
+          Material(
+            shape: const CircleBorder(),
+            clipBehavior: Clip.antiAlias,
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                NavigatorProvider.navigateTo(AppRoutes.profile);
+              },
+              child: CircleAvatar(
+                radius: 28,
+                backgroundColor: context.lightGreyColor.withOpacity(0.18),
+                child: Text(
+                  _getInitials(username),
+                  style: TextStyle(
+                    color: context.blueColor,
+                    fontSize: 20,
                   ),
                 ),
               ),
-              const SizedBox(width: 8),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Bem-vindo,'),
-                  Text(
-                    username,
-                    style: TextStyle(
-                      color: context.blueColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Bem-vindo,'),
+              Text(
+                username,
+                style: TextStyle(
+                  color: context.blueColor,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
-        ),
-        NotificationButton(
-          icon: Icons.notifications,
-          size: 48,
-          iconColor: context.primaryColor.withOpacity(0.5),
-          onPressed: () =>
-              NavigatorProvider.navigateTo(AppRoutes.notifications),
-        )
-      ],
+        ],
+      ),
     );
   }
 }

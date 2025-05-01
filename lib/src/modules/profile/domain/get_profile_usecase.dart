@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:kondus/core/error/kondus_error.dart';
 import 'package:kondus/core/providers/http/error/http_error.dart';
 import 'package:kondus/core/services/auth/auth_service.dart';
 import 'package:kondus/src/modules/profile/domain/profile_model.dart';
@@ -12,14 +13,24 @@ final class GetProfileUsecase {
       final userContent = await authService.getLoggedUserInfo();
 
       if (userContent == null) {
-        return ProfileErrorState(message: 'Erro ao obter dados do usuário.');
+        return ProfileErrorState(
+          error: KondusError(
+            message: 'Erro ao obter dados do usuário.',
+            type: KondusErrorType.unknown,
+          ),
+        );
       }
 
       final model = ProfileModel.fromDTO(userContent);
 
       return ProfileSuccessState(model: model);
     } on HttpError catch (e) {
-      return ProfileErrorState(message: e.message);
+      return ProfileErrorState(
+        error: KondusError(
+          message: e.message,
+          type: KondusErrorType.unknown,
+        ),
+      );
     } catch (e) {
       rethrow;
     }
