@@ -5,29 +5,37 @@ class NotificationSwitchRow extends StatelessWidget {
   final String text;
   final bool switchValue;
   final Function() onTap;
-  const NotificationSwitchRow(
-      {super.key,
-        required this.text,
-        required this.switchValue,
-        required this.onTap});
+
+  const NotificationSwitchRow({
+    super.key,
+    required this.text,
+    required this.switchValue,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: onTap,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            text,
-            style: context.titleMedium,
-          ),
-          Switch(
-            value: switchValue,
-            onChanged: (_) => onTap(),
-          ),
-        ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: onTap,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: Text(
+                text,
+                style: context.bodyLarge,
+              ),
+            ),
+            Switch(
+              value: switchValue,
+              onChanged: (_) => onTap(),
+              activeColor: context.blueColor,
+            ),
+          ],
+        ),
       ),
     );
   }

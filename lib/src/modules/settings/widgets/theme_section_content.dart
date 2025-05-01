@@ -8,24 +8,44 @@ class ThemeSectionContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text("Tema", style: context.titleLarge),
-      for (final theme in ThemeMode.values)
-        GestureDetector(
-          onTap: () => onTap(theme),
-          child: ListTile(
-            title: Text(switch (theme) {
-              ThemeMode.system => "Sistema",
-              ThemeMode.light => "Claro",
-              ThemeMode.dark => "Escuro",
-            }),
-            leading: Radio(
-              value: theme,
-              groupValue: currentTheme,
-              onChanged: (_) => onTap(theme),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 48),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Tema", style: context.titleLarge),
+          const SizedBox(height: 16),
+          for (final theme in ThemeMode.values)
+            GestureDetector(
+              onTap: () => onTap(theme),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Radio<ThemeMode>(
+                      value: theme,
+                      groupValue: currentTheme,
+                      onChanged: (_) => onTap(theme),
+                      activeColor: context.blueColor,
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      switch (theme) {
+                        ThemeMode.system => "Sistema",
+                        ThemeMode.light => "Claro",
+                        ThemeMode.dark => "Escuro",
+                      },
+                      style: context.bodyLarge,
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-        ),
-    ]);
+        ],
+      ),
+    );
   }
 }

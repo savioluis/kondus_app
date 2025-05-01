@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kondus/core/utils/snack_bar_helper.dart';
 import 'package:kondus/src/modules/settings/domain/theme_section_viewmodel.dart';
 import 'package:kondus/src/modules/settings/widgets/theme_section_content.dart';
 
@@ -26,14 +27,14 @@ class _ThemeSectionState extends State<ThemeSection> {
       valueListenable: viewmodel.state,
       builder: (context, state, widget) {
         if (state is ChangeThemeErrorState) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text(
-            state.message,
-            style: TextStyle(
+          SnackBarHelper.showMessageSnackBar(
+            context: context,
+            message: state.message,
+            textStyle: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18,
             ),
-          )));
+          );
         }
 
         return switch (state) {

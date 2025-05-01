@@ -52,7 +52,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   Divider(thickness: 0.5, color: context.lightGreyColor),
                   const SizedBox(height: 48),
                   const ProfileOptions(),
-                  // const SizedBox(height: 100)
                 ],
               ),
             ),
