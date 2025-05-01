@@ -7,12 +7,14 @@ part of 'item_user_dto.dart';
 // **************************************************************************
 
 ItemUserDTO _$ItemUserDTOFromJson(Map<String, dynamic> json) => ItemUserDTO(
+      // id: json['id'] as int,
       name: json['name'] as String,
       house: json['house'] as String,
     );
 
 Map<String, dynamic> _$ItemUserDTOToJson(ItemUserDTO instance) =>
     <String, dynamic>{
+      // 'id': instance.id,
       'name': instance.name,
       'house': instance.house,
     };

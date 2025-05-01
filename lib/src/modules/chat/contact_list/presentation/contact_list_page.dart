@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kondus/app/routing/app_routes.dart';
+import 'package:kondus/app/routing/route_arguments.dart';
+import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/src/modules/chat/contact_chat/presentation/contact_chat_page.dart';
 import 'package:kondus/src/modules/chat/contact_list/widgets/contact_tile.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
@@ -25,7 +28,9 @@ class ContactListPage extends StatelessWidget {
             return Center(child: Text('Erro: ${state.errorMessage}'));
           } else if (state is ContactListSuccess) {
             if (state.contacts.isEmpty) {
-              return const Center(child: Text('Nenhum contato disponível'));
+              return const Center(
+                child: Text('Nenhum contato disponível'),
+              );
             }
             return SingleChildScrollView(
               child: Padding(
@@ -50,17 +55,13 @@ class ContactListPage extends StatelessWidget {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 6),
                           child: ContactTile(
-                            name: contact['name']!,
-                            apartment: contact['apartment']!,
+                            name: contact.name,
+                            apartment: contact.location,
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ContactChatPage(
-                                    uid: contact['uid']!,
-                                    name: contact['name']!,
-                                    apartment: contact['apartment']!,
-                                  ),
+                              NavigatorProvider.navigateTo(
+                                AppRoutes.contactChat,
+                                arguments: RouteArguments<List<String>>(
+                                  [contact.id, contact.name],
                                 ),
                               );
                             },

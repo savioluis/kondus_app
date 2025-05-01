@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:kondus/core/services/chat/chat_service.dart';
 
 abstract class ContactChatState extends Equatable {
   @override
@@ -10,7 +11,7 @@ class ContactChatInitial extends ContactChatState {}
 class ContactChatLoading extends ContactChatState {}
 
 class ContactChatSuccess extends ContactChatState {
-  final List<Map<String, dynamic>> messages;
+  final List<MessageModel> messages;
 
   ContactChatSuccess(this.messages);
 

@@ -5,13 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kondus/core/error/kondus_error.dart';
 import 'package:kondus/core/providers/http/error/http_error.dart';
-import 'package:kondus/core/repositories/i_token_repository.dart';
-import 'package:kondus/core/repositories/token_repository.dart';
 import 'package:kondus/core/services/auth/auth_service.dart';
 import 'package:kondus/core/services/auth/session_manager.dart';
-import 'package:kondus/core/services/dtos/product_dto.dart';
+import 'package:kondus/core/services/chat/chat_service.dart';
 import 'package:kondus/core/services/items/items_service.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
+import 'package:kondus/src/modules/chat/contact_list/model/contact_model.dart';
 import 'package:kondus/src/modules/home/models/item_model.dart';
 import 'package:kondus/src/modules/home/models/user_model.dart';
 import 'package:kondus/src/modules/home/presentation/home_state.dart';
@@ -19,7 +18,7 @@ import 'package:kondus/src/modules/home/presentation/home_state.dart';
 class HomeController extends ChangeNotifier {
   final AuthService _authService = GetIt.instance<AuthService>();
   final ItemsService _itemsService = GetIt.instance<ItemsService>();
-  final SessionManager _sessionManager = GetIt.instance<SessionManager>();
+  final ChatService _chatService = GetIt.instance<ChatService>();
 
   HomeState _state = HomeInitialState();
 
@@ -42,6 +41,17 @@ class HomeController extends ChangeNotifier {
         return;
       }
 
+      final usersIdsWithWhomUserHasChated =
+          await _chatService.getUsersIdsContacts(limit: 7);
+      final usersFromLocal = await _authService.getUsersInfo();
+
+      final contacts = usersFromLocal.users
+          .where(
+            (user) =>
+                usersIdsWithWhomUserHasChated.contains(user.id.toString()),
+          )
+          .toList();
+
       String initialCategory = 'Todos';
 
       final itemsData = await loadItems(initialCategory);
@@ -60,9 +70,9 @@ class HomeController extends ChangeNotifier {
 
       _emitState(
         HomeSuccessState(
-          user: userData,
-          items: itemsData,
-        ),
+            user: userData,
+            items: itemsData,
+            contacts: ContactModel.fromUserDTOList(contacts)),
       );
     } on HttpError catch (e) {
       _emitState(HomeFailureState(error: e));

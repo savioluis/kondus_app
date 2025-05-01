@@ -5,10 +5,12 @@ part 'item_user_dto.g.dart';
 
 @JsonSerializable()
 class ItemUserDTO {
+  final int id;
   final String name;
   final String house;
 
   ItemUserDTO({
+    this.id = 2,
     required this.name,
     required this.house,
   });
@@ -19,5 +21,5 @@ class ItemUserDTO {
   Map<String, dynamic> toJson() => _$ItemUserDTOToJson(this);
 
   @override
-  String toString() => 'ItemUserDTO(name: $name, house: $house)';
+  String toString() => 'ItemUserDTO(id: $id, name: $name, house: $house)';
 }

@@ -5,6 +5,7 @@ import 'package:kondus/core/services/auth/session_manager.dart';
 import 'package:kondus/core/services/dtos/login/login_request_dto.dart';
 import 'package:kondus/core/services/dtos/login/login_response_dto.dart';
 import 'package:kondus/core/services/dtos/user/user_info_response_dto.dart';
+import 'package:kondus/core/services/dtos/user/users_info_response_dto.dart';
 
 class AuthService {
   AuthService({
@@ -159,6 +160,49 @@ class AuthService {
         type: HttpErrorType.unknown,
         message:
             'Ocorreu um erro ao recuperar as informações do usuário. Tente novamente.',
+      );
+    }
+  }
+
+  Future<UsersInfoResponseDTO> getUsersInfo() async {
+    try {
+      final token = await _tokenRepository.getAccessToken();
+
+      final response = await _httpProvider.get<List>(
+        '/users',
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response == null) {
+        throw const HttpError(
+          type: HttpErrorType.unknown,
+          message:
+              'Não foi possível rrecuperar as informações dos usuários. Tente novamente.',
+        );
+      }
+
+      final usersInfo = UsersInfoResponseDTO.fromJson(response);
+
+      return usersInfo;
+    } on HttpError catch (e) {
+      if (e.isAuthError) {
+        throw const HttpError(
+          type: HttpErrorType.unauthorized,
+          message: 'Sua sessão expirou. Autentifique-se novamente.',
+        );
+      }
+
+      if (e.isNetworkError) {
+        throw const HttpError(
+          type: HttpErrorType.network,
+          message: 'Verifique sua conexão com a internet',
+        );
+      }
+
+      throw const HttpError(
+        type: HttpErrorType.unknown,
+        message:
+            'Ocorreu um erro ao recuperar as informações dos usuários. Tente novamente.',
       );
     }
   }

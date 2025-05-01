@@ -10,6 +10,7 @@ import 'package:kondus/core/repositories/i_token_repository.dart';
 import 'package:kondus/core/repositories/token_repository.dart';
 import 'package:kondus/core/services/auth/auth_service.dart';
 import 'package:kondus/core/services/auth/session_manager.dart';
+import 'package:kondus/core/services/chat/chat_service.dart';
 import 'package:kondus/core/services/items/items_service.dart';
 import 'package:kondus/src/modules/product_details/item_details_injections.dart';
 import 'package:kondus/src/modules/profile/profile_injections.dart';
@@ -48,6 +49,10 @@ Future<void> initInjections() async {
       tokenRepository: getIt(),
       sessionManager: getIt(),
     ),
+  );
+
+  getIt.registerLazySingleton(
+    () => ChatService(),
   );
 
   getIt.registerLazySingleton<ItemsService>(
