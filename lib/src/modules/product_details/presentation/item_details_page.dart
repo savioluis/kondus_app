@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
@@ -72,55 +73,61 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                     ),
               body: CustomScrollView(
                 slivers: [
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: data.imageUrls.length > 1
-                          ? ItemDetailsImageCarousel(
-                              imageUrls: data.imageUrls,
-                              size: 256,
-                              radius: 16,
-                              spaceBetweenImages: 1.75,
-                            )
-                          : data.imageUrls.isEmpty
-                              ? Container(
-                                  decoration: BoxDecoration(
-                                    color:
-                                        context.lightGreyColor.withOpacity(0.2),
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(16),
-                                    ),
-                                  ),
-                                  height: 256,
-                                  width: double.infinity,
-                                  child: Icon(
-                                    Icons.hide_image_outlined,
-                                    color:
-                                        context.onSurfaceColor.withOpacity(0.2),
-                                    size: 96,
-                                  ),
-                                )
-                              : GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => PhotoViewPage(
-                                          isFromNetwork: true,
-                                          imagePath: data.imageUrls.first,
-                                        ),
+                  SliverAppBar(
+                    automaticallyImplyLeading: false,
+                    pinned: false,
+                    expandedHeight: data.imageUrls.length > 1 ? 280 : 260,
+                    backgroundColor: context.surfaceColor,
+                    flexibleSpace: FlexibleSpaceBar(
+                      background: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: data.imageUrls.length > 1
+                            ? ItemDetailsImageCarousel(
+                                imageUrls: data.imageUrls,
+                                size: 256,
+                                radius: 16,
+                                spaceBetweenImages: 1.75,
+                              )
+                            : data.imageUrls.isEmpty
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                      color: context.lightGreyColor
+                                          .withOpacity(0.2),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(16),
                                       ),
-                                    );
-                                  },
-                                  child: SizedBox(
+                                    ),
+                                    height: 256,
                                     width: double.infinity,
-                                    child: AuthenticatedImage(
-                                      imagePath: data.imageUrls.first,
-                                      size: 256,
-                                      radius: 16,
+                                    child: Icon(
+                                      Icons.hide_image_outlined,
+                                      color: context.onSurfaceColor
+                                          .withOpacity(0.2),
+                                      size: 96,
+                                    ),
+                                  )
+                                : GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => PhotoViewPage(
+                                            isFromNetwork: true,
+                                            imagePath: data.imageUrls.first,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      child: AuthenticatedImage(
+                                        imagePath: data.imageUrls.first,
+                                        size: 256,
+                                        radius: 16,
+                                      ),
                                     ),
                                   ),
-                                ),
+                      ),
                     ),
                   ),
                   const SliverToBoxAdapter(child: SizedBox(height: 36)),
@@ -135,11 +142,13 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                         decoration: BoxDecoration(
                           border: Border.all(color: context.lightGreyColor),
                           borderRadius:
-                              const BorderRadius.all(Radius.circular(32)),
+                              const BorderRadius.all(Radius.circular(24)),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 36),
+                            horizontal: 24,
+                            vertical: 36,
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -150,8 +159,9 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                               ),
                               const SizedBox(height: 8),
                               Divider(
-                                  color: context.lightGreyColor,
-                                  thickness: 0.5),
+                                color: context.lightGreyColor,
+                                thickness: 0.5,
+                              ),
                               const SizedBox(height: 24),
                               ItemDetailsPriceInfoWidget(
                                 actionType: data.actionType,
@@ -190,6 +200,7 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                               const SizedBox(height: 24),
                               ItemDetailsOwnerBanner(
                                 ownerName: data.owner.name,
+                                ownerHouse: data.owner.house,
                                 ownerComplement: data.owner.complement,
                               ),
                               const SizedBox(height: 24),
@@ -204,33 +215,48 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                               ),
                               const SizedBox(height: 24),
                               Wrap(
-                                spacing: 6,
-                                runSpacing: 10,
-                                alignment: WrapAlignment.start,
-                                children: [
-                                  ...data.categories.map(
-                                    (e) => Container(
-                                      decoration: BoxDecoration(
+                                spacing: 8,
+                                runSpacing: 12,
+                                children: data.categories
+                                    .map(
+                                      (e) => Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 6, horizontal: 10),
+                                        decoration: BoxDecoration(
+                                          color: context.blueColor
+                                              .withOpacity(0.08),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
                                           border: Border.all(
                                             color: context.blueColor
-                                                .withOpacity(0.5),
+                                                .withOpacity(0.4),
+                                            width: 1,
                                           ),
-                                          borderRadius:
-                                              BorderRadius.circular(12)),
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 4,
-                                        horizontal: 6,
-                                      ),
-                                      child: Text(
-                                        e.name,
-                                        style: context.bodyMedium!.copyWith(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(
+                                              HugeIcons
+                                                  .strokeRoundedLabelImportant,
+                                              size: 14,
+                                              color: context.blueColor
+                                                  .withOpacity(0.7),
+                                            ),
+                                            const SizedBox(width: 4),
+                                            Text(
+                                              e.name,
+                                              style:
+                                                  context.labelSmall!.copyWith(
+                                                fontSize: 13,
+                                                color: context.primaryColor,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ],
+                                    )
+                                    .toList(),
                               ),
                               const SizedBox(height: 48),
                             ],

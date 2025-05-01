@@ -87,7 +87,7 @@ class ItemCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     category,
-                    style: context.labelSmall!.copyWith(fontSize: 12),
+                    style: context.labelSmall!.copyWith(fontSize: 13),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                   ),

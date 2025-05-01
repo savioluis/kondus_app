@@ -25,8 +25,9 @@ class ItemDetailsPriceInfoWidget extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
-                color: context.lightGreyColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
+                color: context.lightGreyColor.withOpacity(0.08),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: context.lightGreyColor.withOpacity(0.4))
               ),
               child: Column(
                 children: [
@@ -69,8 +70,9 @@ class ItemDetailsPriceInfoWidget extends StatelessWidget {
             alignment: Alignment.center,
             padding: const EdgeInsets.all(18),
             decoration: BoxDecoration(
-              color: context.blueColor.withOpacity(0.18),
-              borderRadius: BorderRadius.circular(12),
+              color: context.blueColor.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: context.blueColor.withOpacity(0.4))
             ),
             child: RichText(
               text: TextSpan(
@@ -82,7 +84,7 @@ class ItemDetailsPriceInfoWidget extends StatelessWidget {
                   ),
                   TextSpan(
                     text: price.toStringAsFixed(2),
-                    style: context.headlineMedium!.copyWith(fontSize: 18),
+                    style: context.headlineMedium!.copyWith(fontSize: 20),
                   ),
                 ],
               ),

@@ -40,6 +40,7 @@ final class ItemDetailsModel {
       owner: ItemDetailsOwnerModel(
         id: dto.user.id.toString(),
         name: dto.user.name,
+        house: dto.user.house,
         complement: dto.user.house,
       ),
       price: dto.item.price,
@@ -55,11 +56,13 @@ final class ItemDetailsModel {
 final class ItemDetailsOwnerModel {
   final String id;
   final String name;
+  final String house;
   final String complement;
 
   ItemDetailsOwnerModel({
     required this.id,
     required this.name,
+    required this.house,
     required this.complement,
   });
 }

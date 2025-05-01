@@ -8,11 +8,13 @@ class ItemUserDTO {
   final int id;
   final String name;
   final String house;
+  // final String complement;
 
   ItemUserDTO({
-    this.id = 2,
+    required this.id,
     required this.name,
     required this.house,
+    // required this.complement,
   });
 
   factory ItemUserDTO.fromJson(Map<String, dynamic> json) =>

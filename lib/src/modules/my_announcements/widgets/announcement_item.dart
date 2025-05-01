@@ -71,7 +71,7 @@ class AnnouncementItem extends StatelessWidget {
                     item.categories.first.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: context.labelSmall!.copyWith(fontSize: 12),
+                    style: context.labelSmall!.copyWith(fontSize: 13),
                   ),
                 ],
               ),

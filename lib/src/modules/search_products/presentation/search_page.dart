@@ -7,7 +7,7 @@ import 'package:kondus/core/widgets/error_state_widget.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/src/modules/search_products/presentation/search_controller.dart';
 import 'package:kondus/src/modules/search_products/presentation/search_state.dart';
-import 'package:kondus/src/modules/search_products/widgets/product_card.dart';
+import 'package:kondus/src/modules/search_products/widgets/item_card.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/src/modules/search_products/widgets/search_page_appbar.dart';
 
@@ -49,8 +49,9 @@ class _SearchPageState extends State<SearchPage> {
               : const KondusAppBar(),
           floatingActionButton: controller.state is SearchSuccess
               ? FloatingActionButton.extended(
+                elevation: 2,
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32)),
+                      borderRadius: BorderRadius.circular(16)),
                   label: Text(
                     'ANUNCIAR',
                     style: context.headlineLarge!.copyWith(
@@ -59,7 +60,7 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   ),
                   icon: Icon(
-                    HugeIcons.strokeRoundedPackageAdd,
+                    HugeIcons.strokeRoundedSaleTag02,
                     color: context.whiteColor,
                   ),
                   backgroundColor: context.blueColor,
@@ -101,8 +102,8 @@ class _SearchPageState extends State<SearchPage> {
                     itemCount: state.products.length,
                     itemBuilder: (context, index) {
                       final product = state.products[index];
-                      return ProductCard(
-                        product: product,
+                      return ItemCard(
+                        item: product,
                         onTap: () => NavigatorProvider.navigateTo(
                           AppRoutes.itemDetails,
                           arguments: RouteArguments<List<dynamic>>(

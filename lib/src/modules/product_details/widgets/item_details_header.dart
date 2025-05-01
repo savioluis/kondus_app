@@ -14,37 +14,75 @@ class ItemDetailsHeader extends StatelessWidget {
   final String type;
   final String actionType;
 
+  static const _typeEmoji = {
+    'serviço': '🤝',
+    'produto': '📦',
+  };
+
+  String _getTypeEmoji() {
+    return _typeEmoji[type.toLowerCase()] ?? '❓';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment:
-          MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Flexible(
           child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 name,
-                style: context.headlineLarge!
-                    .copyWith(fontSize: 28),
+                style: context.headlineLarge!.copyWith(fontSize: 28),
               ),
               const SizedBox(height: 8),
               Text(
-                '${type[0].toUpperCase()}${type.substring(1)}',
+                '${_getTypeEmoji()}${type[0].toUpperCase()}${type.substring(1)}',
               ),
             ],
           ),
         ),
-        _buildActionTypeChip(actionType),
+        Padding(
+          padding: const EdgeInsets.only(top: 6),
+          child: _buildActionTypeChip(context, actionType),
+        ),
       ],
     );
   }
 }
 
-Widget _buildActionTypeChip(String actionType) {
+// Widget _buildActionTypeChip(String actionType) {
+//   final colors = {
+//     'Comprar': Colors.green,
+//     'Alugar': Colors.orange,
+//     'Contratar': Colors.blue,
+//   };
+
+//   final chipColor = colors[actionType] ?? AppColors.lightGrey;
+
+//   return Container(
+//     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+//     decoration: BoxDecoration(
+//       color: chipColor.withOpacity(0.2),
+//       border: Border.all(color: chipColor),
+//       borderRadius: BorderRadius.circular(16),
+//     ),
+//     child: Text(
+//       maxLines: 1,
+//       actionType.toUpperCase(),
+//       style: TextStyle(
+//         color: chipColor,
+//         fontSize: 14,
+//         fontWeight: FontWeight.bold,
+//       ),
+//     ),
+//   );
+// }
+
+Widget _buildActionTypeChip(BuildContext context, String actionType) {
   final colors = {
     'Comprar': Colors.green,
     'Alugar': Colors.orange,
@@ -56,17 +94,15 @@ Widget _buildActionTypeChip(String actionType) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
     decoration: BoxDecoration(
-      color: chipColor.withOpacity(0.2),
-      border: Border.all(color: chipColor),
+      color: chipColor.withOpacity(0.15),
       borderRadius: BorderRadius.circular(16),
     ),
     child: Text(
-      maxLines: 1,
       actionType.toUpperCase(),
-      style: TextStyle(
+      style: context.labelSmall!.copyWith(
         color: chipColor,
-        fontSize: 14,
         fontWeight: FontWeight.bold,
+        fontSize: 14,
       ),
     ),
   );
