@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/widgets/kondus_elevated_button.dart';
-import 'package:kondus/src/modules/home/widgets/product_card.dart';
+import 'package:kondus/src/modules/home/widgets/item_card.dart';
 
 class DialogHelper {
   static Future<void> showAlert({

@@ -1,4 +1,4 @@
-import 'package:kondus/src/modules/home/widgets/product_card.dart';
+import 'package:kondus/src/modules/home/widgets/item_card.dart';
 
 enum ItemType {
   produto,

@@ -9,7 +9,7 @@ import 'package:kondus/src/modules/home/presentation/home_state.dart';
 import 'package:kondus/src/modules/home/widgets/contact/contact_item_slider.dart';
 import 'package:kondus/src/modules/home/widgets/contact/contact_title.dart';
 import 'package:kondus/src/modules/home/widgets/app_bar/home_app_bar.dart';
-import 'package:kondus/src/modules/home/widgets/product_card.dart';
+import 'package:kondus/src/modules/home/widgets/item_card.dart';
 import 'package:kondus/src/modules/home/widgets/search_bar_button.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 
@@ -137,22 +137,22 @@ class _HomePageState extends State<HomePage> {
                       delegate: SliverChildBuilderDelegate(
                         childCount: currentState.items.length,
                         (context, index) {
-                          final product = currentState.items[index];
+                          final item = currentState.items[index];
                           return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: ProductCard(
-                              imageUrl: product.imagesPaths.isNotEmpty
-                                  ? product.imagesPaths.first
+                            padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
+                            child: ItemCard(
+                              imageUrl: item.imagesPaths.isNotEmpty
+                                  ? item.imagesPaths.first
                                   : null,
-                              name: product.name,
-                              category: product.categories[0].name,
+                              name: item.name,
+                              category: item.categories[0].name,
                               actionType:
-                                  product.type.toActionType(product.quantity),
+                                  item.type.toActionType(item.quantity),
                               onTap: () {
                                 NavigatorProvider.navigateTo(
                                   AppRoutes.itemDetails,
                                   arguments: RouteArguments<List<dynamic>>([
-                                    product.id,
+                                    item.id,
                                     false,
                                   ]),
                                 );

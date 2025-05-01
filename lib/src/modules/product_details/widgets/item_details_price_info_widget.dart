@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/core/theme/app_theme.dart';
-import 'package:kondus/src/modules/home/widgets/product_card.dart';
+import 'package:kondus/src/modules/home/widgets/item_card.dart';
 
 class ItemDetailsPriceInfoWidget extends StatelessWidget {
   const ItemDetailsPriceInfoWidget({
