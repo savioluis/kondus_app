@@ -106,16 +106,16 @@ class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
                           AppRoutes.registerItemStep1,
                           arguments: RouteArguments<List<dynamic>>(
                             [
-                                null,
-                                null,
-                                null,
-                                null,
-                                null,
-                              ],
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                            ],
                           ),
                         ),
                 child: Text(
-                  'Pular Etapa',
+                  widget.onSkipPressed != null ? 'Pular Etapa' : 'Outro',
                   style: context.textTheme.labelMedium?.copyWith(
                     color: context.lightGreyColor,
                     fontSize: 14,
@@ -172,12 +172,13 @@ class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const HeaderSection(
-                titleSize: 32,
+              HeaderSection(
+                titleSize: widget.onSkipPressed != null ? 30 : 38,
                 subTitleSize: 16,
-                title:
-                    'Você possui algum desses itens para compartilhar com seus vizinhos?',
-                subtitle: [
+                title: widget.onSkipPressed != null
+                    ? 'Você possui algum desses itens para compartilhar com seus vizinhos?'
+                    : 'Gostaria de anunciar algum desses itens?',
+                subtitle: const [
                   TextSpan(text: '🎁 Compartilhe seus '),
                   TextSpan(
                     text: 'serviços ',
