@@ -52,7 +52,7 @@ class ProfileBanner extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             Text(
-              'Parque Vitória',
+              model.local,
               style: context.labelSmall!.copyWith(
                 fontSize: 15,
               ),
@@ -70,7 +70,7 @@ class ProfileBanner extends StatelessWidget {
             const SizedBox(width: 8),
             Flexible(
               child: Text(
-                'Apartamento 1 - Bloco A',
+                model.house,
                 style: context.labelSmall!.copyWith(
                   fontSize: 15,
                 ),

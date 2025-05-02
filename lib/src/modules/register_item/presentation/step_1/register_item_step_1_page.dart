@@ -1,24 +1,17 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/utils/snack_bar_helper.dart';
-import 'package:kondus/core/widgets/error_state_widget.dart';
-import 'package:kondus/core/widgets/header_section.dart';
-import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/core/widgets/kondus_elevated_button.dart';
 import 'package:kondus/core/widgets/kondus_text_field.dart';
 import 'package:kondus/core/widgets/photo_view_page.dart';
-import 'package:kondus/src/modules/home/widgets/item_card.dart';
 import 'package:kondus/src/modules/register_item/presentation/register_item_controller.dart';
 import 'package:kondus/src/modules/register_item/presentation/register_item_state.dart';
-import 'package:kondus/src/modules/register_item/widgets/custom_dropdown_field.dart';
 import 'package:kondus/src/modules/register_item/widgets/register_item_step_1_appbar.dart';
 
 class RegisterItemPage extends StatefulWidget {

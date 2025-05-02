@@ -4,15 +4,15 @@ import 'package:kondus/core/theme/app_theme.dart';
 
 class ItemDetailsOwnerBanner extends StatelessWidget {
   const ItemDetailsOwnerBanner({
-    required this.ownerName,
-    required this.ownerHouse,
-    required this.ownerComplement,
+    required this.name,
+    required this.house,
+    required this.local,
     super.key,
   });
 
-  final String ownerName;
-  final String ownerHouse;
-  final String ownerComplement;
+  final String name;
+  final String house;
+  final String local;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class ItemDetailsOwnerBanner extends StatelessWidget {
               backgroundColor: context.lightGreyColor.withOpacity(0.2),
               radius: 20,
               child: Text(
-                ownerName[0].toUpperCase(),
+                name[0].toUpperCase(),
                 style: TextStyle(
                   color: context.blueColor,
                   fontSize: 18,
@@ -40,7 +40,7 @@ class ItemDetailsOwnerBanner extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    ownerName,
+                    name,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -69,7 +69,7 @@ class ItemDetailsOwnerBanner extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    ownerComplement,
+                    local,
                     style: context.labelSmall!.copyWith(
                       fontSize: 15,
                     ),
@@ -87,7 +87,7 @@ class ItemDetailsOwnerBanner extends StatelessWidget {
                   const SizedBox(width: 8),
                   Flexible(
                     child: Text(
-                      ownerHouse,
+                      house,
                       style: context.labelSmall!.copyWith(
                         fontSize: 15,
                       ),

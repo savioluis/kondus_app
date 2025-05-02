@@ -10,6 +10,7 @@ ItemUserDTO _$ItemUserDTOFromJson(Map<String, dynamic> json) => ItemUserDTO(
       id: (json['id'] as num).toInt(),
       name: json['name'] as String,
       house: json['house'] as String,
+      local: json['local'] as String,
     );
 
 Map<String, dynamic> _$ItemUserDTOToJson(ItemUserDTO instance) =>
@@ -17,4 +18,5 @@ Map<String, dynamic> _$ItemUserDTOToJson(ItemUserDTO instance) =>
       'id': instance.id,
       'name': instance.name,
       'house': instance.house,
+      'local': instance.local,
     };

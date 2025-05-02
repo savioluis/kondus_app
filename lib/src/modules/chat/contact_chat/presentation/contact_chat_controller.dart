@@ -17,14 +17,17 @@ class ContactChatController {
     final text = textController.text.trim();
     if (text.isEmpty) return;
 
-    await _chatService.sendMessage(
-      targetId: targetId,
-      text: text,
-    );
-
-    scrollToBottom();
-
-    textController.clear();
+    try {
+      await _chatService.sendMessage(
+        targetId: targetId,
+        text: text,
+      );
+    } catch (e) {
+      rethrow;
+    } finally {
+      scrollToBottom();
+      textController.clear();
+    }
   }
 
   void scrollToBottom() {

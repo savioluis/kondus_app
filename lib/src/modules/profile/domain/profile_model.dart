@@ -1,16 +1,20 @@
 import 'package:kondus/core/services/dtos/user/user_info_response_dto.dart';
 
-final class ProfileModel{
+final class ProfileModel {
   final String owner;
-  final String address;
-  final String complement;
-  ProfileModel({required this.owner, required this.address, required this.complement});
+  final String house;
+  final String local;
+  ProfileModel({
+    required this.owner,
+    required this.house,
+    required this.local,
+  });
 
-    factory ProfileModel.fromDTO(UserInfoResponseDTO dto) {
+  factory ProfileModel.fromDTO(UserInfoResponseDTO dto) {
     return ProfileModel(
       owner: dto.name,
-      address: dto.local.name,
-      complement: dto.house.name,
+      house: dto.house.name,
+      local: dto.local.name,
     );
   }
 }

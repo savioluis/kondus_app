@@ -9,6 +9,7 @@ import 'package:kondus/src/modules/home/presentation/home_state.dart';
 import 'package:kondus/src/modules/home/widgets/contact/contact_item_slider.dart';
 import 'package:kondus/src/modules/home/widgets/contact/contact_title.dart';
 import 'package:kondus/src/modules/home/widgets/app_bar/home_app_bar.dart';
+import 'package:kondus/src/modules/home/widgets/home_banner_carousel.dart';
 import 'package:kondus/src/modules/home/widgets/item_card.dart';
 import 'package:kondus/src/modules/home/widgets/search_bar_button.dart';
 import 'package:kondus/core/theme/app_theme.dart';
@@ -64,11 +65,12 @@ class _HomePageState extends State<HomePage> {
               color: context.whiteColor,
               child: CustomScrollView(
                 slivers: [
+
                   if (state.contacts.isNotEmpty)
                     SliverToBoxAdapter(
                       child: Column(
                         children: [
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 24),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 24),
                             child: ContactTitle(
@@ -77,28 +79,39 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 12),
                           ContactItemSlider(
                             contacts: state.contacts,
                             itemCount: state.contacts.length,
                           ),
+                          const SizedBox(height: 24),
                         ],
                       ),
                     ),
 
+                  const SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        HomeBannerCarousel(),
+                        SizedBox(height: 64),
+                      ],
+                    ),
+                  ),
+
+                  
+
                   SliverToBoxAdapter(
                     child: Column(
                       children: [
-                        const SizedBox(height: 18),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          padding: const EdgeInsets.symmetric(horizontal: 18),
                           child: SearchBarButton(
                             onTap: () => NavigatorProvider.navigateTo(
                               AppRoutes.searchProducts,
                             ),
                           ),
                         ),
-                        const SizedBox(height: 18),
+                        const SizedBox(height: 12),
                       ],
                     ),
                   ),
@@ -112,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                         color: context.surfaceColor,
                         alignment: Alignment.centerLeft,
                         child: ListView(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          padding: const EdgeInsets.symmetric(horizontal: 18),
                           scrollDirection: Axis.horizontal,
                           children: [
                             _buildCategoryChip('Todos'),
@@ -125,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
 
-                  const SliverToBoxAdapter(child: SizedBox(height: 18)),
+                  const SliverToBoxAdapter(child: SizedBox(height: 12)),
 
                   // LISTA DE PRODUTOS
                   if (state.isLoadingMoreItems)
@@ -139,15 +152,18 @@ class _HomePageState extends State<HomePage> {
                         (context, index) {
                           final item = currentState.items[index];
                           return Padding(
-                            padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
+                            padding: const EdgeInsets.only(
+                              left: 18,
+                              right: 18,
+                              bottom: 18,
+                            ),
                             child: ItemCard(
                               imageUrl: item.imagesPaths.isNotEmpty
                                   ? item.imagesPaths.first
                                   : null,
                               name: item.name,
                               category: item.categories[0].name,
-                              actionType:
-                                  item.type.toActionType(item.quantity),
+                              actionType: item.type.toActionType(item.quantity),
                               onTap: () {
                                 NavigatorProvider.navigateTo(
                                   AppRoutes.itemDetails,

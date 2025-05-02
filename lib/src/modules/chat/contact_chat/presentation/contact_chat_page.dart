@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:kondus/core/error/kondus_error.dart';
+import 'package:kondus/core/providers/http/error/http_error.dart';
 import 'package:kondus/core/services/chat/chat_service.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
@@ -33,9 +35,21 @@ class ContactChatPage extends StatelessWidget {
                 }
 
                 if (snapshot.hasError) {
-                  return Center(
+                  final error = snapshot.error;
+                  String errorMessage = error.toString();
+
+                  if (error is KondusFailure)
+                    errorMessage = error.failureMessage;
+
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Center(
                       child: Text(
-                          'Erro ao carregar mensagens: ${snapshot.error}'));
+                        'Erro ao carregar mensagens: $errorMessage',
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  );
                 }
 
                 if (!snapshot.hasData || snapshot.data!.isEmpty) {

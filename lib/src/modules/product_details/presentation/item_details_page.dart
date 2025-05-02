@@ -199,9 +199,9 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                               ),
                               const SizedBox(height: 24),
                               ItemDetailsOwnerBanner(
-                                ownerName: data.owner.name,
-                                ownerHouse: data.owner.house,
-                                ownerComplement: data.owner.complement,
+                                name: data.owner.name,
+                                local: data.owner.local,
+                                house: data.owner.house,
                               ),
                               const SizedBox(height: 24),
                               Divider(
