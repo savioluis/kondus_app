@@ -60,8 +60,8 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
         text:
             "Anuncie seu produto ou serviço e ganhe visibilidade no condomínio!",
         onPressed: () => NavigatorProvider.navigateTo(
-          AppRoutes.registerItemStep1,
-          arguments: RouteArguments<List>([null, null]),
+          AppRoutes.shareYourItems,
+          arguments: RouteArguments<VoidCallback?>(null),
         ),
       ),
     );
@@ -69,7 +69,7 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
   void initState() {
     _pageController = PageController(viewportFraction: 0.89);
 
-    _autoScrollTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
+    _autoScrollTimer = Timer.periodic(const Duration(seconds: 7), (timer) {
       final nextPage = (_currentPage + 1) % _banners.length;
 
       _pageController.animateToPage(

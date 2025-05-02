@@ -66,18 +66,28 @@ class AppRouter {
           settings: settings,
         );
       case AppRoutes.shareYourItems:
+        final args = settings.arguments as RouteArguments<VoidCallback?>;
+        final VoidCallback? onSkipPressed = args.data;
         return MaterialPageRoute(
-          builder: (_) => const ShareYourItemsPage(),
+          builder: (_) => ShareYourItemsPage(
+            onSkipPressed: onSkipPressed,
+          ),
           settings: settings,
         );
       case AppRoutes.registerItemStep1:
         final args = settings.arguments as RouteArguments<List<dynamic>>;
         final itemType = args.data[0];
         final itemName = args.data[1];
+        final itemDescription = args.data[2];
+        final itemCategoriesIds = args.data[3];
+        final itemActionType = args.data[4];
         return MaterialPageRoute(
           builder: (_) => RegisterItemPage(
             itemType: itemType,
             itemName: itemName,
+            description: itemDescription,
+            categoriesIds: itemCategoriesIds,
+            actionType: itemActionType,
           ),
           settings: settings,
         );
@@ -87,12 +97,16 @@ class AppRouter {
         final String name = args.data[1];
         final String description = args.data[2];
         final List<String>? imagesPaths = args.data[3];
+        final String? itemActionType = args.data[4];
+        final List<int>? itemCategoriesIds = args.data[5];
         return MaterialPageRoute(
           builder: (_) => RegisterItemStep2Page(
             itemType: itemType,
             name: name,
             description: description,
             imagesPaths: imagesPaths,
+            actionType: itemActionType,
+            categoriesIds: itemCategoriesIds,
           ),
           settings: settings,
         );
@@ -107,9 +121,9 @@ class AppRouter {
           settings: settings,
         );
       case AppRoutes.contactChat:
-      final args = settings.arguments as RouteArguments<List<String>>;
-      final String targetId = args.data[0];
-      final String name = args.data[1];
+        final args = settings.arguments as RouteArguments<List<String>>;
+        final String targetId = args.data[0];
+        final String name = args.data[1];
         return MaterialPageRoute(
           builder: (_) => ContactChatPage(
             targetId: targetId,

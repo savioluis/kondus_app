@@ -70,7 +70,11 @@ class RegisterItemController extends ChangeNotifier {
     );
   }
 
-  goToStep2(ItemType? itemType) {
+  void goToStep2({
+    ItemType? itemType,
+    String? actionType,
+    List<int>? categoriesIds,
+  }) {
     final validationError = _validateFieldsStep1(
       name: nameEC.value.text,
       description: descriptionEC.value.text,
@@ -92,7 +96,14 @@ class RegisterItemController extends ChangeNotifier {
     NavigatorProvider.navigateTo(
       AppRoutes.registerItemStep2,
       arguments: RouteArguments<List<dynamic>>(
-        [itemType, name, description, imagesPaths],
+        [
+          itemType,
+          name,
+          description,
+          imagesPaths,
+          actionType,
+          categoriesIds,
+        ],
       ),
     );
   }
@@ -195,6 +206,31 @@ class RegisterItemController extends ChangeNotifier {
 
     imagesFiles.addAll(validImages);
     notifyListeners();
+  }
+
+  void applyFieldsIfExistsStep1({String? itemName, String? description}) {
+    if (itemName != null) {
+      nameEC.text = itemName;
+    }
+    if (description != null) {
+      descriptionEC.text = description;
+    }
+  }
+
+  Future<void> applyFieldsIfExistsStep2(
+      {List<int>? categoriesIds, String? actionType}) async {
+    if (categoriesIds != null) {
+      final allCategories = await _itemsService.getAllCategories();
+
+      selectedCategories = allCategories
+          .where(
+            (category) => categoriesIds.contains(category.id),
+          )
+          .toList();
+    }
+    if (actionType != null) {
+      selectedType = actionType;
+    }
   }
 
   String? _validateFieldsStep2({

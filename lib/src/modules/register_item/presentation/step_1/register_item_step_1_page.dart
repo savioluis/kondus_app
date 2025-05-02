@@ -15,10 +15,20 @@ import 'package:kondus/src/modules/register_item/presentation/register_item_stat
 import 'package:kondus/src/modules/register_item/widgets/register_item_step_1_appbar.dart';
 
 class RegisterItemPage extends StatefulWidget {
-  const RegisterItemPage({this.itemType, this.itemName, super.key});
+  const RegisterItemPage({
+    this.itemType,
+    this.itemName,
+    this.description,
+    this.categoriesIds,
+    this.actionType,
+    super.key,
+  });
 
   final ItemType? itemType;
   final String? itemName;
+  final String? description;
+  final List<int>? categoriesIds;
+  final String? actionType;
 
   @override
   _RegisterItemPageState createState() => _RegisterItemPageState();
@@ -32,8 +42,10 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
     super.initState();
     controller = RegisterItemController();
     controller.addListener(_controllerListener);
-
-    _applyItemNameIfExists();
+    controller.applyFieldsIfExistsStep1(
+      itemName: widget.itemName,
+      description: widget.description,
+    );
   }
 
   _controllerListener() {
@@ -45,12 +57,6 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
         message: state.validationErrorMessage!,
         context: context,
       );
-    }
-  }
-
-  _applyItemNameIfExists() {
-    if (widget.itemName != null) {
-      controller.nameEC.text = widget.itemName!;
     }
   }
 
@@ -70,7 +76,11 @@ class _RegisterItemPageState extends State<RegisterItemPage> {
               child: KondusButton(
                 label: 'Próximo',
                 onPressed: () {
-                  controller.goToStep2(widget.itemType);
+                  controller.goToStep2(
+                    itemType: widget.itemType,
+                    categoriesIds: widget.categoriesIds,
+                    actionType: widget.actionType,
+                  );
                 },
               ),
             ),

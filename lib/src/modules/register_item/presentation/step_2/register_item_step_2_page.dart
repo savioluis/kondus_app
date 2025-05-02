@@ -29,12 +29,17 @@ class RegisterItemStep2Page extends StatefulWidget {
     required this.name,
     required this.description,
     this.imagesPaths,
+    this.categoriesIds,
+    this.actionType,
   });
 
   final ItemType? itemType;
   final String name;
   final String description;
   final List<String>? imagesPaths;
+
+  final List<int>? categoriesIds;
+  final String? actionType;
 
   @override
   State<RegisterItemStep2Page> createState() => _RegisterItemStep2PageState();
@@ -48,6 +53,10 @@ class _RegisterItemStep2PageState extends State<RegisterItemStep2Page> {
     super.initState();
     controller = RegisterItemController()..loadCategories();
     controller.addListener(_controllerListener);
+    controller.applyFieldsIfExistsStep2(
+      categoriesIds: widget.categoriesIds,
+      actionType: widget.actionType,
+    );
     log('quantidade de imagens ${widget.imagesPaths?.length}');
   }
 

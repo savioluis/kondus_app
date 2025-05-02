@@ -49,7 +49,7 @@ class _SearchPageState extends State<SearchPage> {
               : const KondusAppBar(),
           floatingActionButton: controller.state is SearchSuccess
               ? FloatingActionButton.extended(
-                elevation: 2,
+                  elevation: 2,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16)),
                   label: Text(
@@ -64,8 +64,10 @@ class _SearchPageState extends State<SearchPage> {
                     color: context.whiteColor,
                   ),
                   backgroundColor: context.blueColor,
-                  onPressed: () =>
-                      NavigatorProvider.navigateTo(AppRoutes.shareYourItems),
+                  onPressed: () => NavigatorProvider.navigateTo(
+                    AppRoutes.shareYourItems,
+                    arguments: RouteArguments<VoidCallback?>(null),
+                  ),
                 )
               : null,
           body: Padding(

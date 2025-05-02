@@ -17,6 +17,8 @@ class DialogHelper {
       context: context,
       barrierDismissible: true,
       builder: (context) => Dialog(
+        backgroundColor: context.surfaceColor,
+        insetPadding: EdgeInsets.symmetric(horizontal: 12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),

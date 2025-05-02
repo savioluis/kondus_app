@@ -26,7 +26,7 @@ class SearchBarButton extends StatelessWidget {
                 decoration: context.textFieldDecoration.copyWith(
                   filled: false,
                   fillColor: context.surfaceColor,
-                  hintText: 'Pesquise aqui um produto ou serviço',
+                  hintText: 'Buscar produtos ou serviços...',
                   prefixIcon: const Icon(Icons.search),
                   prefixIconColor: context.secondaryColor,
                   enabledBorder: OutlineInputBorder(
@@ -50,6 +50,9 @@ class SearchBarButton extends StatelessWidget {
                 AppRoutes.registerItemStep1,
                 arguments: RouteArguments<List>(
                   [
+                    null,
+                    null,
+                    null,
                     null,
                     null,
                   ],

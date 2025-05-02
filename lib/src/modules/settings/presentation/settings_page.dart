@@ -21,7 +21,7 @@ class SettingsPage extends StatelessWidget {
           const HeaderSection(
             title: "Configurações",
             subtitle: [
-              TextSpan(text: "Ajuste suas preferências e configurações")
+              TextSpan(text: "Ajuste suas preferências")
             ],
           ),
           const SizedBox(height: 32),

@@ -4,6 +4,7 @@ import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
 import 'package:kondus/core/widgets/error_state_widget.dart';
+import 'package:kondus/src/modules/chat/contact_list/model/contact_model.dart';
 import 'package:kondus/src/modules/home/presentation/home_controller.dart';
 import 'package:kondus/src/modules/home/presentation/home_state.dart';
 import 'package:kondus/src/modules/home/widgets/contact/contact_item_slider.dart';
@@ -13,6 +14,7 @@ import 'package:kondus/src/modules/home/widgets/home_banner_carousel.dart';
 import 'package:kondus/src/modules/home/widgets/item_card.dart';
 import 'package:kondus/src/modules/home/widgets/search_bar_button.dart';
 import 'package:kondus/core/theme/app_theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -76,10 +78,19 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
 
+                  SliverToBoxAdapter(
+                    child: Divider(
+                      thickness: 0.1,
+                      color: context.lightGreyColor,
+                      height: 2,
+                    ),
+                  ),
+
                   if (state.contacts.isNotEmpty)
                     SliverToBoxAdapter(
                       child: Column(
                         children: [
+                          const SizedBox(height: 36),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 24),
                             child: ContactTitle(
@@ -109,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                   SliverToBoxAdapter(
                     child: Column(
                       children: [
-                        const SizedBox(height: 24),
+                        const SizedBox(height: 36),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           child: SearchBarButton(

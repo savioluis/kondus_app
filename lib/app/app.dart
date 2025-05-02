@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:kondus/app/routing/app_router.dart';
 import 'package:kondus/app/routing/app_routes.dart';
+import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/providers/navigator/navigator_observer_provider.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/providers/theme/theme_provider.dart';
@@ -11,6 +12,7 @@ import 'package:kondus/core/services/auth/auth_gate.dart';
 import 'package:kondus/core/services/auth/session_manager.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class KondusApp extends StatefulWidget {
   const KondusApp({super.key});
@@ -68,8 +70,35 @@ class _InitialPageState extends State<InitialPage> {
 
   Future<void> _handleInitialNavigation() async {
     try {
+      final prefs = await SharedPreferences.getInstance();
+
+      final bool isUserFirstLogin =
+          prefs.getBool('is_user_first_login') ?? true;
+
       final isLoggedIn = await _sessionManager.isLoggedIn();
-      final initialRoute = isLoggedIn.$1 ? AppRoutes.home : AppRoutes.login;
+
+      String initialRoute;
+      RouteArguments? arguments;
+
+      if (isLoggedIn.$1) {
+        if (isUserFirstLogin) {
+          initialRoute = AppRoutes.shareYourItems;
+
+          Future<void> onSkipPressed() async =>
+              NavigatorProvider.navigateAndRemoveUntil(AppRoutes.home);
+
+          arguments = RouteArguments<VoidCallback?>(onSkipPressed);
+
+          await prefs.setBool('is_user_first_login', false);
+        } else {
+          initialRoute = AppRoutes.home;
+        }
+
+        final token = isLoggedIn.$2;
+        log('🔐 Current Token: $token');
+      } else {
+        initialRoute = AppRoutes.login;
+      }
 
       log('🆕 Initial route: $initialRoute');
 
@@ -78,7 +107,10 @@ class _InitialPageState extends State<InitialPage> {
         log('🔐 Current Token: $token');
       }
 
-      await NavigatorProvider.navigateAndRemoveUntil(initialRoute);
+      await NavigatorProvider.navigateAndRemoveUntil(
+        initialRoute,
+        arguments: arguments,
+      );
     } catch (e, stackTrace) {
       log(
         '🚧 Erro ao determinar a tela inicial',
