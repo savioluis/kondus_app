@@ -65,12 +65,21 @@ class _HomePageState extends State<HomePage> {
               color: context.whiteColor,
               child: CustomScrollView(
                 slivers: [
+                  const SliverToBoxAdapter(child: SizedBox(height: 24)),
+
+                  const SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        HomeBannerCarousel(),
+                        SizedBox(height: 36),
+                      ],
+                    ),
+                  ),
 
                   if (state.contacts.isNotEmpty)
                     SliverToBoxAdapter(
                       child: Column(
                         children: [
-                          const SizedBox(height: 24),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 24),
                             child: ContactTitle(
@@ -84,27 +93,25 @@ class _HomePageState extends State<HomePage> {
                             contacts: state.contacts,
                             itemCount: state.contacts.length,
                           ),
-                          const SizedBox(height: 24),
+                          const SizedBox(height: 36),
                         ],
                       ),
                     ),
 
-                  const SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        HomeBannerCarousel(),
-                        SizedBox(height: 64),
-                      ],
+                  SliverToBoxAdapter(
+                    child: Divider(
+                      thickness: 0.1,
+                      color: context.lightGreyColor,
+                      height: 2,
                     ),
                   ),
-
-                  
 
                   SliverToBoxAdapter(
                     child: Column(
                       children: [
+                        const SizedBox(height: 24),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 18),
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
                           child: SearchBarButton(
                             onTap: () => NavigatorProvider.navigateTo(
                               AppRoutes.searchProducts,
@@ -125,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                         color: context.surfaceColor,
                         alignment: Alignment.centerLeft,
                         child: ListView(
-                          padding: const EdgeInsets.symmetric(horizontal: 18),
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
                           scrollDirection: Axis.horizontal,
                           children: [
                             _buildCategoryChip('Todos'),
@@ -153,8 +160,8 @@ class _HomePageState extends State<HomePage> {
                           final item = currentState.items[index];
                           return Padding(
                             padding: const EdgeInsets.only(
-                              left: 18,
-                              right: 18,
+                              left: 12,
+                              right: 12,
                               bottom: 18,
                             ),
                             child: ItemCard(
