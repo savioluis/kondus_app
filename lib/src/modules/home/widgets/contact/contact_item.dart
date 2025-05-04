@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:kondus/core/services/chat/chat_service.dart';
+import 'package:kondus/core/theme/app_theme.dart';
+import 'package:kondus/core/utils/snack_bar_helper.dart';
 
 class ContactItem extends StatelessWidget {
   const ContactItem({
@@ -7,6 +11,7 @@ class ContactItem extends StatelessWidget {
     this.backgroundColor,
     this.iconColor,
     this.maxNameLength = 12,
+    required this.unreadMessagesCount,
     super.key,
   });
 
@@ -15,26 +20,51 @@ class ContactItem extends StatelessWidget {
   final Color? backgroundColor;
   final Color? iconColor;
   final int maxNameLength;
+  final int unreadMessagesCount;  
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Material(
-          shape: const CircleBorder(),
-          clipBehavior: Clip.antiAlias,
-          child: InkWell(
-            onTap: onPressed,
-            child: CircleAvatar(
-              radius: 38,
-              backgroundColor: backgroundColor,
-              child: Icon(
-                Icons.person,
-                size: 48,
-                color: iconColor,
+        Stack(
+          alignment: Alignment.bottomRight,
+          children: [
+            Material(
+              shape: const CircleBorder(),
+              clipBehavior: Clip.antiAlias,
+              child: InkWell(
+                onTap: onPressed,
+                child: CircleAvatar(
+                  radius: 42,
+                  backgroundColor: backgroundColor,
+                  child: Icon(
+                    Icons.person,
+                    size: 44,
+                    color: iconColor,
+                  ),
+                ),
               ),
             ),
-          ),
+            if (unreadMessagesCount > 0)
+              Container(
+                width: 22,
+                height: 22,
+                padding: const EdgeInsets.all(0),
+                decoration: BoxDecoration(
+                  color: context.surfaceColor,
+                  border: Border.all(color: context.lightGreyColor),
+                  shape: BoxShape.circle,
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  unreadMessagesCount > 9 ? '9+' : '$unreadMessagesCount',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+          ],
         ),
         const SizedBox(height: 8),
         Text(

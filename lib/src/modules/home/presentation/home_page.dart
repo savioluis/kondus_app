@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       children: [
                         HomeBannerCarousel(),
-                        SizedBox(height: 36),
+                        SizedBox(height: 24),
                       ],
                     ),
                   ),
@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                     SliverToBoxAdapter(
                       child: Column(
                         children: [
-                          const SizedBox(height: 36),
+                          const SizedBox(height: 24),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 24),
                             child: ContactTitle(
@@ -99,12 +99,17 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 36),
                           ContactItemSlider(
-                            contacts: state.contacts,
+                            contacts: state.contacts
+                              ..addAll([
+                                for (int i = 0; i < 7; i++)
+                                  ContactModel(
+                                      id: '2', name: 'TESTE', location: 'ASD')
+                              ]),
                             itemCount: state.contacts.length,
                           ),
-                          const SizedBox(height: 36),
+                          const SizedBox(height: 24),
                         ],
                       ),
                     ),
@@ -117,39 +122,41 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
 
-                  SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 36),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: SearchBarButton(
-                            onTap: () => NavigatorProvider.navigateTo(
-                              AppRoutes.searchProducts,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                      ],
-                    ),
-                  ),
-
                   SliverPersistentHeader(
                     pinned: true,
-                    delegate: _PinnedCategoryHeader(
-                      minExtent: 60,
-                      maxExtent: 60,
+                    delegate: _PinnedSearchAndCategoryHeader(
+                      minExtent: 180,
+                      maxExtent: 180,
                       child: Container(
                         color: context.surfaceColor,
-                        alignment: Alignment.centerLeft,
-                        child: ListView(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          scrollDirection: Axis.horizontal,
+                        child: Column(
                           children: [
-                            _buildCategoryChip('Todos'),
-                            _buildCategoryChip('Comprar'),
-                            _buildCategoryChip('Alugar'),
-                            _buildCategoryChip('Contratar'),
+                            const SizedBox(height: 24),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 12),
+                              child: SearchBarButton(
+                                onTap: () => NavigatorProvider.navigateTo(
+                                  AppRoutes.searchProducts,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+                            SizedBox(
+                              height: 36,
+                              child: ListView(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                scrollDirection: Axis.horizontal,
+                                children: [
+                                  _buildCategoryChip('Todos'),
+                                  _buildCategoryChip('Comprar'),
+                                  _buildCategoryChip('Alugar'),
+                                  _buildCategoryChip('Contratar'),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 24),
                           ],
                         ),
                       ),
@@ -245,37 +252,24 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class _PinnedCategoryHeader extends SliverPersistentHeaderDelegate {
-  @override
+class _PinnedSearchAndCategoryHeader extends SliverPersistentHeaderDelegate {
   final double minExtent;
-
-  @override
   final double maxExtent;
-
   final Widget child;
 
-  _PinnedCategoryHeader({
-    required this.child,
+  _PinnedSearchAndCategoryHeader({
     required this.minExtent,
     required this.maxExtent,
+    required this.child,
   });
 
   @override
   Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
-    return Material(
-      color: context.surfaceColor,
-      child: child,
-    );
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return child;
   }
 
   @override
-  bool shouldRebuild(covariant _PinnedCategoryHeader oldDelegate) {
-    return oldDelegate.child != child ||
-        oldDelegate.minExtent != minExtent ||
-        oldDelegate.maxExtent != maxExtent;
-  }
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
+      true;
 }

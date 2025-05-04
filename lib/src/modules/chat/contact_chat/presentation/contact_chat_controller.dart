@@ -13,6 +13,10 @@ class ContactChatController {
     return _chatService.getUserMessages(targetId);
   }
 
+  Future<void> markMessagesAsRead(String otherUserId) async {
+    _chatService.markMessagesAsRead(otherUserId);
+  }
+
   Future<void> sendMessage({required String targetId}) async {
     final text = textController.text.trim();
     if (text.isEmpty) return;

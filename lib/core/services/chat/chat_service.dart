@@ -21,6 +21,7 @@ class ChatService {
       'toId': targetId,
       'text': text.trim(),
       'timestamp': Timestamp.now(),
+      'hasBeenRead': false,
     };
 
     await _cloudFireStore.collection('messages').add(messageData);
@@ -77,6 +78,68 @@ class ChatService {
 
     return allUserIds;
   }
+
+  Future<int> getUnreadMessagesCountFrom(String otherUserId) async {
+    final currentUserId = await _authService.getUserId();
+
+    final query = await _cloudFireStore
+        .collection('messages')
+        .where('toId', isEqualTo: currentUserId.toString())
+        .where('fromId', isEqualTo: otherUserId)
+        .where('hasBeenRead', isEqualTo: false)
+        .get();
+
+    return query.docs.length;
+  }
+
+  Future<Map<String, int>> getUnreadMessagesCountForUserContacts(
+      List<String> contactsIds) async {
+    final currentUserId = await _authService.getUserId();
+
+    if (currentUserId == null) return {};
+
+    final query = await _cloudFireStore
+        .collection('messages')
+        .where('toId', isEqualTo: currentUserId.toString())
+        .where('hasBeenRead', isEqualTo: false)
+        .get();
+
+    final Map<String, int> unreadCounts = {};
+
+    for (var doc in query.docs) {
+      final fromId = doc['fromId'];
+      if (contactsIds.contains(fromId)) {
+        unreadCounts[fromId] = (unreadCounts[fromId] ?? 0) + 1;
+      }
+    }
+
+    for (var id in contactsIds) {
+      unreadCounts[id] = unreadCounts[id] ?? 0;
+    }
+
+    return unreadCounts;
+  }
+
+  Future<void> markMessagesAsRead(String otherUserId) async {
+    final currentUserId = await _authService.getUserId();
+
+    if (currentUserId == null) return;
+
+    final query = await _cloudFireStore
+        .collection('messages')
+        .where('toId', isEqualTo: currentUserId.toString())
+        .where('fromId', isEqualTo: otherUserId)
+        .where('hasBeenRead', isEqualTo: false)
+        .get();
+
+    final batch = _cloudFireStore.batch();
+
+    for (final doc in query.docs) {
+      batch.update(doc.reference, {'hasBeenRead': true});
+    }
+
+    await batch.commit();
+  }
 }
 
 class MessageModel {
@@ -84,12 +147,14 @@ class MessageModel {
   final String toId;
   final String text;
   final Timestamp timestamp;
+  final bool hasBeenRead;
 
   MessageModel({
     required this.fromId,
     required this.toId,
     required this.text,
     required this.timestamp,
+    this.hasBeenRead = false,
   });
 
   factory MessageModel.fromFirestore(DocumentSnapshot doc) {
@@ -100,6 +165,7 @@ class MessageModel {
       toId: data['toId'],
       text: data['text'],
       timestamp: data['timestamp'],
+      hasBeenRead: data['hasBeenRead'],
     );
   }
 }

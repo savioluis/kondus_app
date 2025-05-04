@@ -1,34 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/error/kondus_error.dart';
 import 'package:kondus/core/providers/http/error/http_error.dart';
+import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/services/chat/chat_service.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/core/widgets/kondus_text_field.dart';
 import 'package:kondus/src/modules/chat/contact_chat/presentation/contact_chat_controller.dart';
 
-class ContactChatPage extends StatelessWidget {
+class ContactChatPage extends StatefulWidget {
   final String targetId;
   final String name;
 
-  ContactChatPage({
+  const ContactChatPage({
     required this.targetId,
     required this.name,
     super.key,
   });
 
-  final controller = ContactChatController();
+  @override
+  State<ContactChatPage> createState() => _ContactChatPageState();
+}
+
+class _ContactChatPageState extends State<ContactChatPage> {
+  late final ContactChatController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = ContactChatController();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: KondusAppBar(title: name),
+      appBar: KondusAppBar(title: widget.name),
       body: Column(
         children: [
           Expanded(
             child: StreamBuilder<List<MessageModel>>(
-              stream: controller.getMessages(targetId),
+              stream: controller.getMessages(widget.targetId),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -60,6 +73,13 @@ class ContactChatPage extends StatelessWidget {
 
                 final messages = snapshot.data!;
 
+                final unreadMessages =
+                    messages.where((message) => !message.hasBeenRead).toList();
+
+                if (unreadMessages.isNotEmpty) {
+                  controller.markMessagesAsRead(widget.targetId);
+                }
+
                 return ListView.builder(
                   controller: controller.scrollController,
                   padding:
@@ -67,7 +87,7 @@ class ContactChatPage extends StatelessWidget {
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
                     final message = messages[index];
-                    final isUserMessage = message.toId == targetId;
+                    final isUserMessage = message.toId == widget.targetId;
 
                     return Align(
                       alignment: isUserMessage
@@ -112,7 +132,7 @@ class ContactChatPage extends StatelessWidget {
                 const SizedBox(width: 8),
                 IconButton(
                   onPressed: () async {
-                    await controller.sendMessage(targetId: targetId);
+                    await controller.sendMessage(targetId: widget.targetId);
                   },
                   icon: const Icon(Icons.send),
                   color: Colors.blue,

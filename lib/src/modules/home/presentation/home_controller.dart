@@ -146,6 +146,11 @@ class HomeController extends ChangeNotifier {
     }
   }
 
+  Future<int> getUnreadMessagesCount(String targetId) async {
+    final amount = await _chatService.getUnreadMessagesCountFrom(targetId);
+    return amount;
+  }
+
   logout() {
     GetIt.instance<SessionManager>().logout();
   }

@@ -69,15 +69,15 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
   void initState() {
     _pageController = PageController(viewportFraction: 0.89);
 
-    _autoScrollTimer = Timer.periodic(const Duration(seconds: 7), (timer) {
-      final nextPage = (_currentPage + 1) % _banners.length;
+    // _autoScrollTimer = Timer.periodic(const Duration(seconds: 7), (timer) {
+    //   final nextPage = (_currentPage + 1) % _banners.length;
 
-      _pageController.animateToPage(
-        nextPage,
-        duration: const Duration(milliseconds: 800),
-        curve: Curves.easeInOut,
-      );
-    });
+    //   _pageController.animateToPage(
+    //     nextPage,
+    //     duration: const Duration(milliseconds: 800),
+    //     curve: Curves.easeInOut,
+    //   );
+    // });
 
     super.initState();
   }
@@ -94,7 +94,7 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
     return Column(
       children: [
         SizedBox(
-          height: 240,
+          height: 196,
           child: PageView.builder(
             controller: _pageController,
             itemCount: _banners.length,
@@ -121,24 +121,26 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
                       onTap: banner.onPressed,
                       borderRadius: BorderRadius.circular(18),
                       child: Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(18),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(banner.emoji,
-                                style: const TextStyle(fontSize: 28)),
+                            Text(
+                              banner.emoji,
+                              style: const TextStyle(fontSize: 28),
+                            ),
                             const SizedBox(height: 8),
                             Text(
                               banner.title,
                               style: context.titleMedium!.copyWith(
-                                fontSize: 22,
+                                fontSize: 21,
                                 color: context.blueColor,
                               ),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               banner.text,
-                              style: context.labelSmall!.copyWith(fontSize: 16),
+                              style: context.labelSmall!.copyWith(fontSize: 14),
                             ),
                           ],
                         ),

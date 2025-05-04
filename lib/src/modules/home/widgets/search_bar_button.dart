@@ -44,33 +44,36 @@ class SearchBarButton extends StatelessWidget {
         const SizedBox(width: 12),
         Expanded(
           flex: 1,
-          child: InkWell(
-            onTap: () async {
-              NavigatorProvider.navigateTo(
-                AppRoutes.registerItemStep1,
-                arguments: RouteArguments<List>(
-                  [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                  ],
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () async {
+                NavigatorProvider.navigateTo(
+                  AppRoutes.registerItemStep1,
+                  arguments: RouteArguments<List>(
+                    [
+                      null,
+                      null,
+                      null,
+                      null,
+                      null,
+                    ],
+                  ),
+                );
+              },
+              borderRadius: BorderRadius.circular(12),
+              child: Ink(
+                height: 56,
+                decoration: BoxDecoration(
+                  color: context.blueColor.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-              );
-            },
-            borderRadius: BorderRadius.circular(12),
-            child: Ink(
-              height: 56,
-              decoration: BoxDecoration(
-                color: context.blueColor.withOpacity(0.8),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Center(
-                child: Icon(
-                  HugeIcons.strokeRoundedSaleTag02,
-                  color: context.whiteColor,
-                  size: 32,
+                child: Center(
+                  child: Icon(
+                    HugeIcons.strokeRoundedPackageAdd,
+                    color: context.whiteColor,
+                    size: 32,
+                  ),
                 ),
               ),
             ),
