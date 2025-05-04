@@ -273,7 +273,7 @@ class ItemsService {
 
       throw const HttpError(
         type: HttpErrorType.unknown,
-        message: 'Ocorreu um erro ao register o seu item. Tente novamente.',
+        message: 'Ocorreu um erro ao registrar o seu item.',
       );
     }
   }

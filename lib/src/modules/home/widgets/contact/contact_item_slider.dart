@@ -29,7 +29,15 @@ class ContactItemSlider extends StatelessWidget {
           future: _getUnreadMessagesCountForAllContacts(contacts),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return Center(
+                child: SizedBox(
+                  height: 36,
+                  width: 36,
+                  child: CircularProgressIndicator(
+                    color: context.lightGreyColor.withOpacity(0.3),
+                  ),
+                ),
+              );
             }
 
             if (snapshot.hasError) {

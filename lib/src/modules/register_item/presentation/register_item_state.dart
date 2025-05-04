@@ -23,18 +23,25 @@ class RegisterItemValidationErrorState extends RegisterItemState {
 }
 
 class RegisterItemSuccessState extends RegisterItemState {
-  RegisterItemSuccessState(
-      {required this.categories, this.validationErrorMessage});
+  RegisterItemSuccessState({
+    required this.categories,
+    this.validationErrorMessage,
+    this.isSubmitting = false,
+  });
+
   final List<CategoryDTO> categories;
   final String? validationErrorMessage;
+  final bool isSubmitting;
 
   RegisterItemSuccessState copyWith({
     List<CategoryDTO>? categories,
     String? validationErrorMessage,
+    bool? isSubmitting,
   }) {
     return RegisterItemSuccessState(
       categories: categories ?? this.categories,
       validationErrorMessage: validationErrorMessage,
+      isSubmitting: isSubmitting ?? this.isSubmitting,
     );
   }
 }

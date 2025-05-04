@@ -79,17 +79,18 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                     expandedHeight: data.imageUrls.length > 1 ? 280 : 260,
                     backgroundColor: context.surfaceColor,
                     flexibleSpace: FlexibleSpaceBar(
-                      background: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: data.imageUrls.length > 1
-                            ? ItemDetailsImageCarousel(
-                                imageUrls: data.imageUrls,
-                                size: 256,
-                                radius: 16,
-                                spaceBetweenImages: 1.75,
-                              )
-                            : data.imageUrls.isEmpty
-                                ? Container(
+                      background: data.imageUrls.length > 1
+                          ? ItemDetailsImageCarousel(
+                              imageUrls: data.imageUrls,
+                              size: 256,
+                              radius: 16,
+                              spaceBetweenImages: 0.89,
+                            )
+                          : data.imageUrls.isEmpty
+                              ? Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 18),
+                                  child: Container(
                                     decoration: BoxDecoration(
                                       color: context.lightGreyColor
                                           .withOpacity(0.2),
@@ -105,8 +106,11 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                                           .withOpacity(0.2),
                                       size: 96,
                                     ),
-                                  )
-                                : GestureDetector(
+                                  ),
+                                )
+                              : Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 18),
+                                child: GestureDetector(
                                     onTap: () {
                                       Navigator.push(
                                         context,
@@ -118,16 +122,14 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                                         ),
                                       );
                                     },
-                                    child: SizedBox(
-                                      width: double.infinity,
-                                      child: AuthenticatedImage(
-                                        imagePath: data.imageUrls.first,
-                                        size: 256,
-                                        radius: 16,
-                                      ),
+                                    child: AuthenticatedImage(
+                                      imageUrl: data.imageUrls.first,
+                                      size: 256,
+                                      radius: 16,
+                                      imageFit: BoxFit.cover,
                                     ),
                                   ),
-                      ),
+                              ),
                     ),
                   ),
                   const SliverToBoxAdapter(child: SizedBox(height: 36)),

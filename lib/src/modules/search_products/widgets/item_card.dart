@@ -67,7 +67,7 @@ class ItemCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
               child: item.imageUrl.isNotEmpty
                   ? AuthenticatedImage(
-                      imagePath: item.imageUrl,
+                      imageUrl: item.imageUrl,
                       size: 72,
                     )
                   : Container(

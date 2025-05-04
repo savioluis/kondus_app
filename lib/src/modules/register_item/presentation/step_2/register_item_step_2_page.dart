@@ -112,8 +112,9 @@ class _RegisterItemStep2PageState extends State<RegisterItemStep2Page> {
                 ),
                 child: KondusButton(
                   label: 'Anunciar',
-                  onPressed: () {
-                    controller.registerItem(
+                  isLoading: state.isSubmitting,
+                  onPressed: () async {
+                    await controller.registerItem(
                       name: widget.name,
                       description: widget.description,
                       imagesFilesPaths: widget.imagesPaths,

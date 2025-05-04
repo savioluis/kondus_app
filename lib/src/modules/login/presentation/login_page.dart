@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
     final state = controller.state;
 
     if (state is LoginSuccessState) {
-      NavigatorProvider.navigateTo(AppRoutes.home);
+      NavigatorProvider.navigateAndRemoveUntil(AppRoutes.home);
     } else if (state is LoginFailureState) {
       SnackBarHelper.showMessageSnackBar(
         message: state.message,

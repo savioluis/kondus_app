@@ -101,12 +101,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           const SizedBox(height: 36),
                           ContactItemSlider(
-                            contacts: state.contacts
-                              ..addAll([
-                                for (int i = 0; i < 7; i++)
-                                  ContactModel(
-                                      id: '2', name: 'TESTE', location: 'ASD')
-                              ]),
+                            contacts: state.contacts,
                             itemCount: state.contacts.length,
                           ),
                           const SizedBox(height: 24),

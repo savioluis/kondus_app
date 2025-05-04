@@ -41,7 +41,7 @@ class AnnouncementItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               child: item.imagesPaths.isNotEmpty
                   ? AuthenticatedImage(
-                      imagePath: item.imagesPaths.first,
+                      imageUrl: item.imagesPaths.first,
                       size: 72,
                     )
                   : Container(

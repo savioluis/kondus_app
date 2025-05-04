@@ -52,15 +52,14 @@ class _ItemDetailsImageCarouselState extends State<ItemDetailsImageCarousel> {
       children: [
         SizedBox(
           height: widget.size,
-          width: double.infinity,
           child: PageView.builder(
             controller: _carouselController,
             itemCount: imageUrls.length,
             onPageChanged: _onPageChanged,
             itemBuilder: (context, index) {
               final url = imageUrls[index];
-              return FractionallySizedBox(
-                widthFactor: 1 / _carouselController.viewportFraction,
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -76,7 +75,7 @@ class _ItemDetailsImageCarouselState extends State<ItemDetailsImageCarousel> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(widget.radius),
                     child: AuthenticatedImage(
-                      imagePath: url,
+                      imageUrl: url,
                       size: widget.size,
                     ),
                   ),

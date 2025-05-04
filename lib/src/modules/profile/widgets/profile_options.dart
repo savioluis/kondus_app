@@ -13,7 +13,7 @@ class ProfileOptions extends StatelessWidget {
   Widget build(BuildContext context) {
     final options = [
       _OptionData(
-        icon: HugeIcons.strokeRoundedTags,
+        icon: HugeIcons.strokeRoundedPackage,
         title: 'Seus anúncios',
         subtitle: 'Gerencie seus anúncios ativos',
         onTap: () => NavigatorProvider.navigateTo(AppRoutes.myAnnouncements),
@@ -41,7 +41,7 @@ class ProfileOptions extends StatelessWidget {
         return Column(
           children: [
             ListTile(
-              leading: Icon(opt.icon, color: context.blueColor, size: 24),
+              leading: Icon(opt.icon, color: context.blueColor, size: 26),
               title: Text(
                 opt.title,
                 style: context.labelMedium!.copyWith(fontSize: 16),

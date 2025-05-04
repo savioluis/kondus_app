@@ -36,8 +36,6 @@ class RegisterItemController extends ChangeNotifier {
 
   int? createdItemId;
 
-  bool isSubmitting = false;
-
   Future<void> loadCategories() async {
     _emitState(RegisterItemLoadingState());
     try {
@@ -113,10 +111,6 @@ class RegisterItemController extends ChangeNotifier {
     required String description,
     List<String>? imagesFilesPaths,
   }) async {
-    if (isSubmitting) return;
-
-    isSubmitting = true;
-
     final currentState = state as RegisterItemSuccessState;
 
     final validationError = _validateFieldsStep2(
@@ -132,6 +126,8 @@ class RegisterItemController extends ChangeNotifier {
       );
       return;
     }
+
+    _emitState(currentState.copyWith(isSubmitting: true));
 
     final price = priceEC.value.text;
     final categories = selectedCategories;
@@ -176,8 +172,6 @@ class RegisterItemController extends ChangeNotifier {
       }
     } on HttpError catch (e) {
       _emitState(RegisterItemFailureState(error: e));
-    } finally {
-      isSubmitting = false;
     }
   }
 
