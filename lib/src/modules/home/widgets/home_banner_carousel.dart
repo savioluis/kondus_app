@@ -65,6 +65,7 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
         ),
       ),
     );
+
   @override
   void initState() {
     _pageController = PageController(viewportFraction: 0.89);
@@ -91,88 +92,107 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 196,
-          child: PageView.builder(
-            controller: _pageController,
-            itemCount: _banners.length,
-            onPageChanged: (index) => setState(() => _currentPage = index),
-            itemBuilder: (context, index) {
-              final banner = _banners[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Material(
-                  color: Colors.transparent,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: ColorUtils.generateTonalColors(
-                        count: _banners.length,
-                        saturationRange: 0.01,
-                        baseColor: context.lightGreyColor,
-                      )[index]
-                          .withOpacity(0.09),
-                      border: Border.all(
-                          color: context.lightGreyColor.withOpacity(0.18)),
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                    child: InkWell(
-                      onTap: banner.onPressed,
-                      borderRadius: BorderRadius.circular(18),
-                      child: Padding(
-                        padding: const EdgeInsets.all(18),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              banner.emoji,
-                              style: const TextStyle(fontSize: 28),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxWidth = constraints.maxWidth;
+
+        final emojiFontSize = maxWidth * 0.07;
+        final titleFontSize = maxWidth * 0.05;
+        final contentFontSize = maxWidth * 0.035;
+        final bannerHeight = maxWidth * 0.5;
+
+        final selectedDotIndicatorSize = maxWidth * 0.025;
+        final unselectedDotIndicatorSize = maxWidth * 0.020;
+
+        return Column(
+          children: [
+            SizedBox(
+              height: bannerHeight,
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: _banners.length,
+                onPageChanged: (index) => setState(() => _currentPage = index),
+                itemBuilder: (context, index) {
+                  final banner = _banners[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: ColorUtils.generateTonalColors(
+                            count: _banners.length,
+                            saturationRange: 0.01,
+                            baseColor: context.lightGreyColor,
+                          )[index]
+                              .withOpacity(0.09),
+                          border: Border.all(
+                            color: context.lightGreyColor.withOpacity(0.18),
+                          ),
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        child: InkWell(
+                          onTap: banner.onPressed,
+                          borderRadius: BorderRadius.circular(18),
+                          child: Padding(
+                            padding: const EdgeInsets.all(18),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(banner.emoji,
+                                    style: TextStyle(fontSize: emojiFontSize)),
+                                const SizedBox(height: 8),
+                                Text(
+                                  banner.title,
+                                  style: context.titleMedium!.copyWith(
+                                    fontSize: titleFontSize,
+                                    color: context.blueColor,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  banner.text,
+                                  style: context.labelSmall!.copyWith(
+                                    fontSize: contentFontSize,
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(height: 8),
-                            Text(
-                              banner.title,
-                              style: context.titleMedium!.copyWith(
-                                fontSize: 21,
-                                color: context.blueColor,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              banner.text,
-                              style: context.labelSmall!.copyWith(fontSize: 14),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-        const SizedBox(height: 12),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(
-            _banners.length,
-            (index) => AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              width: _currentPage == index ? 10 : 8,
-              height: _currentPage == index ? 10 : 8,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: _currentPage == index
-                    ? context.blueColor
-                    : context.lightGreyColor,
-                border: Border.all(color: context.lightGreyColor, width: 1),
+                  );
+                },
               ),
             ),
-          ),
-        ),
-      ],
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                _banners.length,
+                (index) => AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                  width: _currentPage == index
+                      ? selectedDotIndicatorSize
+                      : unselectedDotIndicatorSize,
+                  height: _currentPage == index
+                      ? selectedDotIndicatorSize
+                      : unselectedDotIndicatorSize,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _currentPage == index
+                        ? context.blueColor
+                        : context.lightGreyColor,
+                    border: Border.all(color: context.lightGreyColor, width: 1),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
