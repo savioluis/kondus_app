@@ -37,6 +37,7 @@ class KondusAppBar extends StatelessWidget implements PreferredSizeWidget {
       surfaceTintColor: context.surfaceColor,
       title: title != null ? Text(title!) : titleWidget,
       actions: actions,
+      centerTitle: true,
     );
   }
 

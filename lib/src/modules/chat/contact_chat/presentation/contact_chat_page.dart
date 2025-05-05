@@ -116,7 +116,7 @@ class _ContactChatPageState extends State<ContactChatPage> {
 
           // Campo de texto e botão de envio
           Padding(
-            padding: const EdgeInsets.only(left: 24, right: 24, bottom: 48),
+            padding: const EdgeInsets.only(left: 24, right: 24, bottom: 36),
             child: Row(
               children: [
                 Expanded(
@@ -135,7 +135,7 @@ class _ContactChatPageState extends State<ContactChatPage> {
                     await controller.sendMessage(targetId: widget.targetId);
                   },
                   icon: const Icon(Icons.send),
-                  color: Colors.blue,
+                  color: context.blueColor,
                 ),
               ],
             ),
