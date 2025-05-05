@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
-import 'package:kondus/src/modules/profile/widgets/profile_option_tile.dart';
 import 'package:kondus/src/modules/settings/widgets/theme_section.dart';
 import 'package:kondus/core/widgets/header_section.dart';
 

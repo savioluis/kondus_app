@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hugeicons/hugeicons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
@@ -14,8 +13,8 @@ import 'package:kondus/src/modules/register_item/presentation/register_item_cont
 import 'package:kondus/src/modules/register_item/presentation/register_item_state.dart';
 import 'package:kondus/src/modules/register_item/widgets/register_item_step_1_appbar.dart';
 
-class RegisterItemPage extends StatefulWidget {
-  const RegisterItemPage({
+class RegisterItemStep1Page extends StatefulWidget {
+  const RegisterItemStep1Page({
     this.itemType,
     this.itemName,
     this.description,
@@ -31,10 +30,10 @@ class RegisterItemPage extends StatefulWidget {
   final String? actionType;
 
   @override
-  _RegisterItemPageState createState() => _RegisterItemPageState();
+  State<RegisterItemStep1Page> createState() => _RegisterItemPageSStep1tate();
 }
 
-class _RegisterItemPageState extends State<RegisterItemPage> {
+class _RegisterItemPageSStep1tate extends State<RegisterItemStep1Page> {
   late final RegisterItemController controller;
 
   @override

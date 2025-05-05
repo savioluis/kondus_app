@@ -13,7 +13,6 @@ import 'package:kondus/core/services/dtos/items/register_item_request_dto.dart';
 import 'package:kondus/core/services/items/items_service.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
 import 'package:kondus/core/utils/input_validator.dart';
-import 'package:kondus/src/modules/register_item/model/register_item_model.dart';
 import 'package:kondus/src/modules/register_item/presentation/register_item_state.dart';
 
 class RegisterItemController extends ChangeNotifier {

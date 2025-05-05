@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:kondus/core/services/chat/chat_service.dart';
 import 'package:kondus/core/theme/app_theme.dart';
-import 'package:kondus/core/utils/snack_bar_helper.dart';
 
 class ContactItem extends StatelessWidget {
   const ContactItem({

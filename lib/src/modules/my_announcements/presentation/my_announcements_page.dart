@@ -1,16 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
-import 'package:kondus/core/services/dtos/product_dto.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/utils/dialog_helper.dart';
 import 'package:kondus/core/utils/snack_bar_helper.dart';
 import 'package:kondus/core/widgets/error_state_widget.dart';
-import 'package:kondus/core/widgets/header_section.dart';
-import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/src/modules/my_announcements/presentation/my_announcements_controller.dart';
 import 'package:kondus/src/modules/my_announcements/presentation/my_announcements_state.dart';
 import 'package:kondus/src/modules/my_announcements/widgets/announcement_appbar.dart';

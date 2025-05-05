@@ -4,13 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kondus/core/error/kondus_error.dart';
 import 'package:kondus/core/providers/http/error/http_error.dart';
-import 'package:kondus/core/repositories/i_token_repository.dart';
 import 'package:kondus/core/services/items/items_service.dart';
 import 'package:kondus/src/modules/my_announcements/presentation/my_announcements_state.dart';
 
 class MyAnnouncementsController extends ChangeNotifier {
   final ItemsService _itemsService = GetIt.instance<ItemsService>();
-  final ITokenRepository _tokenRepository = GetIt.instance<ITokenRepository>();
 
   MyAnnouncementsState _state = MyAnnouncementsInitialState();
 

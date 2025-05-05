@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/app/routing/route_arguments.dart';
-import 'package:kondus/core/error/kondus_error.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
-import 'package:kondus/core/services/chat/chat_service.dart';
-import 'package:kondus/src/modules/chat/contact_chat/presentation/contact_chat_page.dart';
 import 'package:kondus/src/modules/chat/contact_list/model/contact_model.dart';
 import 'package:kondus/src/modules/home/widgets/contact/contact_item.dart';
 import 'package:kondus/core/theme/app_theme.dart';

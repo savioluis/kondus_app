@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
-import 'package:kondus/src/modules/chat/contact_chat/presentation/contact_chat_page.dart';
 import 'package:kondus/src/modules/chat/contact_list/widgets/contact_tile.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'contact_list_controller.dart';

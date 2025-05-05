@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/core/theme/app_theme.dart';
-import 'package:kondus/core/widgets/kondus_elevated_button.dart';
-import 'package:kondus/src/modules/home/widgets/item_card.dart';
 
 class DialogHelper {
   static Future<void> showAlert({
@@ -18,7 +16,7 @@ class DialogHelper {
       barrierDismissible: true,
       builder: (context) => Dialog(
         backgroundColor: context.surfaceColor,
-        insetPadding: EdgeInsets.symmetric(horizontal: 12),
+        insetPadding: const EdgeInsets.symmetric(horizontal: 12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),

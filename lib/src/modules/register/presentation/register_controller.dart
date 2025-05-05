@@ -12,7 +12,7 @@ class RegisterController {
   final confirmPasswordEC = TextEditingController();
 
   void registerAccount(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text(
       'Conta criada com sucesso !',
       style: TextStyle(

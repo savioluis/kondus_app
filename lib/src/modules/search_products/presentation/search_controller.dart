@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:kondus/core/error/kondus_error.dart';
 import 'package:kondus/core/providers/http/error/http_error.dart';
 import 'package:kondus/core/services/dtos/product_dto.dart';
 import 'package:kondus/core/services/items/items_service.dart';

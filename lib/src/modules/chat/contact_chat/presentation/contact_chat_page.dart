@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/error/kondus_error.dart';
-import 'package:kondus/core/providers/http/error/http_error.dart';
-import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/services/chat/chat_service.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';

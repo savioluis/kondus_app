@@ -1,6 +1,5 @@
 import 'package:kondus/core/error/kondus_error.dart';
 import 'package:kondus/core/services/dtos/items/item_dto.dart';
-import 'package:kondus/core/services/dtos/product_dto.dart';
 
 sealed class MyAnnouncementsState {}
 

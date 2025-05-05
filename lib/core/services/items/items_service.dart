@@ -20,12 +20,10 @@ class ItemsService {
     required ITokenRepository tokenRepository,
     required SessionManager sessionManager,
   })  : _httpProvider = httpProvider,
-        _tokenRepository = tokenRepository,
-        _sessionManager = sessionManager;
+        _tokenRepository = tokenRepository;
 
   final IHttpProvider _httpProvider;
   final ITokenRepository _tokenRepository;
-  final SessionManager _sessionManager;
 
   Future<ItemsResponseDTO?> getAllItems({ItemsFiltersModel? filters}) async {
     try {

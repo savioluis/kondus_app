@@ -22,7 +22,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: KondusAppBar(),
+      appBar: const KondusAppBar(),
       body: SingleChildScrollView(
         child: Form(
           child: Padding(
@@ -30,7 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                HeaderSection(
+                const HeaderSection(
                   title: 'Informe seus dados',
                   titleSize: 28,
                   subtitle: [
@@ -42,45 +42,45 @@ class _RegisterPageState extends State<RegisterPage> {
                   ],
                 ),
                 SizedBox(height: screenHeight * 0.05),
-                Text('Nome Completo'),
+                const Text('Nome Completo'),
                 SizedBox(height: screenHeight * 0.01),
-                KondusTextFormField(
+                const KondusTextFormField(
                   hintText: 'Digite seu nome completo',
                 ),
                 SizedBox(height: screenHeight * 0.02),
-                Text('E-mail'),
+                const Text('E-mail'),
                 SizedBox(height: screenHeight * 0.01),
                 Padding(
                   padding: EdgeInsets.only(right: screenWidth * 0.1),
-                  child: KondusTextFormField(
+                  child: const KondusTextFormField(
                     hintText: 'Digite seu email',
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.02),
-                Text('Data de nascimento'),
+                const Text('Data de nascimento'),
                 SizedBox(height: screenHeight * 0.01),
                 Padding(
                   padding: EdgeInsets.only(right: screenWidth * 0.1),
-                  child: KondusTextFormField(
+                  child: const KondusTextFormField(
                     hintText: 'Dia/Mês/Ano',
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.02),
-                Text('Senha'),
+                const Text('Senha'),
                 SizedBox(height: screenHeight * 0.01),
                 Padding(
                   padding: EdgeInsets.only(right: screenWidth * 0.1),
-                  child: KondusTextFormField(
+                  child: const KondusTextFormField(
                     hintText: 'Digite sua senha',
                     isObscure: true,
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.02),
-                Text('Confirmar senha'),
+                const Text('Confirmar senha'),
                 SizedBox(height: screenHeight * 0.01),
                 Padding(
                   padding: EdgeInsets.only(right: screenWidth * 0.1),
-                  child: KondusTextFormField(
+                  child: const KondusTextFormField(
                     hintText: 'Confirme sua senha',
                     isObscure: true,
                   ),

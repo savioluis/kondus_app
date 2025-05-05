@@ -52,7 +52,7 @@ class SearchPageAppBar extends StatelessWidget implements PreferredSizeWidget {
                     children: [
                       Text(
                         title,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.w800,
                         ),

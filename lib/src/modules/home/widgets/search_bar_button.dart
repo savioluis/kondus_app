@@ -49,16 +49,8 @@ class SearchBarButton extends StatelessWidget {
             child: InkWell(
               onTap: () async {
                 NavigatorProvider.navigateTo(
-                  AppRoutes.registerItemStep1,
-                  arguments: RouteArguments<List>(
-                    [
-                      null,
-                      null,
-                      null,
-                      null,
-                      null,
-                    ],
-                  ),
+                  AppRoutes.shareYourItems,
+                  arguments: RouteArguments<VoidCallback?>(null),
                 );
               },
               borderRadius: BorderRadius.circular(12),
