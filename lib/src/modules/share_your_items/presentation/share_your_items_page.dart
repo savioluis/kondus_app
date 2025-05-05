@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
-import 'package:kondus/core/services/items/models/items_filter_model.dart';
+import 'package:kondus/core/widgets/kondus_text_field.dart';
+import 'package:kondus/src/modules/share_your_items/model/recommended_item.dart';
 import 'package:kondus/src/modules/share_your_items/widgets/item_chip.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/theme/theme_extension.dart';
@@ -20,81 +21,37 @@ class ShareYourItemsPage extends StatefulWidget {
 }
 
 class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
-  final items = [
-    {
-      "name": "Reparo de ar condicionado",
-      "type": ItemType.servico,
-      "description":
-          "Serviço de manutenção, limpeza e conserto de ar-condicionado. Atendo modelos do tipo [split/janela/inverter]. Com garantia e agendamento flexível.",
-      "categoriesIds": [1, 3],
-      "actionType": "Serviço",
-    },
-    {
-      "name": "Aspirador",
-      "type": ItemType.produto,
-      "description":
-          "Aspirador portátil ideal para limpeza doméstica ou automotiva. Equipamento em [digite aqui a condição]. Fácil de usar e com bom desempenho.",
-      "categoriesIds": [2, 4],
-      "actionType": 'Aluguel',
-    },
-    {
-      "name": "Chave de Fenda",
-      "type": ItemType.produto,
-      "description":
-          "Kit básico de chave de fenda para pequenos reparos. Ferramenta em [digite aqui a condição]. Ideal para uso esporádico.",
-      "categoriesIds": [2, 5],
-      "actionType": 'Aluguel',
-    },
-    {
-      "name": "Personal Trainer",
-      "type": ItemType.servico,
-      "description":
-          "Acompanhamento personalizado para treinos com foco em [condicionamento, emagrecimento ou hipertrofia]. Atendimento em casa ou online.",
-      "categoriesIds": [6],
-      "actionType": "Serviço",
-    },
-    {
-      "name": "Aula Particular",
-      "type": ItemType.servico,
-      "description":
-          "Aulas em domicílio ou online nas áreas de [matemática, inglês, reforço escolar, etc.]. Flexível e focado em resultados.",
-      "categoriesIds": [7],
-      "actionType": "Serviço",
-    },
-    {
-      "name": "Cortador de Grama",
-      "type": ItemType.produto,
-      "description":
-          "Cortador de grama em [digite aqui a condição]. Perfeito para manter jardins e quintais bem cuidados sem precisar comprar um equipamento próprio.",
-      "categoriesIds": [2, 8],
-      "actionType": "Aluguel",
-    },
-    {
-      "name": "Escada",
-      "type": ItemType.produto,
-      "description":
-          "Escada dobrável multiuso ideal para pequenos reparos ou manutenção doméstica. Está em [digite aqui a condição]. Leve, segura e fácil de transportar.",
-      "categoriesIds": [2, 5],
-      "actionType": "Aluguel",
-    },
-    {
-      "name": "Furadeira",
-      "type": ItemType.produto,
-      "description":
-          "Furadeira elétrica portátil com brocas inclusas. Ótima para instalações simples e reparos. Está em [digite aqui a condição].",
-      "categoriesIds": [2, 5],
-      "actionType": "Aluguel",
-    },
-  ]..shuffle();
+  RecommendedItem? selectedItem;
+  final recommendedItems = RecommendedItem.items..shuffle();
+  List<RecommendedItem> displayedItems = [];
 
-  Map<String, Object>? selectedItem;
+  final TextEditingController _searchController = TextEditingController();
+
+  bool showAllItems = false;
+
+  final minimumDisplayQuantity = 9;
+
+  @override
+  void initState() {
+    super.initState();
+    displayedItems = recommendedItems.take(minimumDisplayQuantity).toList();
+  }
+
+  void _filterItems(String query) {
+    setState(() {
+      displayedItems = recommendedItems
+          .where(
+              (item) => item.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const KondusAppBar(),
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.only(bottom: 48),
+        padding: const EdgeInsets.only(bottom: 48, top: 24),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -116,9 +73,11 @@ class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
                         ),
                 child: Text(
                   widget.onSkipPressed != null ? 'Pular Etapa' : 'Outro',
-                  style: context.textTheme.labelMedium?.copyWith(
-                    color: context.lightGreyColor,
-                    fontSize: 14,
+                  style: context.textTheme.titleMedium?.copyWith(
+                    color: context.blueColor,
+                    fontSize: 17,
+                    // decoration: TextDecoration.underline,
+                    // decorationThickness: 2
                   ),
                 ),
               ),
@@ -131,20 +90,18 @@ class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
                   label: 'CONTINUAR',
                   onPressed: selectedItem != null
                       ? () {
-                          final selectedItemName =
-                              selectedItem!['name'] as String;
+                          final selectedItemName = selectedItem!.name;
 
-                          final selectedItemType =
-                              selectedItem!['type'] as ItemType;
+                          final selectedItemType = selectedItem!.type;
 
                           final selectedItemDescription =
-                              selectedItem!['description'] as String;
+                              selectedItem!.description;
 
                           final selectedItemCategoriesIds =
-                              selectedItem!['categoriesIds'] as List<int>;
+                              selectedItem!.categoriesIds;
 
                           final selectedItemActionType =
-                              selectedItem!['actionType'] as String?;
+                              selectedItem!.actionType;
 
                           NavigatorProvider.navigateTo(
                             AppRoutes.registerItemStep1,
@@ -166,57 +123,118 @@ class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              HeaderSection(
-                titleSize: widget.onSkipPressed != null ? 30 : 38,
-                subTitleSize: 16,
-                title: widget.onSkipPressed != null
-                    ? 'Você possui algum desses itens para compartilhar com seus vizinhos?'
-                    : 'Gostaria de anunciar algum desses itens?',
-                subtitle: const [
-                  TextSpan(text: '🎁 Compartilhe seus '),
-                  TextSpan(
-                    text: 'serviços ',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextSpan(text: 'e '),
-                  TextSpan(
-                    text: 'produtos',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            HeaderSection(
+              titleSize: widget.onSkipPressed != null ? 30 : 38,
+              subTitleSize: 16,
+              title: widget.onSkipPressed != null
+                  ? 'Você possui algum desses itens para compartilhar com seus vizinhos?'
+                  : 'Gostaria de anunciar algum desses itens?',
+              subtitle: const [
+                TextSpan(text: '🎁 Compartilhe seus '),
+                TextSpan(
+                  text: 'serviços ',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                TextSpan(text: 'e '),
+                TextSpan(
+                  text: 'produtos',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            const SizedBox(height: 48),
+            Visibility(
+              visible: showAllItems,
+              child: KondusTextFormField(
+                controller: _searchController,
+                onChanged: _filterItems,
+                decoration: const InputDecoration(
+                  hintText: 'Pesquise um item...',
+                  prefixIcon: Icon(Icons.search),
+                ),
               ),
-              const SizedBox(height: 48),
-              Wrap(
-                spacing: 8,
-                runSpacing: 4,
-                children: [
-                  ...items.map((item) {
-                    final itemName = item['name']! as String;
-                    return ItemChip(
-                      text: itemName,
-                      isSelected:
-                          selectedItem?.containsValue(itemName) ?? false,
-                      onTap: () {
-                        setState(() {
-                          if (selectedItem?.containsValue(itemName) ?? false) {
-                            selectedItem = null;
-                          } else {
-                            selectedItem = item;
-                          }
-                        });
+            ),
+            const SizedBox(height: 24),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: [
+                    ...displayedItems.map(
+                      (item) {
+                        final itemName = item.name;
+                        return ItemChip(
+                          isSelected: selectedItem?.name == itemName,
+                          onTap: () {
+                            setState(() {
+                              if (selectedItem?.name == itemName) {
+                                selectedItem = null;
+                              } else {
+                                selectedItem = item;
+                              }
+                            });
+                          },
+                          child: Text(itemName.toUpperCase()),
+                        );
                       },
-                    );
-                  }),
-                ],
+                    ),
+                    if (!showAllItems &&
+                        recommendedItems.length > minimumDisplayQuantity && _searchController.value.text.isEmpty)
+                      ItemChip(
+                        borderColor: context.lightGreyColor.withOpacity(0.4),
+                        onTap: () {
+                          setState(() {
+                            showAllItems = true;
+                            displayedItems = recommendedItems;
+                          });
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text('VER MAIS'),
+                            const SizedBox(width: 4),
+                            Icon(
+                              Icons.expand_more_rounded,
+                              color: context.blueColor.withOpacity(0.5),
+                            )
+                          ],
+                        ),
+                      ),
+                    if (showAllItems && _searchController.value.text.isEmpty)
+                      ItemChip(
+                        borderColor: context.lightGreyColor.withOpacity(0.4),
+                        onTap: () {
+                          setState(() {
+                            showAllItems = false;
+                            _searchController.clear();
+                            displayedItems = recommendedItems
+                                .take(minimumDisplayQuantity)
+                                .toList();
+                          });
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text('VER MENOS'),
+                            const SizedBox(width: 4),
+                            Icon(
+                              Icons.expand_less,
+                              color: context.blueColor.withOpacity(0.5),
+                            )
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
