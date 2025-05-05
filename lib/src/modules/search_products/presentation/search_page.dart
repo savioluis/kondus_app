@@ -100,7 +100,7 @@ class _SearchPageState extends State<SearchPage> {
             ? state.isLoadingMoreItems
                 ? const Center(child: CircularProgressIndicator())
                 : ListView.separated(
-                    padding: const EdgeInsets.only(top: 12),
+                    padding: const EdgeInsets.only(top: 12, bottom: 96),
                     itemCount: state.products.length,
                     itemBuilder: (context, index) {
                       final product = state.products[index];

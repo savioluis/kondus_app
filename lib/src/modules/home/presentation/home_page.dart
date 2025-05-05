@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 36),
+                          const SizedBox(height: 18),
                           ContactItemSlider(
                             unreadMessagesCountForEachContactId:
                                 state.unreadMessagesCountForEachContactId,
@@ -122,8 +122,8 @@ class _HomePageState extends State<HomePage> {
                   SliverPersistentHeader(
                     pinned: true,
                     delegate: _PinnedSearchAndCategoryHeader(
-                      minExtent: 180,
-                      maxExtent: 180,
+                      minExtent: 166,
+                      maxExtent: 166,
                       child: Container(
                         color: context.surfaceColor,
                         child: Column(
@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 24),
+                            const SizedBox(height: 18),
                           ],
                         ),
                       ),
