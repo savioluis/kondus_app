@@ -67,11 +67,11 @@ class _HomePageState extends State<HomePage> {
               color: context.whiteColor,
               child: CustomScrollView(
                 slivers: [
-                  const SliverToBoxAdapter(child: SizedBox(height: 24)),
 
                   const SliverToBoxAdapter(
                     child: Column(
                       children: [
+                        SizedBox(height: 24),
                         HomeBannerCarousel(),
                         SizedBox(height: 24),
                       ],
@@ -101,6 +101,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                           const SizedBox(height: 36),
                           ContactItemSlider(
+                            unreadMessagesCountForEachContactId:
+                                state.unreadMessagesCountForEachContactId,
                             contacts: state.contacts,
                             itemCount: state.contacts.length,
                           ),
@@ -162,8 +164,15 @@ class _HomePageState extends State<HomePage> {
 
                   // LISTA DE PRODUTOS
                   if (state.isLoadingMoreItems)
-                    const SliverToBoxAdapter(
-                      child: Center(child: CircularProgressIndicator()),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: (72.0 * state.items.length).clamp(100, 300),
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: context.lightGreyColor.withOpacity(0.5),
+                          ),
+                        ),
+                      ),
                     )
                   else if (currentState.items.isNotEmpty)
                     SliverList(
@@ -219,9 +228,8 @@ class _HomePageState extends State<HomePage> {
 
     return GestureDetector(
       onTap: () async {
-        setState(() {
-          selectedCategory = category;
-        });
+        if (selectedCategory == category) return;
+        selectedCategory = category;
         await controller.loadItemsWithCategoryFilter(category);
       },
       child: Container(

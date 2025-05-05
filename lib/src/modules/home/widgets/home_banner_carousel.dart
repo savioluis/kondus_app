@@ -69,15 +69,15 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
   void initState() {
     _pageController = PageController(viewportFraction: 0.89);
 
-    // _autoScrollTimer = Timer.periodic(const Duration(seconds: 7), (timer) {
-    //   final nextPage = (_currentPage + 1) % _banners.length;
+    _autoScrollTimer = Timer.periodic(const Duration(seconds: 7), (timer) {
+      final nextPage = (_currentPage + 1) % _banners.length;
 
-    //   _pageController.animateToPage(
-    //     nextPage,
-    //     duration: const Duration(milliseconds: 800),
-    //     curve: Curves.easeInOut,
-    //   );
-    // });
+      _pageController.animateToPage(
+        nextPage,
+        duration: const Duration(milliseconds: 800),
+        curve: Curves.easeInOut,
+      );
+    });
 
     super.initState();
   }

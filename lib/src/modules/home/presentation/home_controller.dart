@@ -45,12 +45,14 @@ class HomeController extends ChangeNotifier {
           await _chatService.getUsersIdsContacts(limit: 7);
       final usersFromLocal = await _authService.getUsersInfo();
 
-      final contacts = usersFromLocal.users
-          .where(
-            (user) =>
-                usersIdsWithWhomUserHasChated.contains(user.id.toString()),
-          )
-          .toList();
+      final contacts = ContactModel.fromUserDTOList(
+        usersFromLocal.users
+            .where(
+              (user) =>
+                  usersIdsWithWhomUserHasChated.contains(user.id.toString()),
+            )
+            .toList(),
+      );
 
       String initialCategory = 'Todos';
 
@@ -68,12 +70,16 @@ class HomeController extends ChangeNotifier {
         return;
       }
 
-      _emitState(
-        HomeSuccessState(
-            user: userData,
-            items: itemsData,
-            contacts: ContactModel.fromUserDTOList(contacts)),
-      );
+      final unreadMessagesCountForEachContactId =
+          await getUnreadMessagesCountForAllContacts(contacts);
+
+      _emitState(HomeSuccessState(
+        user: userData,
+        items: itemsData,
+        contacts: contacts,
+        unreadMessagesCountForEachContactId:
+            unreadMessagesCountForEachContactId,
+      ));
     } on HttpError catch (e) {
       _emitState(HomeFailureState(error: e));
     }
@@ -140,14 +146,27 @@ class HomeController extends ChangeNotifier {
         return;
       }
 
-      _emitState(currentState.copyWith(items: items));
-    } catch (e) {
-      rethrow;
+      _emitState(
+        currentState.copyWith(
+          items: items,
+          isLoadingMoreItems: false,
+        ),
+      );
+    } on HttpError catch (e) {
+      _emitState(HomeFailureState(error: e));
     }
   }
 
   Future<int> getUnreadMessagesCount(String targetId) async {
     final amount = await _chatService.getUnreadMessagesCountFrom(targetId);
+    return amount;
+  }
+
+  Future<Map<String, int>> getUnreadMessagesCountForAllContacts(
+      List<ContactModel> contacts) async {
+    final amount = await _chatService.getUnreadMessagesCountForUserContacts(
+        contacts.map((contact) => contact.id).toList());
+
     return amount;
   }
 

@@ -15,97 +15,49 @@ class ContactItemSlider extends StatelessWidget {
   const ContactItemSlider({
     required this.contacts,
     required this.itemCount,
+    required this.unreadMessagesCountForEachContactId,
     super.key,
   });
 
   final int itemCount;
   final List<ContactModel> contacts;
+  final Map<String, int> unreadMessagesCountForEachContactId;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 128,
-      child: FutureBuilder(
-          future: _getUnreadMessagesCountForAllContacts(contacts),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: SizedBox(
-                  height: 36,
-                  width: 36,
-                  child: CircularProgressIndicator(
-                    color: context.lightGreyColor.withOpacity(0.3),
-                  ),
+      child: ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          final currentContactId = contacts[index].id;
+          final int contactUnreadMessagesCount =
+              unreadMessagesCountForEachContactId[currentContactId] ?? 0;
+
+          return ContactItem(
+            unreadMessagesCount: contactUnreadMessagesCount,
+            onPressed: () async {
+              await NavigatorProvider.navigateTo(
+                AppRoutes.contactChat,
+                arguments: RouteArguments<List<String>>(
+                  [contacts[index].id, contacts[index].name],
                 ),
               );
-            }
-
-            if (snapshot.hasError) {
-              final error = snapshot.error;
-              String errorMessage = error.toString();
-
-              if (error is KondusFailure) errorMessage = error.failureMessage;
-
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Center(
-                  child: Text(
-                    'Erro ao carregar contatos: $errorMessage',
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              );
-            }
-
-            final Map<String, int> unreadMessagesCountForEachContactId =
-                snapshot.data!;
-
-            return ListView.separated(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                final currentContactId = contacts[index].id;
-                final int contactUnreadMessagesCount =
-                    unreadMessagesCountForEachContactId[currentContactId] ?? 0;
-
-                return ContactItem(
-                  unreadMessagesCount: contactUnreadMessagesCount,
-                  onPressed: () async {
-                    await NavigatorProvider.navigateTo(
-                      AppRoutes.contactChat,
-                      arguments: RouteArguments<List<String>>(
-                        [contacts[index].id, contacts[index].name],
-                      ),
-                    );
-                  },
-                  name: contacts[index].name,
-                  iconColor: context.whiteColor,
-                  backgroundColor: ColorUtils.generateTonalColors(
-                    baseColor: context.blueColor,
-                    count: itemCount,
-                  ).toList()[index].withOpacity(0.38),
-                );
-              },
-              separatorBuilder: (context, index) => const SizedBox(
-                width: 18,
-              ),
-              itemCount: itemCount,
-            );
-          }),
+            },
+            name: contacts[index].name,
+            iconColor: context.whiteColor,
+            backgroundColor: ColorUtils.generateTonalColors(
+              baseColor: context.blueColor,
+              count: itemCount,
+            ).toList()[index].withOpacity(0.38),
+          );
+        },
+        separatorBuilder: (context, index) => const SizedBox(
+          width: 18,
+        ),
+        itemCount: itemCount,
+      ),
     );
   }
-}
-
-Future<Map<String, int>> _getUnreadMessagesCountForAllContacts(
-    List<ContactModel> contacts) async {
-  final chatService = GetIt.instance<ChatService>();
-
-  final amount =
-      await chatService.getUnreadMessagesCountForUserContacts(contacts
-          .map(
-            (contact) => contact.id,
-          )
-          .toList());
-
-  return amount;
 }

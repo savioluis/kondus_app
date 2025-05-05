@@ -15,6 +15,7 @@ class HomeSuccessState extends HomeState {
     required this.items,
     this.isLoadingMoreItems = false,
     required this.contacts,
+    required this.unreadMessagesCountForEachContactId,
   });
 
   final UserModel user;
@@ -22,18 +23,23 @@ class HomeSuccessState extends HomeState {
   final bool isLoadingMoreItems;
 
   final List<ContactModel> contacts;
+  final Map<String, int> unreadMessagesCountForEachContactId;
 
   HomeSuccessState copyWith({
     UserModel? user,
     List<ItemModel>? items,
     bool? isLoadingMoreItems,
     List<ContactModel>? contacts,
+    final Map<String, int>? unreadMessagesCountForEachContactId,
   }) {
     return HomeSuccessState(
       user: user ?? this.user,
       items: items ?? this.items,
       isLoadingMoreItems: isLoadingMoreItems ?? this.isLoadingMoreItems,
-  contacts: contacts ?? this.contacts,
+      contacts: contacts ?? this.contacts,
+      unreadMessagesCountForEachContactId:
+          unreadMessagesCountForEachContactId ??
+              this.unreadMessagesCountForEachContactId,
     );
   }
 }
