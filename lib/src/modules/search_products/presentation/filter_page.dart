@@ -146,14 +146,22 @@ class _FilterPageState extends State<FilterPage> {
                     style: TextStyle(fontSize: 24),
                   ),
                 ),
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: KondusButton(
-            label: amountSelected > 0
-                ? 'Aplicar $amountSelected filtros'
-                : 'Aplicar filtros',
-            onPressed: applyFilters,
+      bottomNavigationBar: ColoredBox(
+        color: context.surfaceColor,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(
+              bottom: 18,
+              top: 18,
+              left: 24,
+              right: 24,
+            ),
+            child: KondusButton(
+              label: amountSelected > 0
+                  ? 'Aplicar $amountSelected filtros'
+                  : 'Aplicar filtros',
+              onPressed: applyFilters,
+            ),
           ),
         ),
       ),

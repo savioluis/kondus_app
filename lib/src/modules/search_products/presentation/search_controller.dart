@@ -22,6 +22,8 @@ class SearchPageController extends ChangeNotifier {
 
   Timer? _debounce;
 
+  bool isFirstItemsLoaded = true;
+
   @override
   void dispose() {
     searchController.dispose();
@@ -75,6 +77,8 @@ class SearchPageController extends ChangeNotifier {
     _debounce = Timer(const Duration(milliseconds: 750), () {
       fetchItems();
     });
+
+    isFirstItemsLoaded = false;
   }
 
   void _emitState(SearchState newState) {
