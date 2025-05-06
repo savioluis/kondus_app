@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hugeicons/hugeicons.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
@@ -65,7 +66,6 @@ class _HomePageState extends State<HomePage> {
               color: context.whiteColor,
               child: CustomScrollView(
                 slivers: [
-
                   const SliverToBoxAdapter(
                     child: Column(
                       children: [
@@ -167,7 +167,7 @@ class _HomePageState extends State<HomePage> {
                         height: (72.0 * state.items.length).clamp(100, 300),
                         child: Center(
                           child: CircularProgressIndicator(
-                            color: context.lightGreyColor.withOpacity(0.5),
+                            color: context.lightGreyColor.withOpacity(0.4),
                           ),
                         ),
                       ),
@@ -206,8 +206,34 @@ class _HomePageState extends State<HomePage> {
                       ),
                     )
                   else
-                    const SliverToBoxAdapter(
-                      child: Center(child: Text('Nenhum produto encontrado')),
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 48, horizontal: 24),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              HugeIcons.strokeRoundedPackage,
+                              size: 36,
+                              color: context.blueColor.withOpacity(0.6),
+                            ),
+                            const SizedBox(height: 12),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 82),
+                              child: Text(
+                                'Nenhum item em destaque no momento',
+                                style: context.bodyMedium?.copyWith(
+                                  color: context.primaryColor.withOpacity(0.7),
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
 
                   const SliverToBoxAdapter(child: SizedBox(height: 96)),
@@ -256,7 +282,7 @@ class _HomePageState extends State<HomePage> {
 class _PinnedSearchAndCategoryHeader extends SliverPersistentHeaderDelegate {
   @override
   final double minExtent;
-  
+
   @override
   final double maxExtent;
 
