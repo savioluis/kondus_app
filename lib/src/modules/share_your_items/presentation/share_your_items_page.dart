@@ -50,77 +50,76 @@ class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const KondusAppBar(),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.only(bottom: 48, top: 24),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: TextButton(
-                onPressed: widget.onSkipPressed ??
-                    () => NavigatorProvider.navigateTo(
-                          AppRoutes.registerItemStep1,
-                          arguments: RouteArguments<List<dynamic>>(
-                            [
-                              null,
-                              null,
-                              null,
-                              null,
-                              null,
-                            ],
-                          ),
-                        ),
-                child: Text(
-                  widget.onSkipPressed != null ? 'Pular Etapa' : 'Outro',
-                  style: context.textTheme.titleMedium?.copyWith(
-                    color: context.blueColor,
-                    fontSize: 17,
-                    // decoration: TextDecoration.underline,
-                    // decorationThickness: 2
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0),
-              child: SizedBox(
-                width: 158,
-                child: KondusButton(
-                  label: 'CONTINUAR',
-                  onPressed: selectedItem != null
-                      ? () {
-                          final selectedItemName = selectedItem!.name;
-
-                          final selectedItemType = selectedItem!.type;
-
-                          final selectedItemDescription =
-                              selectedItem!.description;
-
-                          final selectedItemCategoriesIds =
-                              selectedItem!.categoriesIds;
-
-                          final selectedItemActionType =
-                              selectedItem!.actionType;
-
-                          NavigatorProvider.navigateTo(
+      bottomNavigationBar: ColoredBox(
+        color: context.surfaceColor,
+        child: SafeArea(
+          child: Padding(
+            padding:
+                const EdgeInsets.only(bottom: 18, top: 36, left: 24, right: 24),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  onPressed: widget.onSkipPressed ??
+                      () => NavigatorProvider.navigateTo(
                             AppRoutes.registerItemStep1,
                             arguments: RouteArguments<List<dynamic>>(
                               [
-                                selectedItemType,
-                                selectedItemName,
-                                selectedItemDescription,
-                                selectedItemCategoriesIds,
-                                selectedItemActionType,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
                               ],
                             ),
-                          );
-                        }
-                      : null,
+                          ),
+                  child: Text(
+                    widget.onSkipPressed != null ? 'Pular Etapa' : 'Outro',
+                    style: context.textTheme.titleMedium?.copyWith(
+                      color: context.blueColor,
+                      fontSize: 17,
+                    ),
+                  ),
                 ),
-              ),
+                Flexible(
+                  child: IntrinsicWidth(
+                    child: KondusButton(
+                      label: 'CONTINUAR',
+                      onPressed: selectedItem != null
+                          ? () {
+                              final selectedItemName = selectedItem!.name;
+        
+                              final selectedItemType = selectedItem!.type;
+        
+                              final selectedItemDescription =
+                                  selectedItem!.description;
+        
+                              final selectedItemCategoriesIds =
+                                  selectedItem!.categoriesIds;
+        
+                              final selectedItemActionType =
+                                  selectedItem!.actionType;
+        
+                              NavigatorProvider.navigateTo(
+                                AppRoutes.registerItemStep1,
+                                arguments: RouteArguments<List<dynamic>>(
+                                  [
+                                    selectedItemType,
+                                    selectedItemName,
+                                    selectedItemDescription,
+                                    selectedItemCategoriesIds,
+                                    selectedItemActionType,
+                                  ],
+                                ),
+                              );
+                            }
+                          : null,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
       body: Padding(
@@ -185,9 +184,9 @@ class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
                       },
                     ),
                     if (!showAllItems &&
-                        recommendedItems.length > minimumDisplayQuantity && _searchController.value.text.isEmpty)
+                        recommendedItems.length > minimumDisplayQuantity &&
+                        _searchController.value.text.isEmpty)
                       ItemChip(
-                        borderColor: context.lightGreyColor.withOpacity(0.4),
                         onTap: () {
                           setState(() {
                             showAllItems = true;
@@ -208,7 +207,6 @@ class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
                       ),
                     if (showAllItems && _searchController.value.text.isEmpty)
                       ItemChip(
-                        borderColor: context.lightGreyColor.withOpacity(0.4),
                         onTap: () {
                           setState(() {
                             showAllItems = false;

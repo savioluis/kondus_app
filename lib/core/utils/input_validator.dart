@@ -84,7 +84,6 @@ class InputValidator {
   }
 }
 
-
 class ProgressiveNumberInputFormatter extends TextInputFormatter {
   static final _partialNumberRegex = RegExp(r'^-?(\d+)?(\.)?(\d*)?$');
 
@@ -93,8 +92,13 @@ class ProgressiveNumberInputFormatter extends TextInputFormatter {
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
-    if (_partialNumberRegex.hasMatch(newValue.text)) {
-      return newValue;
+    final sanitizedText = newValue.text.replaceAll(',', '.');
+
+    if (_partialNumberRegex.hasMatch(sanitizedText)) {
+      return newValue.copyWith(
+        text: sanitizedText,
+        selection: TextSelection.collapsed(offset: sanitizedText.length),
+      );
     } else {
       return oldValue;
     }

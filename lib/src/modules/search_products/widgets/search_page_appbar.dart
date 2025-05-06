@@ -68,6 +68,22 @@ class SearchPageAppBar extends StatelessWidget implements PreferredSizeWidget {
                               hintText: 'Digite para pesquisar...',
                               controller: controller.searchController,
                               onChanged: controller.onSearchChanged,
+                              sufixIcon: controller
+                                      .searchController.value.text.isNotEmpty
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        controller.searchController.clear();
+                                        controller.onSearchChanged(controller
+                                            .searchController.value.text);
+                                      },
+                                      child: Icon(
+                                        Icons.close,
+                                        color: context.lightGreyColor
+                                            .withOpacity(0.5),
+                                        size: 20,
+                                      ),
+                                    )
+                                  : null,
                             ),
                           ),
                           const SizedBox(width: 12),
@@ -86,9 +102,10 @@ class SearchPageAppBar extends StatelessWidget implements PreferredSizeWidget {
                                         selectedCategories,
                                       ),
                                     ) as RouteArguments<List<CategoryModel>?>?;
-                  
+
                                     if (result?.data != null) {
-                                      controller.onFiltersChanged(result!.data!);
+                                      controller
+                                          .onFiltersChanged(result!.data!);
                                     }
                                   },
                                   borderRadius: BorderRadius.circular(12),
@@ -113,8 +130,8 @@ class SearchPageAppBar extends StatelessWidget implements PreferredSizeWidget {
                                     width: 26,
                                     decoration: BoxDecoration(
                                       color: context.surfaceColor,
-                                      border:
-                                          Border.all(color: context.lightGreyColor),
+                                      border: Border.all(
+                                          color: context.lightGreyColor),
                                       shape: BoxShape.circle,
                                     ),
                                     child: Center(

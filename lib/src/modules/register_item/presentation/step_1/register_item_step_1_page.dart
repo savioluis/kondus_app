@@ -59,8 +59,17 @@ class _RegisterItemPageSStep1tate extends State<RegisterItemStep1Page> {
     }
   }
 
+  String _getContentTypeValue() {
+    if (widget.itemType == null) return 'item';
+    if (widget.itemType == ItemType.servico) return 'serviço';
+    return 'produto';
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    final contentTypeValue = _getContentTypeValue();
+
     return AnimatedBuilder(
       animation: controller,
       builder: (context, child) {
@@ -69,18 +78,26 @@ class _RegisterItemPageSStep1tate extends State<RegisterItemStep1Page> {
             isOnlyItem: widget.itemType == null,
             itemType: widget.itemType,
           ),
-          bottomNavigationBar: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
-              child: KondusButton(
-                label: 'Próximo',
-                onPressed: () {
-                  controller.goToStep2(
-                    itemType: widget.itemType,
-                    categoriesIds: widget.categoriesIds,
-                    actionType: widget.actionType,
-                  );
-                },
+          bottomNavigationBar: ColoredBox(
+            color: context.surfaceColor,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 18,
+                  top: 18,
+                  left: 24,
+                  right: 24,
+                ),
+                child: KondusButton(
+                  label: 'Próximo',
+                  onPressed: () {
+                    controller.goToStep2(
+                      itemType: widget.itemType,
+                      categoriesIds: widget.categoriesIds,
+                      actionType: widget.actionType,
+                    );
+                  },
+                ),
               ),
             ),
           ),
@@ -92,13 +109,13 @@ class _RegisterItemPageSStep1tate extends State<RegisterItemStep1Page> {
                 children: [
                   _buildSectionTitle('Nome'),
                   KondusTextFormField(
-                    hintText: 'Digite o nome do produto',
+                    hintText: 'Digite o nome do $contentTypeValue...',
                     controller: controller.nameEC,
                   ),
                   const SizedBox(height: 24),
                   _buildSectionTitle('Descrição'),
                   KondusTextFormField(
-                    hintText: 'Digite a descrição do produto',
+                    hintText: 'Digite a descrição do $contentTypeValue...',
                     controller: controller.descriptionEC,
                     maxLines: 4,
                   ),
@@ -106,7 +123,7 @@ class _RegisterItemPageSStep1tate extends State<RegisterItemStep1Page> {
                   _buildSectionTitle('Imagens'),
                   if (controller.imagesFiles.isNotEmpty) ...{
                     SizedBox(
-                      height: 156,
+                      height: 132,
                       child: ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
@@ -126,8 +143,8 @@ class _RegisterItemPageSStep1tate extends State<RegisterItemStep1Page> {
                               },
                               borderRadius: BorderRadius.circular(18),
                               child: Ink(
-                                height: 156,
-                                width: 156,
+                                height: 132,
+                                width: 132,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(18),
                                     color:
@@ -139,14 +156,14 @@ class _RegisterItemPageSStep1tate extends State<RegisterItemStep1Page> {
                                   children: [
                                     Icon(
                                       HugeIcons.strokeRoundedImageAdd02,
-                                      size: 82,
+                                      size: 50,
                                       color: context.lightGreyColor,
                                     ),
                                     const SizedBox(height: 8),
                                     const Text(
                                       'Enviar mais imagens',
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(fontSize: 14),
+                                      style: TextStyle(fontSize: 12.5),
                                     ),
                                   ],
                                 ),
@@ -178,8 +195,8 @@ class _RegisterItemPageSStep1tate extends State<RegisterItemStep1Page> {
                       },
                       borderRadius: BorderRadius.circular(18),
                       child: Ink(
-                        height: 156,
-                        width: 156,
+                        height: 132,
+                        width: 132,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(18),
                             color: context.lightGreyColor.withOpacity(0),
@@ -189,7 +206,7 @@ class _RegisterItemPageSStep1tate extends State<RegisterItemStep1Page> {
                           children: [
                             Icon(
                               HugeIcons.strokeRoundedImageAdd02,
-                              size: 82,
+                              size: 56,
                               color: context.lightGreyColor,
                             ),
                             const SizedBox(height: 8),
@@ -239,8 +256,8 @@ class _RegisterItemPageSStep1tate extends State<RegisterItemStep1Page> {
         onLongPress: () {},
         borderRadius: BorderRadius.circular(18),
         child: Ink(
-          width: 156,
-          height: 156,
+          width: 132,
+          height: 132,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
             image: DecorationImage(

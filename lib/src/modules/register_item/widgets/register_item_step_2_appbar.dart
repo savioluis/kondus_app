@@ -55,24 +55,27 @@ class RegisterItemAppbarStep2 extends StatelessWidget
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 24, right: 24, top: 24),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: context.blueColor.withOpacity(0.2),
-                  border: Border.all(color: context.blueColor),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 4,
-                ),
-                child: Text(
-                  '✅$itemName',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: context.blueColor,
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 24, right: 24, top: 24),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: context.blueColor.withOpacity(0.5),
+                    border: Border.all(color: context.blueColor),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  child: Text(
+                    itemName,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: itemName.length > 34 ? 14 : 16,
+                      color: context.whiteColor,
+                    ),
                   ),
                 ),
               ),

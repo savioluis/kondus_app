@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
+import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/utils/input_validator.dart';
 import 'package:kondus/core/utils/snack_bar_helper.dart';
 import 'package:kondus/core/widgets/error_state_widget.dart';
@@ -97,22 +98,27 @@ class _RegisterItemStep2PageState extends State<RegisterItemStep2Page> {
               itemType: widget.itemType,
               itemName: widget.name,
             ),
-            bottomNavigationBar: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 18,
-                ),
-                child: KondusButton(
-                  label: 'Anunciar',
-                  isLoading: state.isSubmitting,
-                  onPressed: () async {
-                    await controller.registerItem(
-                      name: widget.name,
-                      description: widget.description,
-                      imagesFilesPaths: widget.imagesPaths,
-                    );
-                  },
+            bottomNavigationBar: ColoredBox(
+              color: context.surfaceColor,
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 18,
+                    top: 18,
+                    left: 24,
+                    right: 24,
+                  ),
+                  child: KondusButton(
+                    label: 'Anunciar',
+                    isLoading: state.isSubmitting,
+                    onPressed: () async {
+                      await controller.registerItem(
+                        name: widget.name,
+                        description: widget.description,
+                        imagesFilesPaths: widget.imagesPaths,
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
@@ -126,9 +132,11 @@ class _RegisterItemStep2PageState extends State<RegisterItemStep2Page> {
                     const SizedBox(height: 24),
                     _buildSectionTitle('Preço'),
                     KondusTextFormField(
-                      hintText: 'Digite o nome do produto',
+                      hintText: 'Digite o preço de ${widget.name}....',
                       controller: controller.priceEC,
                       inputFormatters: [ProgressiveNumberInputFormatter()],
+                      keyboardType:
+                          const TextInputType.numberWithOptions(signed: true),
                     ),
                     const SizedBox(height: 24),
                     _buildSectionTitle('Categorias'),
@@ -155,7 +163,7 @@ class _RegisterItemStep2PageState extends State<RegisterItemStep2Page> {
                       const SizedBox(height: 24),
                       _buildSectionTitle('Quantidade'),
                       KondusTextFormField(
-                        hintText: 'Digite a quantidade',
+                        hintText: 'Digite a quantidade a oferecer...',
                         controller: controller.quantityEC,
                       ),
                       const SizedBox(height: 24),
