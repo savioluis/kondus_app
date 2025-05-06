@@ -55,8 +55,8 @@ class KondusTextFormField extends StatelessWidget {
         suffixIcon: sufixIcon,
         suffixIconColor: sufixIconColor ?? context.secondaryColor,
         hintText: hintText,
-        hintStyle: context.titleMedium!
-            .copyWith(color: context.lightGreyColor.withOpacity(0.5)),
+        hintStyle: context.bodyLarge!
+            .copyWith(color: context.lightGreyColor.withOpacity(0.7)),
         filled: isFilled,
         fillColor: fillColor,
         
