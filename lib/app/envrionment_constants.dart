@@ -1,4 +1,3 @@
-
 class EnvrionmentConstants {
-  static const baseUrl = 'http://0.0.0.0:8080';
+  static const baseUrl = String.fromEnvironment('BASE_URL', defaultValue: 'NO_BASE_URL');
 }
