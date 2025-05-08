@@ -20,62 +20,41 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
   int _currentPage = 0;
 
   final _banners = [
-    const _BannerData(
-      emoji: "🤝",
-      title: "Combine tudo pelo chat!",
+    _BannerData(
+      emoji: "🔍",
+      title: "Encontre o que precisa!",
       text:
-          "Converse com o vizinho sobre retirada, entrega e horário ideal. Tudo direto no app.",
+          "Busque produtos e serviços no condomínio de forma rápida e fácil.",
+      onPressed: () => NavigatorProvider.navigateTo(AppRoutes.searchProducts),
     ),
-    const _BannerData(
-      emoji: "🛠️",
-      title: "Evite compras desnecessárias!",
+    _BannerData(
+      emoji: "📢",
+      title: "Anuncie agora!",
       text:
-          "Alugue ou peça emprestado de quem mora perto. Mais econômico e sustentável.",
-    ),
-    const _BannerData(
-      emoji: "🍰",
-      title: "Bolos, docinhos e mais!",
-      text:
-          "Encontre vizinhos que vendem delícias caseiras no app e compre direto deles.",
-    ),
-    const _BannerData(
-      emoji: "💬",
-      title: "Negociação sem complicação",
-      text:
-          "Use o chat para ajustar preços, entrega ou dúvidas antes da contratação.",
-    ),
-    const _BannerData(
-      emoji: "📍",
-      title: "Retire ou receba em casa!",
-      text:
-          "Combine com o vizinho a forma de entrega mais prática pra vocês dois.",
-    ),
-  ]
-    ..shuffle()
-    ..insert(
-      0,
-      _BannerData(
-        emoji: "📢",
-        title: "Tem algo pra oferecer?",
-        text:
-            "Anuncie seu produto ou serviço e ganhe visibilidade no condomínio!",
-        onPressed: () => NavigatorProvider.navigateTo(
-          AppRoutes.shareYourItems,
-          arguments: RouteArguments<VoidCallback?>(null),
-        ),
+          "Contribua para o seu condomínio anunciando produtos ou serviços e ajude seus vizinhos.",
+      onPressed: () => NavigatorProvider.navigateTo(
+        AppRoutes.shareYourItems,
+        arguments: RouteArguments<VoidCallback?>(null),
       ),
-    );
+    ),
+    _BannerData(
+      emoji: "✏️",
+      title: "Gerencie seus anúncios",
+      text: "Acompanhe o que você publicou e remova quando quiser.",
+      onPressed: () => NavigatorProvider.navigateTo(AppRoutes.myAnnouncements),
+    ),
+  ];
 
   @override
   void initState() {
     _pageController = PageController(viewportFraction: 0.89);
 
-    _autoScrollTimer = Timer.periodic(const Duration(seconds: 7), (timer) {
+    _autoScrollTimer = Timer.periodic(const Duration(seconds: 12), (timer) {
       final nextPage = (_currentPage + 1) % _banners.length;
 
       _pageController.animateToPage(
         nextPage,
-        duration: const Duration(milliseconds: 800),
+        duration: const Duration(milliseconds: 900),
         curve: Curves.easeInOut,
       );
     });
@@ -96,10 +75,10 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
       builder: (context, constraints) {
         final maxWidth = constraints.maxWidth;
 
-        final emojiFontSize = maxWidth * 0.07;
+        final emojiFontSize = maxWidth * 0.06;
         final titleFontSize = maxWidth * 0.05;
         final contentFontSize = maxWidth * 0.035;
-        final bannerHeight = maxWidth * 0.5;
+        final bannerHeight = maxWidth * 0.55;
 
         final selectedDotIndicatorSize = maxWidth * 0.025;
         final unselectedDotIndicatorSize = maxWidth * 0.020;
@@ -127,7 +106,7 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
                           )[index]
                               .withOpacity(0.09),
                           border: Border.all(
-                            color: context.lightGreyColor.withOpacity(0.18),
+                            color: context.lightGreyColor.withOpacity(0.36),
                           ),
                           borderRadius: BorderRadius.circular(18),
                         ),
@@ -137,6 +116,7 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
                           child: Padding(
                             padding: const EdgeInsets.all(18),
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(banner.emoji,
