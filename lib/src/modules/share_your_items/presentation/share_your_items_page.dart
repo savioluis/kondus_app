@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
+import 'package:kondus/core/repositories/recommended_items/recommended_items_repository.dart';
 import 'package:kondus/core/widgets/kondus_text_field.dart';
 import 'package:kondus/src/modules/share_your_items/model/recommended_item.dart';
 import 'package:kondus/src/modules/share_your_items/widgets/item_chip.dart';
@@ -22,7 +23,9 @@ class ShareYourItemsPage extends StatefulWidget {
 
 class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
   RecommendedItem? selectedItem;
-  final recommendedItems = RecommendedItem.items..shuffle();
+  final recommendedItems =
+      const RecommendedItemsRepository().getRecommendedItems()..shuffle();
+
   List<RecommendedItem> displayedItems = [];
 
   final TextEditingController _searchController = TextEditingController();
