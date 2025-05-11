@@ -17,9 +17,9 @@ extension ItemTypeExtension on ItemType {
 
   static ItemType fromJsonValue(String category) {
     return switch (category.toLowerCase()) {
-      'comprar' => ItemType.produto,
-      'contratar' => ItemType.servico,
-      'alugar' => ItemType.aluguel,
+      'vendas' => ItemType.produto,
+      'serviços' => ItemType.servico,
+      'alugueis' => ItemType.aluguel,
       _ => ItemType.produto,
     };
   }

@@ -88,7 +88,7 @@ class _FilterPageState extends State<FilterPage> {
 
     return Scaffold(
       appBar: KondusAppBar(
-        title: 'Filtros',
+        title: 'Categorias',
         actions: [
           if (amountSelected > 0)
             Padding(
@@ -113,33 +113,28 @@ class _FilterPageState extends State<FilterPage> {
               child: CircularProgressIndicator(),
             )
           : !_hasError
-              ? RefreshIndicator(
-                  onRefresh: () async {
-                    _loadCategories();
+              ? Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                child: ListView.separated(
+                  itemCount: _categories.length,
+                  itemBuilder: (context, index) {
+                    final category = _categories[index];
+                    return CheckboxListTile(
+                      shape: ContinuousRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      title: Text(category.name),
+                      value: _selectedIndexes.contains(index),
+                      activeColor: context.blueColor,
+                      tileColor: context.lightGreyColor.withOpacity(0.2),
+                      onChanged: (_) => toggleSelection(index),
+                    );
                   },
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                    child: ListView.separated(
-                      itemCount: _categories.length,
-                      itemBuilder: (context, index) {
-                        final category = _categories[index];
-                        return CheckboxListTile(
-                          shape: ContinuousRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          title: Text(category.name),
-                          value: _selectedIndexes.contains(index),
-                          activeColor: context.blueColor,
-                          tileColor: context.lightGreyColor.withOpacity(0.2),
-                          onChanged: (_) => toggleSelection(index),
-                        );
-                      },
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: 12),
-                    ),
-                  ),
-                )
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 12),
+                ),
+              )
               : const Center(
                   child: Text(
                     'Erro ao carregar os filtros.',

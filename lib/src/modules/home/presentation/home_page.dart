@@ -146,9 +146,9 @@ class _HomePageState extends State<HomePage> {
                                 scrollDirection: Axis.horizontal,
                                 children: [
                                   _buildCategoryChip('Todos'),
-                                  _buildCategoryChip('Comprar'),
-                                  _buildCategoryChip('Alugar'),
-                                  _buildCategoryChip('Contratar'),
+                                  _buildCategoryChip('Vendas'),
+                                  _buildCategoryChip('Alugueis'),
+                                  _buildCategoryChip('Serviços'),
                                 ],
                               ),
                             ),
