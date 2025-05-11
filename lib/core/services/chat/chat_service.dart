@@ -7,12 +7,12 @@ class ChatService {
   final AuthService _authService = GetIt.instance<AuthService>();
 
   Future<void> sendMessage({
+    required String? currentUserId,
     required String targetId,
     required String text,
   }) async {
     if (text.trim().isEmpty) return;
 
-    final currentUserId = (await _authService.getUserId())?.toString();
 
     if (currentUserId == null) return;
 
@@ -120,8 +120,7 @@ class ChatService {
     return unreadCounts;
   }
 
-  Future<void> markMessagesAsRead(String otherUserId) async {
-    final currentUserId = await _authService.getUserId();
+  Future<void> markMessagesAsRead(String? currentUserId, String otherUserId) async {
 
     if (currentUserId == null) return;
 

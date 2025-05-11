@@ -52,7 +52,8 @@ class _SearchPageState extends State<SearchPage> {
           floatingActionButton: currentState is SearchSuccess
               ? controller.searchController.value.text.isEmpty &&
                       currentState.products.isEmpty &&
-                      controller.isFirstItemsLoaded
+                      controller.isFirstItemsLoaded &&
+                      controller.selectedCategories.isEmpty
                   ? null
                   : FloatingActionButton.extended(
                       elevation: 2,

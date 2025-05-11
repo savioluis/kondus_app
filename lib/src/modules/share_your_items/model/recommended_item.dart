@@ -261,14 +261,6 @@ class RecommendedItem {
       actionType: "Serviço",
     ),
     RecommendedItem(
-      name: "Aulas de Redação",
-      type: ItemType.servico,
-      description:
-          "Correção e acompanhamento de textos para estudantes e vestibulandos.",
-      categoriesIds: [14],
-      actionType: "Serviço",
-    ),
-    RecommendedItem(
       name: "Aulas de Piano",
       type: ItemType.servico,
       description:

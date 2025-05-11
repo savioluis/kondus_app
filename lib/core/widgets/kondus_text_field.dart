@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kondus/core/theme/app_theme.dart';
@@ -16,7 +18,7 @@ class KondusTextFormField extends StatelessWidget {
   final Color? fillColor;
   final Function(String)? onChanged;
   final InputDecoration? decoration;
-  final int maxLines;
+  final int? maxLines;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
 
@@ -49,18 +51,18 @@ class KondusTextFormField extends StatelessWidget {
       obscureText: isObscure,
       onChanged: onChanged,
       maxLines: maxLines,
-      decoration: decoration ?? context.textFieldDecoration.copyWith(
-        prefixIcon: prefixIcon,
-        prefixIconColor: prefixIconColor ?? context.secondaryColor,
-        suffixIcon: sufixIcon,
-        suffixIconColor: sufixIconColor ?? context.secondaryColor,
-        hintText: hintText,
-        hintStyle: context.bodyLarge!
-            .copyWith(color: context.lightGreyColor.withOpacity(0.7)),
-        filled: isFilled,
-        fillColor: fillColor,
-        
-      ),
+      decoration: decoration ??
+          context.textFieldDecoration.copyWith(
+            prefixIcon: prefixIcon,
+            prefixIconColor: prefixIconColor ?? context.secondaryColor,
+            suffixIcon: sufixIcon,
+            suffixIconColor: sufixIconColor ?? context.secondaryColor,
+            hintText: hintText,
+            hintStyle: context.bodyLarge!
+                .copyWith(color: context.lightGreyColor.withOpacity(0.7)),
+            filled: isFilled,
+            fillColor: fillColor,
+          ),
       onTapOutside: (event) {
         FocusManager.instance.primaryFocus?.unfocus();
       },

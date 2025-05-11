@@ -30,10 +30,12 @@ class AppTheme {
       elevatedButtonTheme: _elevatedButtonThemeData(),
       inputDecorationTheme: TextFieldThemeData.lightTheme(colorScheme),
       chipTheme: _chipThemeData(colorScheme),
+      textSelectionTheme: TextSelectionThemeData(
+          selectionColor: AppColors.blue.withOpacity(0.27)),
     );
   }
 
-  static ThemeData darkTheme() {
+  static ThemeData darkTheme() {  
     final baseTheme = ThemeData.dark();
     const colorScheme = ColorScheme.dark(
       primary: AppColors.darkPrimary,
@@ -53,6 +55,9 @@ class AppTheme {
       elevatedButtonTheme: _elevatedButtonThemeData(),
       inputDecorationTheme: TextFieldThemeData.darkTheme(colorScheme),
       chipTheme: _chipThemeData(colorScheme),
+      textSelectionTheme: TextSelectionThemeData(
+        selectionColor: AppColors.blue.withOpacity(0.27),
+      ),
     );
   }
 }
