@@ -70,10 +70,6 @@ class _InitialPageState extends State<InitialPage> {
 
   Future<void> _handleInitialNavigation() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-
-      final bool isUserFirstLogin =
-          prefs.getBool('is_user_first_login') ?? true;
 
       final isLoggedIn = await _sessionManager.isLoggedIn();
 
@@ -81,18 +77,7 @@ class _InitialPageState extends State<InitialPage> {
       RouteArguments? arguments;
 
       if (isLoggedIn.$1) {
-        if (isUserFirstLogin) {
-          initialRoute = AppRoutes.shareYourItems;
-
-          Future<void> onSkipPressed() async =>
-              NavigatorProvider.navigateAndRemoveUntil(AppRoutes.home);
-
-          arguments = RouteArguments<VoidCallback?>(onSkipPressed);
-
-          await prefs.setBool('is_user_first_login', false);
-        } else {
-          initialRoute = AppRoutes.home;
-        }
+        initialRoute = AppRoutes.home;
 
         final token = isLoggedIn.$2;
         log('🔐 Current Token: $token');

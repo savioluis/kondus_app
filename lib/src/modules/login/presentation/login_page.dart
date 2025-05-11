@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kondus/app/routing/app_routes.dart';
+import 'package:kondus/app/routing/route_arguments.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/utils/snack_bar_helper.dart';
 import 'package:kondus/src/modules/login/presentation/login_controller.dart';
@@ -8,6 +9,7 @@ import 'package:kondus/src/modules/login/widgets/login_app_bar.dart';
 import 'package:kondus/src/modules/login/widgets/register_text_widget.dart';
 import 'package:kondus/core/widgets/kondus_elevated_button.dart';
 import 'package:kondus/core/widgets/kondus_text_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -26,17 +28,37 @@ class _LoginPageState extends State<LoginPage> {
     controller.addListener(_controllerListener);
   }
 
-  void _controllerListener() {
+  void _controllerListener() async {
     final state = controller.state;
 
     if (state is LoginSuccessState) {
-      NavigatorProvider.navigateAndRemoveUntil(AppRoutes.home);
+      final prefs = await SharedPreferences.getInstance();
+
+      final bool isUserFirstLogin =
+          prefs.getBool('is_user_first_login') ?? true;
+
+      String initialRoute;
+      RouteArguments? arguments;
+
+      Future<void> onSkipPressed() async =>
+          NavigatorProvider.navigateAndRemoveUntil(AppRoutes.home);
+
+      initialRoute =
+          isUserFirstLogin ? AppRoutes.shareYourItems : AppRoutes.home;
+
+      arguments = RouteArguments<VoidCallback?>(onSkipPressed);
+
+      await prefs.setBool('is_user_first_login', false);
+
+      NavigatorProvider.navigateAndRemoveUntil(
+        initialRoute,
+        arguments: arguments,
+      );
     } else if (state is LoginFailureState) {
       SnackBarHelper.showMessageSnackBar(
-        message: state.message,
-        context: context,
-        duration: const Duration(seconds: 3)
-      );
+          message: state.message,
+          context: context,
+          duration: const Duration(seconds: 3));
     }
   }
 
