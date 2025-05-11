@@ -38,12 +38,24 @@ class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
   }
 
   void _filterItems(String query) {
+    final normalizedQuery = _removeAccents(query.toLowerCase());
+
     setState(() {
-      displayedItems = recommendedItems
-          .where(
-              (item) => item.name.toLowerCase().contains(query.toLowerCase()))
-          .toList();
+      displayedItems = recommendedItems.where((item) {
+        final normalizedName = _removeAccents(item.name.toLowerCase());
+        return normalizedName.contains(normalizedQuery);
+      }).toList();
     });
+  }
+
+  String _removeAccents(String str) {
+    const accents = 'áàâãäéèêëíìîïóòôõöúùûüçñÁÀÂÃÄÉÈÊËÍÌÎÏÓÒÔÕÖÚÙÛÜÇÑ';
+    const without = 'aaaaaeeeeiiiiooooouuuucnAAAAAEEEEIIIIOOOOOUUUUCN';
+
+    for (var i = 0; i < accents.length; i++) {
+      str = str.replaceAll(accents[i], without[i]);
+    }
+    return str;
   }
 
   @override
@@ -88,18 +100,18 @@ class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
                       onPressed: selectedItem != null
                           ? () {
                               final selectedItemName = selectedItem!.name;
-        
+
                               final selectedItemType = selectedItem!.type;
-        
+
                               final selectedItemDescription =
                                   selectedItem!.description;
-        
+
                               final selectedItemCategoriesIds =
                                   selectedItem!.categoriesIds;
-        
+
                               final selectedItemActionType =
                                   selectedItem!.actionType;
-        
+
                               NavigatorProvider.navigateTo(
                                 AppRoutes.registerItemStep1,
                                 arguments: RouteArguments<List<dynamic>>(
