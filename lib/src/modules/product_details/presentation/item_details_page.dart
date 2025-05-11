@@ -68,8 +68,14 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                         ),
                       ),
                       backgroundColor: context.blueColor,
-                      label: const Text("RESERVAR"),
-                      icon: const Icon(Icons.chat),
+                      label: Text(
+                        "CONVERSAR",
+                        style: TextStyle(color: context.whiteColor),
+                      ),
+                      icon: Icon(
+                        HugeIcons.strokeRoundedMessage02,
+                        color: context.whiteColor,
+                      ),
                     ),
               body: CustomScrollView(
                 slivers: [
@@ -109,8 +115,9 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                                   ),
                                 )
                               : Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 18),
-                                child: GestureDetector(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 18),
+                                  child: GestureDetector(
                                     onTap: () {
                                       Navigator.push(
                                         context,
@@ -129,7 +136,7 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                                       imageFit: BoxFit.cover,
                                     ),
                                   ),
-                              ),
+                                ),
                     ),
                   ),
                   const SliverToBoxAdapter(child: SizedBox(height: 36)),
