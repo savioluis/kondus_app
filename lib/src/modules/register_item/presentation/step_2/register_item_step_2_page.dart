@@ -6,6 +6,7 @@ import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/services/items/models/items_filter_model.dart';
 import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/utils/input_validator.dart';
+import 'package:kondus/core/utils/overlay_helper.dart';
 import 'package:kondus/core/utils/snack_bar_helper.dart';
 import 'package:kondus/core/widgets/error_state_widget.dart';
 import 'package:kondus/core/widgets/kondus_elevated_button.dart';
@@ -64,11 +65,13 @@ class _RegisterItemStep2PageState extends State<RegisterItemStep2Page> {
         context: context,
       );
     } else if (state is RegisteredItemWithSuccess) {
-      SnackBarHelper.showMessageSnackBar(
-        message: '${state.itemName} foi anunciado com sucesso!',
-        context: context,
-      );
-      NavigatorProvider.navigateAndRemoveUntil(AppRoutes.home);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        NavigatorProvider.navigateAndRemoveUntil(AppRoutes.home);
+        OverlayHelper.showSuccessOverlay(
+          context: context,
+          duration: const Duration(milliseconds: 1500),
+        );
+      });
     }
   }
 
