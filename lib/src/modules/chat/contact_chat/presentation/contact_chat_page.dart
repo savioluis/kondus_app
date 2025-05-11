@@ -8,6 +8,7 @@ import 'package:kondus/core/theme/app_theme.dart';
 import 'package:kondus/core/widgets/kondus_app_bar.dart';
 import 'package:kondus/core/widgets/kondus_text_field.dart';
 import 'package:kondus/src/modules/chat/contact_chat/presentation/contact_chat_controller.dart';
+import 'package:kondus/src/modules/chat/contact_chat/widget/date_header_widget.dart';
 import 'package:kondus/src/modules/chat/contact_chat/widget/message_bubble.dart';
 
 class ContactChatPage extends StatefulWidget {
@@ -31,7 +32,6 @@ class _ContactChatPageState extends State<ContactChatPage> {
   bool _isFirstScroll = true;
   bool _isUserScrolling = false;
   bool _hasMarkedMessagesThisScroll = false;
-  
 
   @override
   void initState() {
@@ -206,11 +206,37 @@ class _ContactChatPageState extends State<ContactChatPage> {
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
                       final message = messages[index];
-                      return MessageBubble(
-                        text: message.text,
-                        timestamp: message.timestamp,
-                        isMe: message.fromId == _currentUserId,
-                        hasBeenRead: message.hasBeenRead,
+
+                      final currentDate = DateTime(
+                        message.timestamp.toDate().year,
+                        message.timestamp.toDate().month,
+                        message.timestamp.toDate().day,
+                      );
+
+                      DateTime? previousDate;
+                      if (index > 0) {
+                        final previousMessage = messages[index - 1];
+                        previousDate = DateTime(
+                          previousMessage.timestamp.toDate().year,
+                          previousMessage.timestamp.toDate().month,
+                          previousMessage.timestamp.toDate().day,
+                        );
+                      }
+
+                      final isFirstOfDay =
+                          index == 0 || currentDate != previousDate;
+
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          if (isFirstOfDay) DateHeaderWidget(date: currentDate),
+                          MessageBubble(
+                            text: message.text,
+                            timestamp: message.timestamp,
+                            isMe: message.fromId == _currentUserId,
+                            hasBeenRead: message.hasBeenRead,
+                          ),
+                        ],
                       );
                     },
                   ),

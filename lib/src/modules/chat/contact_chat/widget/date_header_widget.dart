@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kondus/core/theme/app_theme.dart';
 
 class DateHeaderWidget extends StatelessWidget {
   final DateTime date;
@@ -41,14 +42,14 @@ class DateHeaderWidget extends StatelessWidget {
     final label = _formatDate(date);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.symmetric(vertical: 18),
       child: Center(
         child: Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 13,
             fontWeight: FontWeight.w500,
-            color: Colors.grey,
+            color: context.lightGreyColor,
           ),
         ),
       ),
