@@ -49,6 +49,7 @@ class _LoginPageState extends State<LoginPage> {
       arguments = RouteArguments<VoidCallback?>(onSkipPressed);
 
       await prefs.setBool('is_user_first_login', false);
+      await prefs.setBool('is_user_first_session', false);
 
       NavigatorProvider.navigateAndRemoveUntil(
         initialRoute,

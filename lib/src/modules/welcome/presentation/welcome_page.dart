@@ -1,102 +1,169 @@
 import 'package:flutter/material.dart';
+import 'package:kondus/app/routing/app_routes.dart';
+import 'package:kondus/core/providers/navigator/navigator_provider.dart';
+import 'package:kondus/core/repositories/welcome_slides/welcome_slides_repository.dart';
+import 'package:kondus/core/theme/app_theme.dart';
 
-class WelcomePage extends StatelessWidget {
+class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
+
+  @override
+  State<WelcomePage> createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage> {
+  final PageController _controller = PageController();
+  int _currentIndex = 0;
+
+  final slides = const WelcomeSlidesRepository().getWelcomeSlides()..shuffle();
+
+  void _nextPage() {
+    if (_currentIndex < slides.length - 1) {
+      _controller.nextPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    } else {
+      NavigatorProvider.navigateTo(AppRoutes.login);
+    }
+  }
+
+  void _previousPage() {
+    if (_currentIndex > 0) {
+      _controller.previousPage(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: ClipPath(
-              clipper: GetStartedClipper(),
-              child: Container(
-                color: const Color(0xff05ACC1),
-                height: MediaQuery.of(context).size.height * 0.4,
-              ),
-            ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(color: context.lightGreyColor, width: 0.2),
           ),
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+        ),
+        child: SafeArea(
+          bottom: true,
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 18),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const FlutterLogo(
-                  size: 120,
-                ),
-                const SizedBox(height: 24),
-                const Text(
-                  'Kondus',
-                  style: TextStyle(
-                    fontSize: 32,
-                    color: Color(0xff05ACC1),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  'Acesse tudo sobre seu condomínio em um só lugar.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey,
-                  ),
-                ),
-                const SizedBox(height: 48),
-                
-                const SizedBox(height: 16),
-                TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    'CRIAR CONTA',
-                    style: TextStyle(
-                      color: Color(0xff05ACC1),
-                      fontSize: 16,
+                if (_currentIndex > 0)
+                  TextButton(
+                    onPressed: _previousPage,
+                    child: Text(
+                      'Voltar',
+                      style: context.bodyMedium?.copyWith(
+                          color: context.primaryColor.withOpacity(0.5)),
                     ),
+                  )
+                else
+                  const SizedBox.shrink(),
+                TextButton(
+                  onPressed: _nextPage,
+                  child: Text(
+                    _currentIndex == slides.length - 1 ? 'Começar' : 'Próximo',
+                    style: context.bodyLarge
+                        ?.copyWith(color: context.blueColor, fontSize: 14),
                   ),
                 ),
               ],
             ),
           ),
+        ),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Flexible(
+            flex: 2,
+            child: PageView.builder(
+              controller: _controller,
+              itemCount: slides.length,
+              onPageChanged: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+              itemBuilder: (context, index) {
+                final slide = slides[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 160,
+                        height: 160,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: context.blueColor.withOpacity(0.1),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          slide.emoji,
+                          style: const TextStyle(fontSize: 72),
+                        ),
+                      ),
+                      const SizedBox(height: 48),
+                      Text(
+                        slide.title,
+                        style: context.titleLarge?.copyWith(
+                          color: context.blueColor,
+                          fontSize: 28,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        slide.subtitle,
+                        style: context.bodyMedium?.copyWith(
+                          fontSize: 20,
+                          color: context.greyColor,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          // Dots indicadores
+          Flexible(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                slides.length,
+                (index) => AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                  margin: const EdgeInsets.symmetric(horizontal: 6),
+                  width: _currentIndex == index ? 12 : 8,
+                  height: _currentIndex == index ? 12 : 8,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: context.lightGreyColor, width: 1),
+                    color: _currentIndex == index
+                        ? context.blueColor
+                        : context.lightGreyColor,
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+
+          // Botões
         ],
       ),
     );
-  }
-}
-
-class GetStartedClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-
-    double curveHeight = size.height * 0.2; // Altura da curva
-
-    // Começa no canto superior esquerdo
-    path.moveTo(0, 0);
-
-    // Cria a curva suave no topo
-    path.quadraticBezierTo(
-      size.width / 2,
-      curveHeight,
-      size.width,
-      0,
-    );
-
-    // Linha reta até o canto inferior direito
-    path.lineTo(size.width, size.height);
-
-    // Linha reta até o canto inferior esquerdo
-    path.lineTo(0, size.height);
-
-    // Fecha o caminho
-    path.close();
-
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
-    return false;
   }
 }
