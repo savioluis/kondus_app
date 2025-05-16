@@ -70,8 +70,11 @@ class _InitialPageState extends State<InitialPage> {
 
   Future<void> _handleInitialNavigation() async {
     try {
-
       final isLoggedIn = await _sessionManager.isLoggedIn();
+
+      final prefs = await SharedPreferences.getInstance();
+      final bool isUserFirstSession =
+          prefs.getBool('is_user_first_session') ?? true;
 
       String initialRoute;
       RouteArguments? arguments;
@@ -82,7 +85,7 @@ class _InitialPageState extends State<InitialPage> {
         final token = isLoggedIn.$2;
         log('🔐 Current Token: $token');
       } else {
-        initialRoute = AppRoutes.login;
+        initialRoute = isUserFirstSession ? AppRoutes.welcome : AppRoutes.login;
       }
 
       log('🆕 Initial route: $initialRoute');
