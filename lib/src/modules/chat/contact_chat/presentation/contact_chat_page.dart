@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get_it/get_it.dart';
 import 'package:kondus/core/error/kondus_error.dart';
+import 'package:kondus/core/providers/navigator/navigator_provider.dart';
 import 'package:kondus/core/services/auth/auth_service.dart';
 import 'package:kondus/core/services/chat/chat_service.dart';
 import 'package:kondus/core/theme/app_theme.dart';
@@ -33,11 +34,21 @@ class _ContactChatPageState extends State<ContactChatPage> {
   bool _isUserScrolling = false;
   bool _hasMarkedMessagesThisScroll = false;
 
+  final FocusNode _focusNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
     _loadUserId();
     controller = ContactChatController();
+
+    _focusNode.addListener(() {
+      if (_focusNode.hasFocus) {
+        Future.delayed(const Duration(milliseconds: 180), () {
+          controller.jumpToBottom();
+        });
+      }
+    });
   }
 
   Future<void> _loadUserId() async {
@@ -50,6 +61,7 @@ class _ContactChatPageState extends State<ContactChatPage> {
 
   @override
   void dispose() {
+    _focusNode.dispose();
     controller.scrollController.dispose();
     super.dispose();
   }
@@ -57,68 +69,18 @@ class _ContactChatPageState extends State<ContactChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: KondusAppBar(
         title: widget.name,
-      ),
-      bottomNavigationBar: Material(
-        color: context.surfaceColor,
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 18, bottom: 18, top: 18),
-            child: Row(
-              children: [
-                Expanded(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxHeight: 86),
-                    child: KondusTextFormField(
-                      controller: controller.textController,
-                      decoration: const InputDecoration(
-                        hintText: 'Digite sua mensagem...',
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                      ),
-                      maxLines: null,
-                      onChanged: (_) async {
-                        final controllerPosition =
-                            controller.scrollController.position;
-
-                        final isNearBottom =
-                            controllerPosition.hasContentDimensions &&
-                                (controllerPosition.maxScrollExtent -
-                                        controllerPosition.pixels) <
-                                    MediaQuery.sizeOf(context).height / 3;
-
-                        if (controller.lastUnreadCount > 0 && isNearBottom) {
-                          await controller.markMessagesAsRead(
-                            _currentUserId,
-                            widget.targetId,
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                IconButton(
-                  onPressed: () async {
-                    await controller.sendMessage(
-                      currentUserId: _currentUserId,
-                      targetId: widget.targetId,
-                    );
-                    if (controller.lastUnreadCount > 0) {
-                      await controller.markMessagesAsRead(
-                        _currentUserId,
-                        widget.targetId,
-                      );
-                    }
-                  },
-                  icon: const Icon(Icons.send),
-                  color: context.blueColor,
-                ),
-              ],
-            ),
-          ),
-        ),
+        onBackButtonPressed: () async {
+          NavigatorProvider.goBack();
+          if (controller.lastUnreadCount > 0) {
+            await controller.markMessagesAsRead(
+              _currentUserId,
+              widget.targetId,
+            );
+          }
+        },
       ),
       body: Column(
         children: [
@@ -159,19 +121,21 @@ class _ContactChatPageState extends State<ContactChatPage> {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (_isUserScrolling) return;
 
-                  final controllerPosition =
-                      controller.scrollController.position;
-                  final isNearBottom =
-                      controllerPosition.hasContentDimensions &&
-                          (controllerPosition.maxScrollExtent -
-                                  controllerPosition.pixels) <
-                              MediaQuery.sizeOf(context).height / 3;
+                  if (controller.scrollController.hasClients) {
+                    final controllerPosition =
+                        controller.scrollController.position;
+                    final isNearBottom =
+                        controllerPosition.hasContentDimensions &&
+                            (controllerPosition.maxScrollExtent -
+                                    controllerPosition.pixels) <
+                                MediaQuery.sizeOf(context).height / 3;
 
-                  if (_isFirstScroll) {
-                    controller.jumpToBottom();
-                    _isFirstScroll = false;
-                  } else if (isNearBottom) {
-                    controller.animateToBottom();
+                    if (_isFirstScroll) {
+                      controller.jumpToBottom();
+                      _isFirstScroll = false;
+                    } else if (isNearBottom) {
+                      controller.animateToBottom();
+                    }
                   }
                 });
 
@@ -201,8 +165,12 @@ class _ContactChatPageState extends State<ContactChatPage> {
                   },
                   child: ListView.builder(
                     controller: controller.scrollController,
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                      top: 8,
+                      bottom: 64,
+                    ),
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
                       final message = messages[index];
@@ -242,6 +210,80 @@ class _ContactChatPageState extends State<ContactChatPage> {
                   ),
                 );
               },
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              border: Border(
+                top: BorderSide(color: context.lightGreyColor, width: 0.2),
+              ),
+            ),
+            child: SafeArea(
+              bottom: true,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  right: 12,
+                  bottom: 12,
+                  top: 16,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxHeight: 86),
+                        child: KondusTextFormField(
+                          focusNode: _focusNode,
+                          controller: controller.textController,
+                          decoration: const InputDecoration(
+                            hintText: 'Digite sua mensagem...',
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                          ),
+                          maxLines: null,
+                          onChanged: (_) async {
+                            if (controller.scrollController.hasClients) {
+                              final controllerPosition =
+                                  controller.scrollController.position;
+                              final isNearBottom =
+                                  controllerPosition.hasContentDimensions &&
+                                      (controllerPosition.maxScrollExtent -
+                                              controllerPosition.pixels) <
+                                          MediaQuery.sizeOf(context).height / 3;
+                              if (controller.lastUnreadCount > 0 &&
+                                  isNearBottom) {
+                                await controller.markMessagesAsRead(
+                                  _currentUserId,
+                                  widget.targetId,
+                                );
+                              }
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    IconButton(
+                      onPressed: () async {
+                        await controller.sendMessage(
+                          currentUserId: _currentUserId,
+                          targetId: widget.targetId,
+                        );
+                        if (controller.lastUnreadCount > 0) {
+                          await controller.markMessagesAsRead(
+                            _currentUserId,
+                            widget.targetId,
+                          );
+                        }
+                      },
+                      icon: const Icon(Icons.send),
+                      color: context.blueColor,
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ],

@@ -19,6 +19,7 @@ class KondusTextFormField extends StatelessWidget {
   final int? maxLines;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
+  final FocusNode? focusNode;
 
   const KondusTextFormField({
     this.formKey,
@@ -37,6 +38,7 @@ class KondusTextFormField extends StatelessWidget {
     this.maxLines = 1,
     this.keyboardType,
     this.inputFormatters,
+    this.focusNode,
     super.key,
   });
 
@@ -44,6 +46,7 @@ class KondusTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       key: formKey,
+      focusNode: focusNode,
       enabled: isEnabled,
       controller: controller,
       obscureText: isObscure,

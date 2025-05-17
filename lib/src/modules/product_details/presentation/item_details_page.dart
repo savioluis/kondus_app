@@ -169,7 +169,7 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                               const SizedBox(height: 8),
                               Divider(
                                 color: context.lightGreyColor,
-                                thickness: 0.5,
+                                thickness: 0.1,
                               ),
                               const SizedBox(height: 24),
                               ItemDetailsPriceInfoWidget(
@@ -180,7 +180,7 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                               const SizedBox(height: 24),
                               Divider(
                                   color: context.lightGreyColor,
-                                  thickness: 0.5),
+                                  thickness: 0.1),
                               const SizedBox(height: 24),
                               Text(
                                 "Descrição",
@@ -198,7 +198,7 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                               const SizedBox(height: 24),
                               Divider(
                                 color: context.lightGreyColor,
-                                thickness: 0.5,
+                                thickness: 0.1,
                               ),
                               const SizedBox(height: 24),
                               Text(
@@ -215,8 +215,9 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
                               const SizedBox(height: 24),
                               Divider(
                                 color: context.lightGreyColor,
-                                thickness: 0.5,
+                                thickness: 0.1,
                               ),
+                              const SizedBox(height: 24),
                               Text(
                                 "Categorias",
                                 style: context.headlineMedium!

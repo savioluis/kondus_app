@@ -33,7 +33,9 @@ class MessageBubble extends StatelessWidget {
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.7,
         ),
-        child: Container(
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.easeOutQuart,
           margin: const EdgeInsets.symmetric(vertical: 6),
           padding: const EdgeInsets.only(
             left: 12,
@@ -42,19 +44,31 @@ class MessageBubble extends StatelessWidget {
             bottom: 8,
           ),
           decoration: BoxDecoration(
+            border: isMe || hasBeenRead
+                ? null
+                : Border(
+                    left: BorderSide(
+                      color: context.blueColor.withOpacity(0.3),
+                      width: 2,
+                    ),
+                    bottom: BorderSide(
+                      color: context.blueColor.withOpacity(0.3),
+                      width: 2,
+                    ),
+                  ),
             color: isMe
-                ? context.blueColor.withOpacity(0.15)
+                ? context.blueColor.withOpacity(0.10)
                 : hasBeenRead
-                    ? context.lightGreyColor.withOpacity(0.15)
-                    : context.lightGreyColor.withOpacity(0.30),
+                    ? context.lightGreyColor.withOpacity(0.05)
+                    : context.lightGreyColor.withOpacity(0.05),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end, // <- esse é o segredo
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
                 text,
-                style: const TextStyle(fontSize: 16),
+                style: context.bodyMedium!.copyWith(fontSize: 16),
               ),
               const SizedBox(height: 6),
               Text(
@@ -64,7 +78,7 @@ class MessageBubble extends StatelessWidget {
                   color: context.lightGreyColor,
                   fontWeight: FontWeight.w600,
                 ),
-                textAlign: TextAlign.right, // <-- alinhamento final
+                textAlign: TextAlign.right,
               ),
             ],
           ),

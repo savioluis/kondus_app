@@ -105,17 +105,14 @@ class _HomePageState extends State<HomePage> {
                             itemCount: state.contacts.length,
                           ),
                           const SizedBox(height: 24),
+                          Divider(
+                            thickness: 0.1,
+                            color: context.lightGreyColor,
+                            height: 2,
+                          ),
                         ],
                       ),
                     ),
-
-                  SliverToBoxAdapter(
-                    child: Divider(
-                      thickness: 0.1,
-                      color: context.lightGreyColor,
-                      height: 2,
-                    ),
-                  ),
 
                   SliverPersistentHeader(
                     pinned: true,

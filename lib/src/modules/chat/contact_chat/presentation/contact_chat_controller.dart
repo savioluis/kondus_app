@@ -36,16 +36,16 @@ class ContactChatController {
         targetId: targetId,
         text: text,
       );
-
-      Future.delayed(const Duration(milliseconds: 100), animateToBottom);
     } catch (e) {
       rethrow;
+    } finally {
+      jumpToBottom();
     }
   }
 
   void jumpToBottom() {
     if (scrollController.hasClients) {
-      scrollController.jumpTo(scrollController.position.maxScrollExtent + 23);
+      scrollController.jumpTo(scrollController.position.maxScrollExtent);
     }
   }
 
