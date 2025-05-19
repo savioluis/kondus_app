@@ -50,11 +50,14 @@ class SearchPageAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        title,
-                        style: const TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.w800,
+                      RichText(
+                        text: TextSpan(
+                          text: title,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 32,
+                            color: context.primaryColor,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 12),

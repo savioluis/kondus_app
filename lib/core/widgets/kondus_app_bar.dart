@@ -10,6 +10,7 @@ class KondusAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.backButtonColor,
     this.actions,
     this.backgroundColor,
+    this.showBackButton = true,
     super.key,
   }) : assert(title == null || titleWidget == null,
             'Can not have both title and titleWidget in this Widget');
@@ -20,18 +21,21 @@ class KondusAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? backButtonColor;
   final List<Widget>? actions;
   final Color? backgroundColor;
+  final bool showBackButton;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
-      leading: IconButton(
-        onPressed: onBackButtonPressed ?? NavigatorProvider.goBack,
-        icon: Icon(
-          Icons.arrow_back,
-          color: backButtonColor ?? context.onSurfaceColor,
-        ),
-      ),
+      leading: showBackButton
+          ? IconButton(
+              onPressed: onBackButtonPressed ?? NavigatorProvider.goBack,
+              icon: Icon(
+                Icons.arrow_back,
+                color: backButtonColor ?? context.onSurfaceColor,
+              ),
+            )
+          : null,
       elevation: 0,
       backgroundColor: backgroundColor ?? context.surfaceColor,
       surfaceTintColor: context.surfaceColor,

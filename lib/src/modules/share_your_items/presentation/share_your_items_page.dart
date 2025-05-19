@@ -32,7 +32,7 @@ class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
 
   bool showAllItems = false;
 
-  final minimumDisplayQuantity = 9;
+  final minimumDisplayQuantity = 7;
 
   @override
   void initState() {
@@ -64,7 +64,9 @@ class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const KondusAppBar(),
+      appBar: KondusAppBar(
+        showBackButton: widget.onSkipPressed == null,
+      ),
       bottomNavigationBar: ColoredBox(
         color: context.surfaceColor,
         child: SafeArea(

@@ -49,12 +49,12 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
   void initState() {
     _pageController = PageController(viewportFraction: 0.89);
 
-    _autoScrollTimer = Timer.periodic(const Duration(seconds: 12), (timer) {
+    _autoScrollTimer = Timer.periodic(const Duration(seconds: 7), (timer) {
       final nextPage = (_currentPage + 1) % _banners.length;
 
       _pageController.animateToPage(
         nextPage,
-        duration: const Duration(milliseconds: 900),
+        duration: const Duration(milliseconds: 800),
         curve: Curves.easeInOut,
       );
     });
@@ -95,49 +95,46 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
                   final banner = _banners[index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: ColorUtils.generateTonalColors(
-                            count: _banners.length,
-                            saturationRange: 0.01,
-                            baseColor: context.lightGreyColor,
-                          )[index]
-                              .withOpacity(0.09),
-                          border: Border.all(
-                            color: context.lightGreyColor.withOpacity(0.36),
-                          ),
-                          borderRadius: BorderRadius.circular(18),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        color: ColorUtils.generateTonalColors(
+                          count: _banners.length,
+                          saturationRange: 0.01,
+                          baseColor: context.lightGreyColor,
+                        )[index]
+                            .withOpacity(0.09),
+                        border: Border.all(
+                          color: context.lightGreyColor.withOpacity(0.36),
                         ),
-                        child: InkWell(
-                          onTap: banner.onPressed,
-                          borderRadius: BorderRadius.circular(18),
-                          child: Padding(
-                            padding: const EdgeInsets.all(18),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(banner.emoji,
-                                    style: TextStyle(fontSize: emojiFontSize)),
-                                const SizedBox(height: 8),
-                                Text(
-                                  banner.title,
-                                  style: context.titleMedium!.copyWith(
-                                    fontSize: titleFontSize,
-                                    color: context.blueColor,
-                                  ),
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: InkWell(
+                        onTap: banner.onPressed,
+                        borderRadius: BorderRadius.circular(18),
+                        child: Padding(
+                          padding: const EdgeInsets.all(18),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(banner.emoji,
+                                  style: TextStyle(fontSize: emojiFontSize)),
+                              const SizedBox(height: 8),
+                              Text(
+                                banner.title,
+                                style: context.titleMedium!.copyWith(
+                                  fontSize: titleFontSize,
+                                  color: context.blueColor,
                                 ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  banner.text,
-                                  style: context.labelSmall!.copyWith(
-                                    fontSize: contentFontSize,
-                                  ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                banner.text,
+                                style: context.labelSmall!.copyWith(
+                                  fontSize: contentFontSize,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
