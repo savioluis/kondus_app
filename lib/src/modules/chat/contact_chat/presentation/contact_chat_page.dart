@@ -34,21 +34,16 @@ class _ContactChatPageState extends State<ContactChatPage> {
   bool _isUserScrolling = false;
   bool _hasMarkedMessagesThisScroll = false;
 
-  final FocusNode _focusNode = FocusNode();
-
   @override
   void initState() {
     super.initState();
     _loadUserId();
     controller = ContactChatController();
 
-    _focusNode.addListener(() {
-      if (_focusNode.hasFocus) {
-        Future.delayed(const Duration(milliseconds: 180), () {
-          controller.jumpToBottom();
-        });
-      }
-    });
+    controller.messageFieldFocusNode
+        .addListener(controller.handleScrollToBottomWhenKeayboardAppears);
+
+    controller.scrollController.addListener(controller.handleFABVisibility);
   }
 
   Future<void> _loadUserId() async {
@@ -61,8 +56,12 @@ class _ContactChatPageState extends State<ContactChatPage> {
 
   @override
   void dispose() {
-    _focusNode.dispose();
+    controller.messageFieldFocusNode
+        .removeListener(controller.handleScrollToBottomWhenKeayboardAppears);
+    controller.messageFieldFocusNode.dispose();
+    controller.scrollController.removeListener(controller.handleFABVisibility);
     controller.scrollController.dispose();
+    controller.fabVisibility.dispose();
     super.dispose();
   }
 
@@ -82,208 +81,255 @@ class _ContactChatPageState extends State<ContactChatPage> {
           }
         },
       ),
-      body: Column(
+      body: Stack(
         children: [
-          Expanded(
-            child: StreamBuilder<List<MessageModel>>(
-              stream: controller.getMessages(widget.targetId),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-
-                if (snapshot.hasError) {
-                  final error = snapshot.error;
-                  String errorMessage = error.toString();
-                  if (error is KondusFailure) {
-                    errorMessage = error.failureMessage;
-                  }
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Center(
-                      child: Text(
-                        'Erro ao carregar mensagens: $errorMessage',
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  );
-                }
-
-                if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('Nenhuma mensagem ainda.'));
-                }
-
-                final messages = snapshot.data!;
-                final unreadMessages =
-                    messages.where((message) => !message.hasBeenRead).toList();
-                controller.lastUnreadCount = unreadMessages.length;
-
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  if (_isUserScrolling) return;
-
-                  if (controller.scrollController.hasClients) {
-                    final controllerPosition =
-                        controller.scrollController.position;
-                    final isNearBottom =
-                        controllerPosition.hasContentDimensions &&
-                            (controllerPosition.maxScrollExtent -
-                                    controllerPosition.pixels) <
-                                MediaQuery.sizeOf(context).height / 3;
-
-                    if (_isFirstScroll) {
-                      controller.jumpToBottom();
-                      _isFirstScroll = false;
-                    } else if (isNearBottom) {
-                      controller.animateToBottom();
+          Column(
+            children: [
+              Expanded(
+                child: StreamBuilder<List<MessageModel>>(
+                  stream: controller.getMessages(widget.targetId),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
                     }
-                  }
-                });
 
-                return NotificationListener<ScrollNotification>(
-                  onNotification: (notification) {
-                    if (notification is UserScrollNotification) {
-                      if (notification.direction != ScrollDirection.idle) {
-                        _isUserScrolling = true;
-
-                        if (!_hasMarkedMessagesThisScroll &&
-                            controller.lastUnreadCount > 0) {
-                          _hasMarkedMessagesThisScroll = true;
-
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            controller.markMessagesAsRead(
-                              _currentUserId,
-                              widget.targetId,
-                            );
-                          });
-                        }
-                      } else {
-                        _isUserScrolling = false;
-                        _hasMarkedMessagesThisScroll = false;
+                    if (snapshot.hasError) {
+                      final error = snapshot.error;
+                      String errorMessage = error.toString();
+                      if (error is KondusFailure) {
+                        errorMessage = error.failureMessage;
                       }
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Center(
+                          child: Text(
+                            'Erro ao carregar mensagens: $errorMessage',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      );
                     }
-                    return false;
+
+                    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(
+                          child: Text('Nenhuma mensagem ainda.'));
+                    }
+
+                    final messages = snapshot.data!;
+                    final unreadMessages = messages
+                        .where((message) => !message.hasBeenRead)
+                        .toList();
+                    controller.lastUnreadCount = unreadMessages.length;
+
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      controller.scrollToBottomIfNeeded(
+                        context: context,
+                        isUserScrolling: _isUserScrolling,
+                        isFirstScroll: _isFirstScroll,
+                        onFirstScrollHandled: () {
+                          _isFirstScroll = false;
+                        },
+                      );
+                    });
+
+                    return NotificationListener<ScrollNotification>(
+                      onNotification: (notification) {
+                        if (notification is UserScrollNotification) {
+                          controller.handleUserScrollNotification(
+                            notification: notification,
+                            markMessagesAsReadCallback: () {
+                              controller.markMessagesAsRead(
+                                _currentUserId,
+                                widget.targetId,
+                              );
+                            },
+                            onStartScroll: () {
+                              _isUserScrolling = true;
+
+                              if (!_hasMarkedMessagesThisScroll) {
+                                _hasMarkedMessagesThisScroll = true;
+                              }
+                            },
+                            onStopScroll: () {
+                              _isUserScrolling = false;
+                              _hasMarkedMessagesThisScroll = false;
+                            },
+                          );
+                        }
+                        return false;
+                      },
+                      child: ListView.builder(
+                        controller: controller.scrollController,
+                        padding: const EdgeInsets.only(
+                          left: 16,
+                          right: 16,
+                          top: 8,
+                          bottom: 64,
+                        ),
+                        itemCount: messages.length,
+                        itemBuilder: (context, index) {
+                          final message = messages[index];
+
+                          final currentDate = DateTime(
+                            message.timestamp.toDate().year,
+                            message.timestamp.toDate().month,
+                            message.timestamp.toDate().day,
+                          );
+
+                          DateTime? previousDate;
+                          if (index > 0) {
+                            final previousMessage = messages[index - 1];
+                            previousDate = DateTime(
+                              previousMessage.timestamp.toDate().year,
+                              previousMessage.timestamp.toDate().month,
+                              previousMessage.timestamp.toDate().day,
+                            );
+                          }
+
+                          final isFirstOfDay =
+                              index == 0 || currentDate != previousDate;
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              if (isFirstOfDay)
+                                DateHeaderWidget(date: currentDate),
+                              MessageBubble(
+                                text: message.text,
+                                timestamp: message.timestamp,
+                                isMe: message.fromId == _currentUserId,
+                                hasBeenRead: message.hasBeenRead,
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    );
                   },
-                  child: ListView.builder(
-                    controller: controller.scrollController,
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(color: context.lightGreyColor, width: 0.2),
+                  ),
+                ),
+                child: SafeArea(
+                  bottom: true,
+                  child: Padding(
                     padding: const EdgeInsets.only(
                       left: 16,
-                      right: 16,
-                      top: 8,
-                      bottom: 64,
+                      right: 12,
+                      bottom: 18,
+                      top: 16,
                     ),
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      final message = messages[index];
-
-                      final currentDate = DateTime(
-                        message.timestamp.toDate().year,
-                        message.timestamp.toDate().month,
-                        message.timestamp.toDate().day,
-                      );
-
-                      DateTime? previousDate;
-                      if (index > 0) {
-                        final previousMessage = messages[index - 1];
-                        previousDate = DateTime(
-                          previousMessage.timestamp.toDate().year,
-                          previousMessage.timestamp.toDate().month,
-                          previousMessage.timestamp.toDate().day,
-                        );
-                      }
-
-                      final isFirstOfDay =
-                          index == 0 || currentDate != previousDate;
-
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          if (isFirstOfDay) DateHeaderWidget(date: currentDate),
-                          MessageBubble(
-                            text: message.text,
-                            timestamp: message.timestamp,
-                            isMe: message.fromId == _currentUserId,
-                            hasBeenRead: message.hasBeenRead,
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              border: Border(
-                top: BorderSide(color: context.lightGreyColor, width: 0.2),
-              ),
-            ),
-            child: SafeArea(
-              bottom: true,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 16,
-                  right: 12,
-                  bottom: 12,
-                  top: 16,
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxHeight: 86),
-                        child: KondusTextFormField(
-                          focusNode: _focusNode,
-                          controller: controller.textController,
-                          decoration: const InputDecoration(
-                            hintText: 'Digite sua mensagem...',
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
-                          ),
-                          maxLines: null,
-                          onChanged: (_) async {
-                            if (controller.scrollController.hasClients) {
-                              final controllerPosition =
-                                  controller.scrollController.position;
-                              final isNearBottom =
-                                  controllerPosition.hasContentDimensions &&
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxHeight: 86),
+                            child: KondusTextFormField(
+                              focusNode: controller.messageFieldFocusNode,
+                              controller: controller.textController,
+                              decoration: const InputDecoration(
+                                hintText: 'Digite sua mensagem...',
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 8,
+                                ),
+                              ),
+                              maxLines: null,
+                              onChanged: (_) async {
+                                if (controller.scrollController.hasClients) {
+                                  final controllerPosition =
+                                      controller.scrollController.position;
+                                  final isNearBottom = controllerPosition
+                                          .hasContentDimensions &&
                                       (controllerPosition.maxScrollExtent -
                                               controllerPosition.pixels) <
                                           MediaQuery.sizeOf(context).height / 3;
-                              if (controller.lastUnreadCount > 0 &&
-                                  isNearBottom) {
-                                await controller.markMessagesAsRead(
-                                  _currentUserId,
-                                  widget.targetId,
-                                );
-                              }
+                                  if (controller.lastUnreadCount > 0 &&
+                                      isNearBottom) {
+                                    await controller.markMessagesAsRead(
+                                      _currentUserId,
+                                      widget.targetId,
+                                    );
+                                  }
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        IconButton(
+                          onPressed: () async {
+                            await controller.sendMessage(
+                              currentUserId: _currentUserId,
+                              targetId: widget.targetId,
+                            );
+                            if (controller.lastUnreadCount > 0) {
+                              await controller.markMessagesAsRead(
+                                _currentUserId,
+                                widget.targetId,
+                              );
                             }
                           },
+                          icon: const Icon(Icons.send),
+                          color: context.blueColor,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+            bottom: 156,
+            right: 0,
+            child: ValueListenableBuilder<bool>(
+              valueListenable: controller.fabVisibility,
+              builder: (context, showFAB, _) {
+                return AnimatedOpacity(
+                  opacity: showFAB ? 1 : 0,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeOutBack,
+                  child: IgnorePointer(
+                    ignoring: !showFAB,
+                    child: Container(
+                      width: 64,
+                      decoration: BoxDecoration(
+                          color: context.surfaceColor,
+                          borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(18),
+                            topLeft: Radius.circular(18),
+                          ),
+                          border: Border.all(color: context.lightGreyColor)),
+                      padding: const EdgeInsets.all(16),
+                      child: FittedBox(
+                        child: FloatingActionButton(
+                          focusElevation: 0,
+                          disabledElevation: 0,
+                          hoverElevation: 0,
+                          highlightElevation: 0,
+                          elevation: 0,
+                          backgroundColor: context.blueColor,
+                          mini: true,
+                          shape: const CircleBorder(),
+                          onPressed: () {
+                            controller.animateToBottom();
+                          },
+                          child: Icon(
+                            Icons.keyboard_arrow_down,
+                            color: context.whiteColor,
+                            size: 28,
+                          ),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 8),
-                    IconButton(
-                      onPressed: () async {
-                        await controller.sendMessage(
-                          currentUserId: _currentUserId,
-                          targetId: widget.targetId,
-                        );
-                        if (controller.lastUnreadCount > 0) {
-                          await controller.markMessagesAsRead(
-                            _currentUserId,
-                            widget.targetId,
-                          );
-                        }
-                      },
-                      icon: const Icon(Icons.send),
-                      color: context.blueColor,
-                    ),
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             ),
           ),
         ],
