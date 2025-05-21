@@ -73,6 +73,7 @@ class ContactChatController {
   }
 
   void handleFABVisibility() {
+    if (!scrollController.hasClients) return;
     final controllerPosition = scrollController.position;
     if (!controllerPosition.hasContentDimensions) return;
 
@@ -85,6 +86,8 @@ class ContactChatController {
   }
 
   void handleScrollToBottomWhenKeayboardAppears() {
+    if (!scrollController.hasClients) return;
+
     final controllerPosition = scrollController.position;
     if (!controllerPosition.hasContentDimensions) return;
 

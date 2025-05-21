@@ -66,7 +66,6 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
 
   @override
   void dispose() {
-    log('DEU DISPOSE NO CAROUSEL');
     _autoScrollTimer?.cancel();
     _pageController.dispose();
     super.dispose();
