@@ -134,4 +134,11 @@ class ContactChatController {
       );
     }
   }
+
+  void dispose() {
+    fabVisibility.dispose();
+    messageFieldFocusNode.dispose();
+    textController.dispose();
+    scrollController.dispose();
+  }
 }

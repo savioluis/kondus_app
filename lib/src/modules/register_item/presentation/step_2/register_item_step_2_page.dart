@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:kondus/app/routing/app_routes.dart';
 import 'package:kondus/core/providers/navigator/navigator_provider.dart';
@@ -52,7 +50,13 @@ class _RegisterItemStep2PageState extends State<RegisterItemStep2Page> {
       categoriesIds: widget.categoriesIds,
       actionType: widget.actionType,
     );
-    log('quantidade de imagens ${widget.imagesPaths?.length}');
+  }
+
+  @override
+  dispose() {
+    controller.removeListener(_controllerListener);
+    controller.dispose();
+    super.dispose();
   }
 
   _controllerListener() {

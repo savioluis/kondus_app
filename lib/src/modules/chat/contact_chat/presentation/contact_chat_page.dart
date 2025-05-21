@@ -46,23 +46,21 @@ class _ContactChatPageState extends State<ContactChatPage> {
     controller.scrollController.addListener(controller.handleFABVisibility);
   }
 
+  @override
+  void dispose() {
+    controller.messageFieldFocusNode
+        .removeListener(controller.handleScrollToBottomWhenKeayboardAppears);
+    controller.scrollController.removeListener(controller.handleFABVisibility);
+    controller.dispose();
+    super.dispose();
+  }
+
   Future<void> _loadUserId() async {
     final authService = GetIt.instance<AuthService>();
     final id = await authService.getUserId();
     setState(() {
       _currentUserId = id?.toString();
     });
-  }
-
-  @override
-  void dispose() {
-    controller.messageFieldFocusNode
-        .removeListener(controller.handleScrollToBottomWhenKeayboardAppears);
-    controller.messageFieldFocusNode.dispose();
-    controller.scrollController.removeListener(controller.handleFABVisibility);
-    controller.scrollController.dispose();
-    controller.fabVisibility.dispose();
-    super.dispose();
   }
 
   @override

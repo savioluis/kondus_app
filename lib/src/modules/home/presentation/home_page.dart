@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
+    controller.dispose();
     super.dispose();
   }
 

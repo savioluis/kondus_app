@@ -31,6 +31,11 @@ class _FilterPageState extends State<FilterPage> {
     _loadCategories();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future<void> _loadCategories() async {
     setState(() {
       _isLoading = true;
@@ -114,27 +119,27 @@ class _FilterPageState extends State<FilterPage> {
             )
           : !_hasError
               ? Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                child: ListView.separated(
-                  itemCount: _categories.length,
-                  itemBuilder: (context, index) {
-                    final category = _categories[index];
-                    return CheckboxListTile(
-                      shape: ContinuousRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      title: Text(category.name),
-                      value: _selectedIndexes.contains(index),
-                      activeColor: context.blueColor,
-                      tileColor: context.lightGreyColor.withOpacity(0.2),
-                      onChanged: (_) => toggleSelection(index),
-                    );
-                  },
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 12),
-                ),
-              )
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                  child: ListView.separated(
+                    itemCount: _categories.length,
+                    itemBuilder: (context, index) {
+                      final category = _categories[index];
+                      return CheckboxListTile(
+                        shape: ContinuousRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        title: Text(category.name),
+                        value: _selectedIndexes.contains(index),
+                        activeColor: context.blueColor,
+                        tileColor: context.lightGreyColor.withOpacity(0.2),
+                        onChanged: (_) => toggleSelection(index),
+                      );
+                    },
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 12),
+                  ),
+                )
               : const Center(
                   child: Text(
                     'Erro ao carregar os filtros.',

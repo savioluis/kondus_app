@@ -17,6 +17,12 @@ class _RegisterPageState extends State<RegisterPage> {
   final pageController = RegisterController();
 
   @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;

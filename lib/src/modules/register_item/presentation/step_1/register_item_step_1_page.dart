@@ -47,6 +47,13 @@ class _RegisterItemPageSStep1tate extends State<RegisterItemStep1Page> {
     );
   }
 
+  @override
+  dispose() {
+    controller.removeListener(_controllerListener);
+    controller.dispose();
+    super.dispose();
+  }
+
   _controllerListener() {
     final state = controller.state;
 
@@ -67,7 +74,6 @@ class _RegisterItemPageSStep1tate extends State<RegisterItemStep1Page> {
 
   @override
   Widget build(BuildContext context) {
-
     final contentTypeValue = _getContentTypeValue();
 
     return AnimatedBuilder(

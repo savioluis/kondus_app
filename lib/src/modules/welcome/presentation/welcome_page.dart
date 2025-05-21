@@ -17,6 +17,12 @@ class _WelcomePageState extends State<WelcomePage> {
 
   final slides = const WelcomeSlidesRepository().getWelcomeSlides()..shuffle();
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   void _nextPage() {
     if (_currentIndex < slides.length - 1) {
       _controller.nextPage(

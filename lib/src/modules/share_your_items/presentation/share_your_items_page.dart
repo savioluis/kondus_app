@@ -40,6 +40,12 @@ class _ShareYourItemsPageState extends State<ShareYourItemsPage> {
     displayedItems = recommendedItems.take(minimumDisplayQuantity).toList();
   }
 
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   void _filterItems(String query) {
     final normalizedQuery = _removeAccents(query.toLowerCase());
 

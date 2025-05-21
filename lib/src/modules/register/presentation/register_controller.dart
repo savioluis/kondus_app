@@ -11,6 +11,14 @@ class RegisterController {
   final passwordEC = TextEditingController();
   final confirmPasswordEC = TextEditingController();
 
+  dispose() {
+    fullNameEC.dispose();
+    emailEC.dispose();
+    birthDateEC.dispose();
+    passwordEC.dispose();
+    confirmPasswordEC.dispose();
+  }
+
   void registerAccount(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text(

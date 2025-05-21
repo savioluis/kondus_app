@@ -19,13 +19,21 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final controller = LoginController();
+  late final LoginController controller;
   bool passwordHiddenValue = true;
 
   @override
   void initState() {
     super.initState();
+    controller = LoginController();
     controller.addListener(_controllerListener);
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(_controllerListener);
+    controller.dispose();
+    super.dispose();
   }
 
   void _controllerListener() async {
@@ -64,13 +72,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  void dispose() {
-    controller.removeListener(_controllerListener);
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -103,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 12),
                     KondusTextFormField(
                       isObscure: passwordHiddenValue,
-                      controller: controller.password,
+                      controller: controller.passwordEC,
                       sufixIcon: IconButton(
                         onPressed: () {
                           setState(() {
@@ -123,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                         isLoading: controller.state is LoginLoadingState,
                         onPressed: () async {
                           final email = controller.emailEC.value.text;
-                          final password = controller.password.value.text;
+                          final password = controller.passwordEC.value.text;
                           await controller.login(
                             email: email,
                             password: password,

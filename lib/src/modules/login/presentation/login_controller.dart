@@ -14,7 +14,7 @@ class LoginController extends ChangeNotifier {
   LoginState get state => _state;
 
   final TextEditingController emailEC = TextEditingController();
-  final TextEditingController password = TextEditingController();
+  final TextEditingController passwordEC = TextEditingController();
 
   Future<void> login({
     required String email,
@@ -65,5 +65,12 @@ class LoginController extends ChangeNotifier {
     if (passwordValidationError != null) return passwordValidationError;
 
     return null;
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    emailEC.dispose();
+    passwordEC.dispose();
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:kondus/app/routing/app_routes.dart';
@@ -23,8 +24,7 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
     _BannerData(
       emoji: "🔍",
       title: "Encontre o que precisa!",
-      text:
-          "Busque produtos e serviços no condomínio de forma rápida e fácil.",
+      text: "Busque produtos e serviços no condomínio de forma rápida e fácil.",
       onPressed: () => NavigatorProvider.navigateTo(AppRoutes.searchProducts),
     ),
     _BannerData(
@@ -49,7 +49,9 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
   void initState() {
     _pageController = PageController(viewportFraction: 0.89);
 
-    _autoScrollTimer = Timer.periodic(const Duration(seconds: 7), (timer) {
+    _autoScrollTimer = Timer.periodic(const Duration(seconds: 7), (_) {
+      if (_banners.isEmpty || !_pageController.hasClients) return;
+
       final nextPage = (_currentPage + 1) % _banners.length;
 
       _pageController.animateToPage(
@@ -64,6 +66,7 @@ class _HomeBannerCarouselState extends State<HomeBannerCarousel> {
 
   @override
   void dispose() {
+    log('DEU DISPOSE NO CAROUSEL');
     _autoScrollTimer?.cancel();
     _pageController.dispose();
     super.dispose();

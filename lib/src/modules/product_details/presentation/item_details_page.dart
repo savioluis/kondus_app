@@ -37,6 +37,11 @@ class ItemtDetailsPageState extends State<ItemDetailsPage> {
     viewmodel.getItemDetails(widget.productId);
     super.initState();
   }
+  
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

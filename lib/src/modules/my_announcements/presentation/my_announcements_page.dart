@@ -19,7 +19,6 @@ class MyItemsPage extends StatefulWidget {
   @override
   State<MyItemsPage> createState() => _MyItemsPageState();
 }
-
 class _MyItemsPageState extends State<MyItemsPage> {
   late final MyAnnouncementsController controller;
 
@@ -28,6 +27,12 @@ class _MyItemsPageState extends State<MyItemsPage> {
     super.initState();
     controller = MyAnnouncementsController()..loadAnnouncements();
     controller.addListener(_controllerListener);
+  }
+  
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   void _controllerListener() {

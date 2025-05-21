@@ -27,6 +27,7 @@ class SearchPageController extends ChangeNotifier {
   @override
   void dispose() {
     searchController.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 
