@@ -24,11 +24,11 @@ class OverlayHelper {
           parent: controller,
           curve: Curves.easeInOut,
         ),
-        child: Stack(
+        child: const Stack(
           children: [
             Positioned.fill(
               child: IgnorePointer(
-                child: Center(child: const _CenteredSuccessWidget()),
+                child: Center(child: _CenteredSuccessWidget()),
               ),
             ),
           ],

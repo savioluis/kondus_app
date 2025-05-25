@@ -6,7 +6,6 @@ import 'package:kondus/core/utils/snack_bar_helper.dart';
 import 'package:kondus/src/modules/login/presentation/login_controller.dart';
 import 'package:kondus/src/modules/login/presentation/login_state.dart';
 import 'package:kondus/src/modules/login/widgets/login_app_bar.dart';
-import 'package:kondus/src/modules/login/widgets/register_text_widget.dart';
 import 'package:kondus/core/widgets/kondus_elevated_button.dart';
 import 'package:kondus/core/widgets/kondus_text_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -137,14 +136,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
-          RegisterTextWidget(
-            message: 'Não possui uma conta?',
-            buttonMessage: 'Criar conta',
-            onPressed: () {
-              NavigatorProvider.navigateTo(AppRoutes.register);
-            },
-          ),
-          const SizedBox(height: 72),
         ],
       ),
     );
