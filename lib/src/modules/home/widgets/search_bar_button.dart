@@ -62,7 +62,7 @@ class SearchBarButton extends StatelessWidget {
                 ),
                 child: Center(
                   child: Icon(
-                    HugeIcons.strokeRoundedPackageAdd,
+                    HugeIcons.strokeRoundedAdd01,
                     color: context.whiteColor,
                     size: 32,
                   ),

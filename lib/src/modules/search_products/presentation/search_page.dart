@@ -67,7 +67,7 @@ class _SearchPageState extends State<SearchPage> {
                         ),
                       ),
                       icon: Icon(
-                        HugeIcons.strokeRoundedPackageAdd,
+                        HugeIcons.strokeRoundedAdd01,
                         color: context.whiteColor,
                       ),
                       backgroundColor: context.blueColor,
