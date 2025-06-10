@@ -34,13 +34,8 @@ class _WelcomePageState extends State<WelcomePage> {
     }
   }
 
-  void _previousPage() {
-    if (_currentIndex > 0) {
-      _controller.previousPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    }
+  void _skip() async {
+    NavigatorProvider.navigateTo(AppRoutes.login);
   }
 
   @override
@@ -60,17 +55,14 @@ class _WelcomePageState extends State<WelcomePage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (_currentIndex > 0)
-                  TextButton(
-                    onPressed: _previousPage,
-                    child: Text(
-                      'Voltar',
-                      style: context.bodyMedium?.copyWith(
-                          color: context.primaryColor.withOpacity(0.5)),
-                    ),
-                  )
-                else
-                  const SizedBox.shrink(),
+                TextButton(
+                  onPressed: _skip,
+                  child: Text(
+                    'Pular',
+                    style: context.bodyMedium?.copyWith(
+                        color: context.primaryColor.withOpacity(0.5)),
+                  ),
+                ),
                 TextButton(
                   onPressed: _nextPage,
                   child: Text(
@@ -142,7 +134,6 @@ class _WelcomePageState extends State<WelcomePage> {
               },
             ),
           ),
-          // Dots indicadores
           Flexible(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -165,9 +156,6 @@ class _WelcomePageState extends State<WelcomePage> {
               ),
             ),
           ),
-
-
-          // Botões
         ],
       ),
     );
